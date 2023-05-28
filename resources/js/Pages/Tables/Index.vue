@@ -7,6 +7,10 @@ defineProps({
         type: Object,
         required: true,
     },
+    dates: {
+        type: Object,
+        required: true,
+    }
 });
 </script>
 
@@ -20,6 +24,13 @@ defineProps({
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
+                <div class="flex justify-end">
+                    <div class="flex items-center justify-between">
+                        <Link :href="route('tables.index', {'date': dates.before})" class="px-1">&lt;</Link>
+                        <div v-text="dates.selectedDate"/>
+                        <Link :href="route('tables.index', {'date': dates.after})" class="px-1">&gt;</Link>
+                    </div>
+                </div>
                 <div v-for="table in $props.tables.data" :class="{'line-through': table.reserved}"
                      class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-3">
                     <div class="flex justify-between">
