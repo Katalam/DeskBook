@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model=Table>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model=Room>
  */
-class TableFactory extends Factory
+class RoomFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,6 @@ class TableFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'location' => $this->faker->address,
         ];
     }
 }

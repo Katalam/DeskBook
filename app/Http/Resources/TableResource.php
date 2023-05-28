@@ -19,6 +19,7 @@ class TableResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'location' => $this->resource->location,
+            'room_name' => $this->whenLoaded('room', fn() => $this->resource->room->name),
             'reserved' => $this->whenLoaded('reservations', fn() => $this->isReserved($request)),
             'reservation' => $this->whenLoaded('reservations', fn() => ReservationResource::make($this->resource->reservations->first())),
         ];

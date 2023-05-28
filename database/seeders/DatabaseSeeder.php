@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\Table;
 use App\Models\User;
 use Hash;
@@ -22,8 +23,11 @@ class DatabaseSeeder extends Seeder
              'password' => Hash::make('password'),
          ]);
 
-         Table::factory()
+
+         Room::factory()
+             ->has(Table::factory()
              ->has(Reservation::factory()->count(5), 'reservations')
-             ->count(5)->create();
+             ->count(5), 'tables')
+             ->count(2)->create();
     }
 }

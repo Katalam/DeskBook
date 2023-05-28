@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RoomResource;
 use App\Http\Resources\TableResource;
+use App\Models\Room;
 use App\Models\Table;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,17 +19,26 @@ class TableController extends Controller
             $selectedDate = Carbon::parse($request->input('date'));
         }
 
-        $tables = Table::query()
+        $rooms = Room::query()
+            ->when($request->has('room'), function ($query) use ($request) {
+                return $query->where('id', $request->input('room'));
+            })
             ->with([
-                'reservations' => function ($query) use ($selectedDate) {
+                'tables' => function ($query) use ($selectedDate) {
                     return $query
-                        ->where('date', '=', $selectedDate)
-                        ->with('user');
-                }])
+                        ->with([
+                            'reservations' => function ($query) use ($selectedDate) {
+                                return $query
+                                    ->where('date', '=', $selectedDate)
+                                    ->with('user');
+                            },
+                        ]);
+                },
+            ])
             ->get();
 
         return inertia('Tables/Index', [
-            'tables' => TableResource::collection($tables),
+            'rooms' => RoomResource::collection($rooms),
             'dates' => [
                 // the subDay and addDay function are changing the selectedDate variable,
                 // so we need to add a day for selected and one more to after to get the correct dates
