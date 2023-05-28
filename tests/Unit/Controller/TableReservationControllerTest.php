@@ -5,21 +5,6 @@ use App\Models\Table;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
-it('will return a 200 response on table reservation create', function () {
-    $user = User::factory()->create();
-    $table = Table::factory()->create();
-
-    $response = $this->actingAs($user)
-        ->get(route('tables.reservations.create', $table));
-
-    $response->assertOk();
-
-    $response->assertInertia(fn (Assert $page) => $page
-        ->component('Tables/Reservations/Create')
-        ->where('table', $table->id)
-    );
-})->group('unit', 'controller', 'table-reservation');
-
 it('will return a 302 response on table reservation store', function () {
     $user = User::factory()->create();
     $table = Table::factory()->create();

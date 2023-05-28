@@ -11,7 +11,7 @@ class TableController extends Controller
 {
     public function index(Request $request)
     {
-        $selectedDate = now();
+        $selectedDate = today();
 
         if ($request->has('date')) {
             $selectedDate = Carbon::parse($request->input('date'));
