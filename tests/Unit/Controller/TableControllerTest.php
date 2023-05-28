@@ -27,7 +27,7 @@ it('will return a 200 response on table index', function () {
             ->has('name')
             ->has('location')
             ->has('reserved')
-            ->has('reservations')
+            ->has('reservation')
         )
         ->has('dates')
     );

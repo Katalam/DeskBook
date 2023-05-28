@@ -22,8 +22,7 @@ class TableController extends Controller
                 'reservations' => function ($query) use ($selectedDate) {
                     return $query
                         ->where('date', '=', $selectedDate)
-                        ->with('user')
-                        ->orderBy('date');
+                        ->with('user');
                 }])
             ->get();
 

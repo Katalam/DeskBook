@@ -43,10 +43,13 @@ function reserve(tableId) {
                         <Link :href="route('tables.index', {'date': dates.after})" class="px-1">&gt;</Link>
                     </div>
                 </div>
-                <div v-for="table in $props.tables.data" :class="{'line-through': table.reserved}"
+                <div v-for="table in $props.tables.data"
                      class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-3">
                     <div class="flex justify-between">
-                        <p v-text="table.name" class="font-bold uppercase mb-2 text-lg"/>
+                        <div class="flex items-center justify-between gap-8 mb-2">
+                            <p v-text="table.name" class="font-bold uppercase text-lg" :class="{'line-through': table.reserved}"/>
+                            <p v-if="table.reservation" v-text="table.reservation.user.name" class="uppercase no-underline"/>
+                        </div>
                         <button type="button"
                                 @click="reserve(table.id)"
                                 v-if="!table.reserved"
@@ -54,11 +57,7 @@ function reserve(tableId) {
                                 :disabled="table.reserved">Reservieren
                         </button>
                     </div>
-                    <p v-text="table.location" class="tracking-widest text-gray-600 font-light mb-4"/>
-                    <div class="flex space-x-4 ml-3 text-gray-800 text-sm" v-for="reservation in table.reservations">
-                        <div v-text="reservation.date"/>
-                        <div v-text="reservation.user.name"/>
-                    </div>
+                    <p v-text="table.location" :class="{'line-through': table.reserved}" class="tracking-widest text-gray-600 font-light mb-4"/>
                 </div>
             </div>
         </div>

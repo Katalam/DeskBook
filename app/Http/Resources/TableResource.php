@@ -20,7 +20,7 @@ class TableResource extends JsonResource
             'name' => $this->resource->name,
             'location' => $this->resource->location,
             'reserved' => $this->whenLoaded('reservations', fn() => $this->isReserved($request)),
-            'reservations' => ReservationResource::collection($this->whenLoaded('reservations')),
+            'reservation' => $this->whenLoaded('reservations', fn() => ReservationResource::make($this->resource->reservations->first())),
         ];
     }
 
