@@ -34,4 +34,4 @@ it('will return a 200 response on table index', function () {
             )
         )
     );
-})->group('unit', 'controller', 'table-reservation');
+})->group('unit', 'controller', 'table');

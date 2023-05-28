@@ -9,7 +9,7 @@ class TableReservationController extends Controller
 {
     public function create(int $table)
     {
-        return inertia('Tables/Create', [
+        return inertia('Tables/Reservations/Create', [
             'table' => $table,
         ]);
     }
