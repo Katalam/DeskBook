@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TableUpdateRequest extends FormRequest
+class RoomUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,7 @@ class TableUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|max:255',
-            'location' => 'sometimes|string',
-            'room_id' => 'sometimes|integer|exists:rooms,id',
+            'name' => 'required|string|max:255',
         ];
     }
 }

@@ -88,10 +88,17 @@ it('will update a table on update method', function () {
     $user = User::factory()->create();
     $room = Room::factory()->create();
 
-    $response = $this->actingAs($user)->post(route('tables.store'), [
+    $table = Table::factory()
+        ->state([
+            'name' => 'Old Name',
+            'location' => 'Old Location',
+            'room_id' => $room->id,
+        ])
+        ->create();
+
+    $response = $this->actingAs($user)->patch(route('tables.update', $table->id), [
         'name' => 'Test Table',
         'location' => 'Test Location',
-        'room_id' => $room->id,
     ]);
 
     $response->assertRedirect(route('tables.index'));
@@ -99,6 +106,9 @@ it('will update a table on update method', function () {
     $this->assertDatabaseHas('tables', [
         'name' => 'Test Table',
         'location' => 'Test Location',
-        'room_id' => $room->id,
+    ]);
+    $this->assertDatabaseMissing('tables', [
+        'name' => 'Old Name',
+        'location' => 'Old Location',
     ]);
 })->group('unit', 'controller', 'table');

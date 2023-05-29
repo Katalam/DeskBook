@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TableStoreRequest;
+use App\Http\Requests\TableUpdateRequest;
 use App\Http\Resources\RoomResource;
 use App\Http\Resources\TableResource;
 use App\Models\Room;
@@ -58,7 +59,7 @@ class TableController extends Controller
         return redirect()->route('tables.index');
     }
 
-    public function update(TableStoreRequest $request, int $table): RedirectResponse
+    public function update(TableUpdateRequest $request, int $table): RedirectResponse
     {
         Table::query()
             ->where('id', $table)

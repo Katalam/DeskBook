@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TableReservationController;
 use Illuminate\Foundation\Application;
@@ -35,14 +36,26 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::controller(TableController::class)->group(function () {
-        Route::get('/tables', 'index')->name('tables.index');
-        Route::post('/tables', 'store')->name('tables.store');
-    });
+    Route::controller(RoomController::class)
+        ->prefix('/rooms')
+        ->as('rooms.')
+        ->group(function () {
+            Route::post('/', 'store')->name('store');
+            Route::patch('{room}', 'update')->name('update');
+        });
+
+    Route::controller(TableController::class)
+        ->prefix('/tables')
+        ->as('tables.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
+            Route::patch('{table}', 'update')->name('update');
+        });
 
     Route::controller(TableReservationController::class)
         ->prefix('/tables/{table}/reservations')
-        ->as('tables.reservations')
+        ->as('tables.reservations.')
         ->group(function () {
             Route::get('create', 'create')->name('create');
             Route::post('/', 'store')->name('store');
