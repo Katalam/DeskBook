@@ -38,6 +38,7 @@ class TableController extends Controller
                         ]);
                 },
             ])
+            ->has('tables')
             ->get();
 
         return inertia('Tables/Index', [
