@@ -41,6 +41,7 @@ Route::middleware([
         ->group(function () {
             Route::post('/', 'store')->name('store');
             Route::patch('{room}', 'update')->name('update');
+            Route::delete('{room}', 'destroy')->name('destroy');
         });
 
     Route::controller(TableController::class)
@@ -50,6 +51,7 @@ Route::middleware([
             Route::get('/', 'index')->name('index');
             Route::post('/', 'store')->name('store');
             Route::patch('{table}', 'update')->name('update');
+            Route::delete('{table}', 'destroy')->name('destroy');
         });
 
     Route::controller(TableReservationController::class)

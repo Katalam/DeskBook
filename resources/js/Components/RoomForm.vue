@@ -33,7 +33,6 @@ function submit() {
                     type="text"
                     class="mt-1 block w-full"
                     required
-                    autofocus
                     placeholder="Room 404"
                     autocomplete="name"
                 />

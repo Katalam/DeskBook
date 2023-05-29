@@ -6,7 +6,7 @@ import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "./PrimaryButton.vue";
 import Select from "./Select.vue";
 
-defineProps({
+const props = defineProps({
     rooms: {
         type: Object,
         required: true,
@@ -16,7 +16,7 @@ defineProps({
 const form = useForm({
     name: '',
     location: '',
-    room_id: 1,
+    room_id: props.rooms.data[0]?.id?.toString() ?? '',
 });
 
 const emit = defineEmits(['submit-table'])
@@ -49,7 +49,6 @@ function submit() {
                         type="text"
                         class="mt-1 block w-full"
                         required
-                        autofocus
                         placeholder="Table 5120"
                         autocomplete="name"
                     />
@@ -63,7 +62,6 @@ function submit() {
                         type="text"
                         class="mt-1 block w-full"
                         required
-                        autofocus
                         placeholder="Table 5120"
                         autocomplete="location"
                     />

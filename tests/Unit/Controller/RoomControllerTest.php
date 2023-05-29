@@ -37,3 +37,16 @@ it('will update a room on update method', function () {
         'name' => 'Old Room',
     ]);
 })->group('unit', 'controller', 'room');
+
+it('can destroy a room', function () {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    $response = $this->actingAs($user)->delete(route('rooms.destroy', $room->id));
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseMissing('rooms', [
+        'id' => $room->id,
+    ]);
+})->group('unit', 'controller', 'room');

@@ -24,4 +24,13 @@ class RoomController extends Controller
 
         return redirect()->back();
     }
+
+    public function destroy(int $room): RedirectResponse
+    {
+        Room::query()
+            ->where('id', $room)
+            ->delete();
+
+        return redirect()->back();
+    }
 }

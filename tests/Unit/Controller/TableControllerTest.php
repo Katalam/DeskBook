@@ -113,3 +113,16 @@ it('will update a table on update method', function () {
         'location' => 'Old Location',
     ]);
 })->group('unit', 'controller', 'table');
+
+it('can destroy a table', function () {
+    $user = User::factory()->create();
+    $table = Table::factory()->create();
+
+    $response = $this->actingAs($user)->delete(route('tables.destroy', $table->id));
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseMissing('tables', [
+        'id' => $table->id,
+    ]);
+})->group('unit', 'controller', 'table');
