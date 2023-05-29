@@ -32,13 +32,13 @@ it('will return an error response on table reservation store if date is blocked'
     $table = Table::factory()->create();
 
     $table->reservations()->create([
-        'date' => now()->format('Y-m-d'),
+        'date' => today(),
         'user_id' => $userForReservation->id,
     ]);
 
     $response = $this->actingAs($user)
         ->post(route('tables.reservations.store', $table), [
-            'date' => now()->format('Y-m-d'),
+            'date' => today(),
         ]);
 
     $response->assertStatus(302);
