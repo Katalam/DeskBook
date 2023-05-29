@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReservationResource;
 use App\Http\Resources\RoomResource;
 use App\Http\Resources\TableResource;
 use App\Models\Room;
 use App\Models\Table;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -14,15 +16,14 @@ class DashboardController extends Controller
      */
     public function __invoke()
     {
-        $rooms = Room::query()
-            ->get();
-
-        $tables = Table::query()
-            ->get();
+        $reservation = auth()->user()
+            ?->reservations()
+            ->with('table.room')
+            ->where('date', today())
+            ->first();
 
         return inertia('Dashboard', [
-            'rooms' => RoomResource::collection($rooms),
-            'tables' => TableResource::collection($tables),
+            'reservation' => $reservation ? ReservationResource::make($reservation) : null,
         ]);
     }
 }

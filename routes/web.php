@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TableReservationController;
 use Illuminate\Foundation\Application;
@@ -34,6 +35,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/settings', SettingController::class)->name('settings');
 
     Route::controller(RoomController::class)
         ->prefix('/rooms')

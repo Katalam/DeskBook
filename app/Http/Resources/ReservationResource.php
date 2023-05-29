@@ -23,6 +23,7 @@ class ReservationResource extends JsonResource
                     'name' => $this->resource->user->name,
                 ];
             }),
+            'table' => TableResource::make($this->whenLoaded('table')),
         ];
     }
 }

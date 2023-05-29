@@ -49,6 +49,9 @@ const logout = () => {
                                 <NavLink :href="route('tables.index')" :active="route().current('tables.index')">
                                     Tables
                                 </NavLink>
+                                <NavLink :href="route('settings')" :active="route().current('settings')">
+                                    Settings
+                                </NavLink>
                             </div>
 
                             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -156,6 +159,10 @@ const logout = () => {
 
                         <ResponsiveNavLink :href="route('tables.index')" :active="route().current('tables.index')">
                             Tables
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('settings')" :active="route().current('settings')">
+                            Settings
                         </ResponsiveNavLink>
                     </div>
 
