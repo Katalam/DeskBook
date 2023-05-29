@@ -62,7 +62,7 @@ const showDeleteRoomModal = ref(null);
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto space-y-4 text-gray-100">
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="bg-background-light-dark rounded-lg p-6">
                         <h3 class="text-2xl font-semibold">New room</h3>
                         <RoomForm @submit-room="roomReload" />
