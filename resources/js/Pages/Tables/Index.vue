@@ -1,7 +1,8 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import {Link, router} from '@inertiajs/vue3';
+import {Link, router, useForm} from '@inertiajs/vue3';
 import axios from "axios";
+import DangerButton from "../../Components/DangerButton.vue";
 
 const props = defineProps({
     rooms: {
@@ -23,6 +24,14 @@ function reserve(tableId) {
         .then(() => {
             router.reload({only: ['rooms']})
         });
+}
+
+const deleteForm = useForm({});
+
+function deleteReserved(tableId, reservationId) {
+    deleteForm.delete(route('tables.reservations.destroy', [tableId, reservationId]), {
+        preserveScroll: true,
+    })
 }
 </script>
 
@@ -77,6 +86,12 @@ function reserve(tableId) {
                                                     class="inline-flex items-center px-4 py-2 bg-blue-500 rounded-2xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-100 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                                 Reserve
                                             </button>
+                                            <DangerButton
+                                                    @click="deleteReserved(table.id, table.reservation.id)"
+                                                    v-if="table.reserved && table.reservation.user.id === $page.props.auth.user.id"
+                                                    class="inline-flex items-center px-4 py-2 bg-blue-500 rounded-2xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-100 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                                Cancel
+                                            </DangerButton>
                                         </div>
                                     </div>
                                 </div>

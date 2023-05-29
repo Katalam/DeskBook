@@ -1,5 +1,5 @@
 <template>
-    <div class="font-mono font-semibold flex items-center justify-center space-x-1 text-white uppercase">
+    <div class="font-mono font-semibold flex items-center justify-center space-x-1 text-white uppercase select-none">
         <span>Desk</span>
         <span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

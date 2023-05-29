@@ -60,5 +60,6 @@ Route::middleware([
         ->group(function () {
             Route::get('create', 'create')->name('create');
             Route::post('/', 'store')->name('store');
+            Route::delete('{reservation}', 'destroy')->name('destroy');
         });
 });

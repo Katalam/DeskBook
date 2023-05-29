@@ -55,3 +55,45 @@ it('will return an error response on table reservation store if date is blocked'
     ]);
 })->group('unit', 'controller', 'table-reservation');
 
+it('will destroy a reservation if user is the reserver', function () {
+    $user = User::factory()->create();
+    $table = Table::factory()->create();
+    $reservation = Reservation::factory()->create([
+        'table_id' => $table->id,
+        'user_id' => $user->id,
+    ]);
+
+    $response = $this->actingAs($user)
+        ->delete(route('tables.reservations.destroy', [$table, $reservation]));
+
+    $response->assertStatus(302);
+
+    $response->assertSessionHasNoErrors();
+
+    $this->assertDatabaseMissing('reservations', [
+        'table_id' => $table->id,
+        'user_id' => $user->id,
+    ]);
+})->group('unit', 'controller', 'table-reservation');
+
+it('will not destroy a reservation if user is not the reserver', function () {
+    $reserver = User::factory()->create();
+    $user = User::factory()->create();
+    $table = Table::factory()->create();
+    $reservation = Reservation::factory()->create([
+        'table_id' => $table->id,
+        'user_id' => $reserver->id,
+    ]);
+
+    $response = $this->actingAs($user)
+        ->delete(route('tables.reservations.destroy', [$table, $reservation]));
+
+    $response->assertStatus(302);
+
+    $response->assertSessionHasNoErrors();
+
+    $this->assertDatabaseHas('reservations', [
+        'table_id' => $table->id,
+        'user_id' => $reserver->id,
+    ]);
+})->group('unit', 'controller', 'table-reservation');

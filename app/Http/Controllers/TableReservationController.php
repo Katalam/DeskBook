@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TableReservationStoreRequest;
 use App\Models\Table;
+use Illuminate\Http\RedirectResponse;
 
 class TableReservationController extends Controller
 {
@@ -26,5 +27,15 @@ class TableReservationController extends Controller
         ]);
 
         return redirect()->route('tables.index');
+    }
+
+    public function destroy(Table $table, int $reservation): RedirectResponse
+    {
+        $table->reservations()
+            ->where('id', $reservation)
+            ->where('user_id', auth()->id())
+            ->delete();
+
+        return redirect()->back();
     }
 }
