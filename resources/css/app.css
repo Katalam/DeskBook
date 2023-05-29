@@ -49,6 +49,19 @@
     border-bottom-right-radius: 0.5rem;
 }
 
+.border-triple:after {
+    content: " ";
+    position: absolute;
+    z-index: -1;
+    bottom: -10px;
+    top: 10px;
+    left: 10px;
+    right: -10px;
+    background-color: #0C1620;
+    border: 1px solid #AA2AC7FF;
+    border-radius: 0.5rem;
+}
+
 .border-triple__header-top:after {
     content: " ";
     position: absolute;
