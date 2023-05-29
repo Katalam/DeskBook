@@ -36,7 +36,7 @@ function deleteReserved(tableId, reservationId) {
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Tables">
         <template #header>
             <h2 class="font-semibold bg-background-light text-lg text-gray-700 leading-tight">
                 Tables

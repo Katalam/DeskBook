@@ -5,6 +5,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TableReservationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -63,5 +64,15 @@ Route::middleware([
             Route::get('create', 'create')->name('create');
             Route::post('/', 'store')->name('store');
             Route::delete('{reservation}', 'destroy')->name('destroy');
+        });
+
+    Route::controller(UserController::class)
+        ->prefix('/users')
+        ->as('users.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
+            Route::patch('{user}', 'update')->name('update');
+            Route::delete('{user}', 'destroy')->name('destroy');
         });
 });
