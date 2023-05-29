@@ -56,7 +56,7 @@ class TableController extends Controller
     {
         Table::create($request->safe()->all());
 
-        return redirect()->route('tables.index');
+        return redirect()->back();
     }
 
     public function update(TableUpdateRequest $request, int $table): RedirectResponse
@@ -65,6 +65,6 @@ class TableController extends Controller
             ->where('id', $table)
             ->update($request->safe()->all());
 
-        return redirect()->route('tables.index');
+        return redirect()->back();
     }
 }

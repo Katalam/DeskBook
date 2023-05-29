@@ -13,8 +13,6 @@ it('will create a new room on store method', function () {
         'name' => 'Test Room',
     ]);
 
-    $response->assertRedirect(route('tables.index'));
-
     $this->assertDatabaseHas('rooms', [
         'name' => 'Test Room',
     ]);
@@ -31,8 +29,6 @@ it('will update a room on update method', function () {
     $response = $this->actingAs($user)->patch(route('rooms.update', $room->id), [
         'name' => 'Test Room',
     ]);
-
-    $response->assertRedirect(route('tables.index'));
 
     $this->assertDatabaseHas('rooms', [
         'name' => 'Test Room',

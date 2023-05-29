@@ -13,7 +13,7 @@ class RoomController extends Controller
     {
         Room::create($request->safe()->all());
 
-        return redirect()->route('tables.index');
+        return redirect()->back();
     }
 
     public function update(RoomUpdateRequest $request, int $room): RedirectResponse
@@ -22,6 +22,6 @@ class RoomController extends Controller
             ->where('id', $room)
             ->update($request->safe()->all());
 
-        return redirect()->route('tables.index');
+        return redirect()->back();
     }
 }

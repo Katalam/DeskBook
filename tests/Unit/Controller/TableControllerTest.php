@@ -31,6 +31,7 @@ it('will return a 200 response on table index', function () {
         ->component('Tables/Index')
         ->has('rooms')
         ->has('rooms.data', 3, fn (Assert $page) => $page
+            ->has('id')
             ->has('name')
             ->has('tables', 5, fn (Assert $page) => $page
                 ->has('id')
@@ -75,7 +76,7 @@ it('will create a new table on store method', function () {
         'room_id' => $room->id,
     ]);
 
-    $response->assertRedirect(route('tables.index'));
+    $response->assertStatus(302);
 
     $this->assertDatabaseHas('tables', [
         'name' => 'Test Table',
@@ -101,7 +102,7 @@ it('will update a table on update method', function () {
         'location' => 'Test Location',
     ]);
 
-    $response->assertRedirect(route('tables.index'));
+    $response->assertStatus(302);
 
     $this->assertDatabaseHas('tables', [
         'name' => 'Test Table',
