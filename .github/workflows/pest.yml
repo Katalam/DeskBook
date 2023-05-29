@@ -30,6 +30,8 @@ jobs:
           touch database/database.sqlite
       - name: Serve Application
         run: php artisan serve &
+      - name: Build frontend assets
+        run: npm ci && npm run build
       - name: Execute tests (Unit and Feature tests) via Pest
         env:
           DB_CONNECTION: sqlite
