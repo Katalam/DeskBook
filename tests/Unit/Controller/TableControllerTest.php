@@ -65,3 +65,40 @@ it('will return a 200 response on table index with get parameter date', function
     );
 })->group('unit', 'controller', 'table');
 
+it('will create a new table on store method', function () {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    $response = $this->actingAs($user)->post(route('tables.store'), [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+        'room_id' => $room->id,
+    ]);
+
+    $response->assertRedirect(route('tables.index'));
+
+    $this->assertDatabaseHas('tables', [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+        'room_id' => $room->id,
+    ]);
+})->group('unit', 'controller', 'table');
+
+it('will update a table on update method', function () {
+    $user = User::factory()->create();
+    $room = Room::factory()->create();
+
+    $response = $this->actingAs($user)->post(route('tables.store'), [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+        'room_id' => $room->id,
+    ]);
+
+    $response->assertRedirect(route('tables.index'));
+
+    $this->assertDatabaseHas('tables', [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+        'room_id' => $room->id,
+    ]);
+})->group('unit', 'controller', 'table');

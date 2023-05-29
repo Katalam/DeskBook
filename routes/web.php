@@ -35,8 +35,16 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/tables', [TableController::class, 'index'])->name('tables.index');
+    Route::controller(TableController::class)->group(function () {
+        Route::get('/tables', 'index')->name('tables.index');
+        Route::post('/tables', 'store')->name('tables.store');
+    });
 
-    Route::get('/tables/{table}/reservations/create', [TableReservationController::class, 'create'])->name('tables.reservations.create');
-    Route::post('/tables/{table}/reservations', [TableReservationController::class, 'store'])->name('tables.reservations.store');
+    Route::controller(TableReservationController::class)
+        ->prefix('/tables/{table}/reservations')
+        ->as('tables.reservations')
+        ->group(function () {
+            Route::get('create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+        });
 });

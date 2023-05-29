@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TableStoreRequest;
 use App\Http\Resources\RoomResource;
 use App\Http\Resources\TableResource;
 use App\Models\Room;
 use App\Models\Table;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TableController extends Controller
@@ -47,5 +49,21 @@ class TableController extends Controller
                 'after' => $selectedDate->addDay()->format('Y-m-d'),
             ],
         ]);
+    }
+
+    public function store(TableStoreRequest $request): RedirectResponse
+    {
+        Table::create($request->safe()->all());
+
+        return redirect()->route('tables.index');
+    }
+
+    public function update(TableStoreRequest $request, int $table): RedirectResponse
+    {
+        Table::query()
+            ->where('id', $table)
+            ->update($request->safe()->all());
+
+        return redirect()->route('tables.index');
     }
 }
