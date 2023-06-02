@@ -57,5 +57,7 @@ class JetstreamServiceProvider extends ServiceProvider
             'create',
             'update',
         ])->description('Editor users can access the table management.');
+
+        Jetstream::role('member', 'Member', [])->description('Editor users can access the table management.');
     }
 }
