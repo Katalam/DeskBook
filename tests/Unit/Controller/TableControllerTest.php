@@ -7,8 +7,13 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 it('will return a 200 response on table index', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
     Room::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
         ->has(
             Table::factory()
                 ->has(
@@ -46,7 +51,9 @@ it('will return a 200 response on table index', function () {
 })->group('unit', 'controller', 'table');
 
 it('will return a 200 response on table index with get parameter date', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
     Table::factory()
         ->has(
             Reservation::factory()
@@ -67,7 +74,9 @@ it('will return a 200 response on table index with get parameter date', function
 })->group('unit', 'controller', 'table');
 
 it('will create a new table on store method', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
     $room = Room::factory()->create();
 
     $response = $this->actingAs($user)->post(route('tables.store'), [

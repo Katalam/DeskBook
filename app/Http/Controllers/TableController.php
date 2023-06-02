@@ -23,6 +23,7 @@ class TableController extends Controller
         }
 
         $rooms = Room::query()
+            ->where('team_id', $request->user()->currentTeam->id)
             ->when($request->has('room'), function ($query) use ($request) {
                 return $query->where('id', $request->input('room'));
             })
