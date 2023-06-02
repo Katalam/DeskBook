@@ -8,14 +8,14 @@ use Illuminate\Http\RedirectResponse;
 
 class TableReservationController extends Controller
 {
-    public function store(TableReservationStoreRequest $request, Table $table)
+    public function store(TableReservationStoreRequest $request, Table $table): RedirectResponse
     {
         $alreadyReserved = $table
             ->reservations()
             ->where('date', $request->date)
             ->exists();
 
-        if ($alreadyReserved) {
+        if ($alreadyReserved && !$table->multiple_bookings) {
             return back()->withErrors([
                 'date' => 'Dieser Tisch ist an diesem Tag bereits reserviert.',
             ]);

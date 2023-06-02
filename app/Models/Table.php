@@ -15,6 +15,7 @@ class Table extends Model
         'name',
         'location',
         'room_id',
+        'multiple_bookings',
     ];
 
     public function reservations(): HasMany
