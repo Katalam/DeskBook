@@ -93,8 +93,6 @@ const displayableRole = (role) => {
 <template>
     <div>
         <div v-if="userPermissions.canAddTeamMembers">
-            <SectionBorder />
-
             <!-- Add Team Member -->
             <FormSection @submitted="addTeamMember">
                 <template #title>
@@ -173,8 +171,6 @@ const displayableRole = (role) => {
         </div>
 
         <div v-if="team.team_invitations.length > 0 && userPermissions.canAddTeamMembers">
-            <SectionBorder />
-
             <!-- Team Member Invitations -->
             <ActionSection class="mt-10 sm:mt-0">
                 <template #title>
@@ -210,8 +206,6 @@ const displayableRole = (role) => {
         </div>
 
         <div v-if="team.users.length > 0">
-            <SectionBorder />
-
             <!-- Manage Team Members -->
             <ActionSection class="mt-10 sm:mt-0">
                 <template #title>
@@ -228,7 +222,7 @@ const displayableRole = (role) => {
                         <div v-for="user in team.users" :key="user.id" class="flex items-center justify-between">
                             <div class="flex items-center">
                                 <img class="w-8 h-8 rounded-full object-cover" :src="user.profile_photo_url" :alt="user.name">
-                                <div class="ml-4">
+                                <div class="ml-4 text-gray-300">
                                     {{ user.name }}
                                 </div>
                             </div>
