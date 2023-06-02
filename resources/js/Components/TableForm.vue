@@ -17,6 +17,7 @@ const form = useForm({
     name: '',
     location: '',
     room_id: props.rooms.data[0]?.id?.toString() ?? '',
+    multiple_bookings: false,
 });
 
 const emit = defineEmits(['submit-table'])
@@ -78,6 +79,19 @@ function submit() {
                         <option v-for="(room, index) in rooms.data" :selected="index === 1" :value="room.id" :key="room.id" v-text="room.name" />
                     </Select>
                     <InputError class="mt-2" :message="form.errors.location"/>
+                </div>
+                <div>
+                    <InputLabel for="multiple_bookings" value="Multiple bookable"/>
+                    <Select
+                        id="room_id"
+                        v-model="form.multiple_bookings"
+                        class="mt-1 block w-full"
+                        required
+                    >
+                        <option  :value="true" :key="true">True</option>
+                        <option selected :value="false" :key="false">False</option>
+                    </Select>
+                    <InputError class="mt-2" :message="form.errors.multiple_bookings"/>
                 </div>
             </div>
             <div class="mt-4 flex items-center justify-end">

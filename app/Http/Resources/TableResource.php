@@ -21,7 +21,8 @@ class TableResource extends JsonResource
             'location' => $this->resource->location,
             'room_name' => $this->whenLoaded('room', fn() => $this->resource->room->name),
             'reserved' => $this->whenLoaded('reservations', fn() => $this->isReserved($request)),
-            'reservation' => $this->whenLoaded('reservations', fn() => ReservationResource::make($this->resource->reservations->first())),
+            'reservations' => $this->whenLoaded('reservations', fn() => ReservationResource::collection($this->resource->reservations)),
+            'multiple_bookings' => $this->resource->multiple_bookings,
         ];
     }
 
