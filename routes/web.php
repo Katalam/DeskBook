@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TableReservationController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\CheckFor2FaAuthentication;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,6 +35,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    CheckFor2FaAuthentication::class
 ])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/settings', SettingController::class)->name('settings');

@@ -7,6 +7,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import Banner2FA from "../Components/Banner2FA.vue";
 
 defineProps({
     title: String,
@@ -31,7 +32,8 @@ const logout = () => {
     <div>
         <Head :title="title"/>
 
-        <Banner/>
+        <Banner />
+        <Banner2FA />
 
         <div class="min-h-screen">
             <nav>
