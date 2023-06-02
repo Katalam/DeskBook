@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('password'),
             ]);
         $user->currentTeam->users()->attach($invitedUser, ['role' => 'admin']);
+        $invitedUser->switchTeam($user->currentTeam);
 
 
         Room::factory()
