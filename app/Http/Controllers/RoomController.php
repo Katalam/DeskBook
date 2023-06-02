@@ -11,7 +11,11 @@ class RoomController extends Controller
 {
     public function store(RoomStoreRequest $request): RedirectResponse
     {
-        Room::create($request->safe()->all());
+        // merge the team id into the request data and create the room
+        // this will automatically associate the room with the current team
+        Room::create($request->safe()->merge([
+            'team_id' => $request->user()->currentTeam->id,
+        ])->all());
 
         return redirect()->back();
     }

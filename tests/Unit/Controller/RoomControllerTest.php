@@ -7,11 +7,15 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 it('will create a new room on store method', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
 
     $response = $this->actingAs($user)->post(route('rooms.store'), [
         'name' => 'Test Room',
     ]);
+
+    $response->assertStatus(302);
 
     $this->assertDatabaseHas('rooms', [
         'name' => 'Test Room',
@@ -29,6 +33,8 @@ it('will update a room on update method', function () {
     $response = $this->actingAs($user)->patch(route('rooms.update', $room->id), [
         'name' => 'Test Room',
     ]);
+
+    $response->assertStatus(302);
 
     $this->assertDatabaseHas('rooms', [
         'name' => 'Test Room',

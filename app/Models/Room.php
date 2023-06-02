@@ -12,6 +12,7 @@ class Room extends Model
 
     protected $fillable = [
         'name',
+        'team_id',
     ];
 
     public function tables(): HasMany
