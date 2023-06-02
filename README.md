@@ -64,7 +64,6 @@ Password: password
 2. Convert the JavaScript code to TypeScript.
 3. Activate the email verification feature.
 4. Add a live update feature to the table page.
-5. Re add the teams feature.
 
 ## License
 
