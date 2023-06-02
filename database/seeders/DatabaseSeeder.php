@@ -17,20 +17,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         User::factory()
-             ->withPersonalTeam()
-             ->create([
-             'name' => 'test@test.com',
-             'email' => 'test@test.com',
-             'password' => Hash::make('password'),
-             'is_admin' => true,
-         ]);
+        $user = User::factory()
+            ->withPersonalTeam()
+            ->create([
+                'name' => 'test@test.com',
+                'email' => 'test@test.com',
+                'password' => Hash::make('password'),
+            ]);
+
+        $invitedUser = User::factory()
+            ->create([
+                'name' => 'test2@test.com',
+                'email' => 'test2@test.com',
+                'password' => Hash::make('password'),
+            ]);
+        $user->currentTeam->users()->attach($invitedUser, ['role' => 'admin']);
 
 
-         Room::factory()
-             ->has(Table::factory()
-             ->has(Reservation::factory()->count(5), 'reservations')
-             ->count(5), 'tables')
-             ->count(2)->create();
+        Room::factory()
+            ->state([
+                'team_id' => $user->currentTeam->id,
+            ])
+            ->has(Table::factory()
+                ->has(Reservation::factory()->count(5), 'reservations')
+                ->count(5), 'tables')
+            ->count(2)->create();
     }
 }

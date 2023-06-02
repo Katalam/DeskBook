@@ -58,11 +58,11 @@ const logout = () => {
                                 <NavLink :href="route('tables.index')" :active="route().current('tables.index')">
                                     Tables
                                 </NavLink>
-                                <NavLink v-if="$page.props.auth.user.is_admin" :href="route('settings')"
+                                <NavLink v-if="$page.props.can.canAccessTableManagement" :href="route('settings')"
                                          :active="route().current('settings')">
                                     Settings
                                 </NavLink>
-                                <NavLink v-if="$page.props.auth.user.is_admin" :href="route('users.index')"
+                                <NavLink v-if="$page.props.can.canAccessUserManagement" :href="route('users.index')"
                                          :active="route().current('users.index')">
                                     User Management
                                 </NavLink>

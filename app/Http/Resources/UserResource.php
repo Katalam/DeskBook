@@ -18,7 +18,6 @@ class UserResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'email' => $this->resource->email,
-            'is_admin' => $this->resource->is_admin,
             'has_two_factor_auth' => $this->resource->two_factor_secret !== null,
         ];
     }
