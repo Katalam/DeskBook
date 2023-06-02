@@ -25,7 +25,7 @@ class TableStoreRequest extends FormRequest
             'name' => 'required|string|max:255',
             'location' => 'required|string',
             'room_id' => 'required|integer|exists:rooms,id',
-            'multiple_bookings' => 'required|boolean',
+            'multiple_bookings' => 'sometimes|boolean',
         ];
     }
 }

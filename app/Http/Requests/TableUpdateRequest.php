@@ -25,7 +25,7 @@ class TableUpdateRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'location' => 'sometimes|string',
             'room_id' => 'sometimes|integer|exists:rooms,id',
-            'multiple_bookings' => 'required|boolean',
+            'multiple_bookings' => 'sometimes|boolean',
         ];
     }
 }
