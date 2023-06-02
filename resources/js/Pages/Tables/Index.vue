@@ -75,8 +75,8 @@ function deleteReserved(tableId, reservationId) {
                                 <div class="flex flex-col justify-between h-full">
                                     <div>
                                         <p v-text="table.name" class="text-center font-bold uppercase text-lg"
-                                           :class="{'line-through': table.reserved}"/>
-                                        <p v-text="table.location" :class="{'line-through': table.reserved}"
+                                           :class="{'line-through': table.reserved && !table.multiple_bookings}"/>
+                                        <p v-text="table.location" :class="{'line-through': table.reserved && !table.multiple_bookings}"
                                            class="tracking-widest text-gray-600 font-light mb-4 text-center"/>
                                         <div v-for="reservation in table.reservations">
                                             <p v-if="reservation" v-text="reservation.user.name"
