@@ -105,7 +105,7 @@ const displayableRole = (role) => {
 
                 <template #form>
                     <div class="col-span-6">
-                        <div class="max-w-xl text-sm text-gray-600">
+                        <div class="max-w-xl text-sm text-gray-300">
                             Please provide the email address of the person you would like to add to this team.
                         </div>
                     </div>
@@ -139,7 +139,7 @@ const displayableRole = (role) => {
                                 <div :class="{'opacity-50': addTeamMemberForm.role && addTeamMemberForm.role != role.key}">
                                     <!-- Role Name -->
                                     <div class="flex items-center">
-                                        <div class="text-sm text-gray-600" :class="{'font-semibold': addTeamMemberForm.role == role.key}">
+                                        <div class="text-sm text-gray-200" :class="{'font-semibold': addTeamMemberForm.role == role.key}">
                                             {{ role.name }}
                                         </div>
 
@@ -149,7 +149,7 @@ const displayableRole = (role) => {
                                     </div>
 
                                     <!-- Role Description -->
-                                    <div class="mt-2 text-xs text-gray-600 text-left">
+                                    <div class="mt-2 text-xs text-gray-400 text-left">
                                         {{ role.description }}
                                     </div>
                                 </div>
@@ -168,6 +168,8 @@ const displayableRole = (role) => {
                     </PrimaryButton>
                 </template>
             </FormSection>
+
+            <SectionBorder />
         </div>
 
         <div v-if="team.team_invitations.length > 0 && userPermissions.canAddTeamMembers">
