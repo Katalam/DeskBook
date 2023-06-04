@@ -63,7 +63,6 @@ Password: password
 1. Add a feature to allow users to book a desk for multiple days.
 2. Convert the JavaScript code to TypeScript.
 3. Activate the email verification feature.
-4. Add a live update feature to the table page.
 
 ## License
 
