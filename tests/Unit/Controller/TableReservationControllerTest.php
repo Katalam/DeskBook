@@ -6,7 +6,9 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 it('will return a 302 response on table reservation store', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
     $table = Table::factory()->create();
 
     $response = $this->actingAs($user)
@@ -57,7 +59,9 @@ it('will return an error response on table reservation store if date is blocked'
 })->group('unit', 'controller', 'table-reservation');
 
 it('will not return an error response on table reservation store if date is blocked when it is a multiple bookable table', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
     $userForReservation = User::factory()->create();
     $table = Table::factory()
         ->state([
@@ -89,7 +93,9 @@ it('will not return an error response on table reservation store if date is bloc
 
 
 it('will destroy a reservation if user is the reserver', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
     $table = Table::factory()->create();
     $reservation = Reservation::factory()->create([
         'table_id' => $table->id,
@@ -110,8 +116,12 @@ it('will destroy a reservation if user is the reserver', function () {
 })->group('unit', 'controller', 'table-reservation');
 
 it('will not destroy a reservation if user is not the reserver', function () {
-    $reserver = User::factory()->create();
-    $user = User::factory()->create();
+    $reserver = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
     $table = Table::factory()->create();
     $reservation = Reservation::factory()->create([
         'table_id' => $table->id,
