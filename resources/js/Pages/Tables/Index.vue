@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import {Link, router, useForm} from '@inertiajs/vue3';
+import {Link, router, useForm, usePage} from '@inertiajs/vue3';
 import axios from "axios";
 import DangerButton from "../../Components/DangerButton.vue";
 import {computed} from "vue";
@@ -34,6 +34,12 @@ function deleteReserved(tableId, reservationId) {
         preserveScroll: true,
     })
 }
+
+Echo.private(`tables.${ usePage().props.auth.user.current_team_id }`)
+    .listen('TableReserved', (e) => {
+        router.reload({only: ['rooms']})
+    })
+
 </script>
 
 <template>
