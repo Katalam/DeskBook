@@ -8,6 +8,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import Banner2FA from "../Components/Banner2FA.vue";
+import {Team} from "@/types/global";
 
 defineProps({
     title: String,
@@ -15,7 +16,7 @@ defineProps({
 
 const showingNavigationDropdown = ref(false);
 
-const switchToTeam = (team) => {
+const switchToTeam = (team : Team) => {
     router.put(route('current-team.update'), {
         team_id: team.id,
     }, {
@@ -251,12 +252,12 @@ const logout = () => {
                             Tables
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink v-if="$page.props.auth.user.is_admin" :href="route('settings')"
+                        <ResponsiveNavLink v-if="$page.props.can.canAccessTableManagement" :href="route('settings')"
                                            :active="route().current('settings')">
                             Settings
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink v-if="$page.props.auth.user.is_admin" :href="route('users.index')"
+                        <ResponsiveNavLink v-if="$page.props.can.canAccessUserManagement" :href="route('users.index')"
                                            :active="route().current('users.index')">
                             User Management
                         </ResponsiveNavLink>
