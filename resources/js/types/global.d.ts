@@ -6,10 +6,12 @@ import { PageProps as AppPageProps } from './';
 declare global {
     interface Window {
         axios: AxiosInstance;
+        Pusher: typeof Pusher;
+        Echo: typeof Echo;
     }
 
-    var route: typeof ziggyRoute;
-    var Ziggy: ZiggyConfig;
+    let route: typeof ziggyRoute;
+    let Ziggy: ZiggyConfig;
 }
 
 declare module 'vue' {

@@ -12,7 +12,7 @@ createInertiaApp({
     title: (title : string) : string => `${title} - ${appName}`,
     resolve: (name : string) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
+        createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .mount(el);
