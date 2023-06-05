@@ -106,6 +106,26 @@ declare namespace App.Models {
         tokeneable_id: number
         tokeneable_type: string
     }
+
+    declare type Room = {
+        id: number,
+        name: string,
+        tables: Array<Table>
+    }
+
+    declare type Table = {
+        id: number,
+        name: string,
+        location: string,
+        reserved: boolean,
+        multiple_bookings: boolean,
+        reservations: Array<Reservation>
+    }
+
+    declare type Reservation = {
+        id: number,
+        user: User
+    }
 }
 
 declare module '@inertiajs/core' {
@@ -138,3 +158,5 @@ declare module '@inertiajs/core' {
         can: canObject;
     }
 }
+
+
