@@ -47,7 +47,12 @@ it('will return a 200 response on table index', function () {
                 ->has('multiple_bookings')
             )
         )
-        ->has('dates')
+        ->has('dates', fn (Assert $page) => $page
+            ->has('before')
+            ->has('selectedWeekday')
+            ->has('selectedDate')
+            ->has('after')
+        )
     );
 })->group('unit', 'controller', 'table');
 

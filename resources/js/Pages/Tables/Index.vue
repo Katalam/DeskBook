@@ -60,6 +60,7 @@ Echo.private(`tables.${ usePage().props.auth.user.current_team_id }`)
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
                             </svg>
                         </Link>
+                        <div v-text="dates.selectedWeekday" class="px-2"/>
                         <div v-text="dates.selectedDate" class="px-2"/>
                         <Link :href="route('tables.index', {'date': dates.after})" class="px-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

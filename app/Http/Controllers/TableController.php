@@ -48,7 +48,8 @@ class TableController extends Controller
                 // the subDay and addDay function are changing the selectedDate variable,
                 // so we need to add a day for selected and one more to after to get the correct dates
                 'before' => $selectedDate->subDay()->format('Y-m-d'),
-                'selectedDate' => $selectedDate->addDay()->format('Y-m-d'),
+                'selectedWeekday' => $selectedDate->addDay()->dayName,
+                'selectedDate' => $selectedDate->format('Y-m-d'),
                 'after' => $selectedDate->addDay()->format('Y-m-d'),
             ],
         ]);
