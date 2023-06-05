@@ -23,8 +23,8 @@ defineProps({
                     <div class="border-triple"></div>
                     <div>
                         <h1 v-if="reservation">
-                            Your table for today: {{ reservation.data.table.name }}. <br>
-                            It is located at {{ reservation.data.table.location }}.
+                            Your table for today:<br>{{ reservation.data.table.name }}. <br>
+                            <span v-if="reservation.data.table.location">It is located at {{ reservation.data.table.location }}.</span>
                         </h1>
                         <h1 v-else>You don't have a table reservation for today.</h1>
                     </div>
