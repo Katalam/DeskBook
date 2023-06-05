@@ -8,11 +8,11 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import Banner2FA from "../Components/Banner2FA.vue";
-import {Team} from "@/types/global";
+import {Team} from "@/types/models";
 
-defineProps({
+defineProps<{
     title: String,
-});
+}>();
 
 const showingNavigationDropdown = ref(false);
 

@@ -4,20 +4,9 @@ import {Link, router, useForm, usePage} from '@inertiajs/vue3';
 import axios from "axios";
 import DangerButton from "../../Components/DangerButton.vue";
 import {RouteParam} from "ziggy-js";
-import {App} from "@/types/global";
-import Room = App.Models.Room;
-import Reservation = App.Models.Reservation;
+import {Reservation, Room} from "@/types/models";
 
-const props = defineProps({
-    rooms: {
-        type: Object,
-        required: true,
-    },
-    dates: {
-        type: Object,
-        required: true,
-    }
-});
+const props = defineProps<Props>()
 
 function reserve(tableId : RouteParam) {
     const data = {
@@ -26,7 +15,7 @@ function reserve(tableId : RouteParam) {
 
     axios.post(route('tables.reservations.store', tableId), data)
         .then(() => {
-            router.reload({only: ['rooms']})
+            router.reload({only: ['rooms', 'hasBookedSelectedDate']})
         });
 }
 
@@ -40,13 +29,19 @@ function deleteReserved(tableId : RouteParam, reservationId : RouteParam) {
 
 window.Echo.private(`tables.${ usePage().props.auth.user.current_team_id }`)
     .listen('TableReserved', (e : any) => {
-        router.reload({only: ['rooms']})
+        router.reload({only: ['rooms', 'hasBookedSelectedDate']})
     })
 
-declare type rooms = {
+interface Props {
+    rooms: Rooms,
+    dates: Dates,
+    hasBookedSelectedDate: boolean,
+}
+
+declare interface Rooms {
     data: Array<Room>
 }
-declare type dates = {
+declare interface Dates {
     today: string,
     before: string,
     after: string,
@@ -121,7 +116,7 @@ declare type dates = {
                                         </template>
                                         <button type="button"
                                                 @click="reserve(table.id)"
-                                                v-if="!table.reserved || (table.multiple_bookings && !table.reservations.map((reservation : Reservation) => reservation.user.id).includes($page.props.auth.user.id))"
+                                                v-if="(!table.reserved || (table.multiple_bookings && !table.reservations.map((reservation : Reservation) => reservation.user.id).includes($page.props.auth.user.id))) && !hasBookedSelectedDate"
                                                 class="inline-flex items-center px-4 py-2 bg-blue-500 rounded-2xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-100 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                             Reserve
                                         </button>
