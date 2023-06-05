@@ -1,0 +1,21 @@
+name: Vue Tsc
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install frontend assets
+        run: npm ci
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - uses: keita-hino/vue-tsc-action@main
