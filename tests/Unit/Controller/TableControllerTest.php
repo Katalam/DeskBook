@@ -51,6 +51,8 @@ it('will return a 200 response on table index', function () {
             ->has('before')
             ->has('selectedWeekday')
             ->has('selectedDate')
+            ->has('isToday')
+            ->has('today')
             ->has('after')
         )
     );

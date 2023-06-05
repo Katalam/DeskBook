@@ -50,6 +50,8 @@ class TableController extends Controller
                 'before' => $selectedDate->subDay()->format('Y-m-d'),
                 'selectedWeekday' => $selectedDate->addDay()->dayName,
                 'selectedDate' => $selectedDate->format('Y-m-d'),
+                'isToday' => $selectedDate->isToday(),
+                'today' => today()->format('Y-m-d'),
                 'after' => $selectedDate->addDay()->format('Y-m-d'),
             ],
         ]);

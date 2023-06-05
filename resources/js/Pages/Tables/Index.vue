@@ -52,7 +52,13 @@ Echo.private(`tables.${ usePage().props.auth.user.current_team_id }`)
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto space-y-4 text-gray-100">
-                <div class="flex justify-center sm:justify-end">
+                <div class="flex sm:flex-row flex-col justify-center sm:justify-end gap-2">
+                    <div class="flex items-center justify-center border border-pink-800 text-lg px-3 py-1 rounded-sm" v-if="!dates.isToday">
+                        <Link :href="route('tables.index', {'date': dates.today})" class="px-2">
+                            Today
+                        </Link>
+                    </div>
+
                     <div class="flex items-center justify-between border border-pink-800 text-lg px-3 py-1 rounded-sm">
                         <Link :href="route('tables.index', {'date': dates.before})" class="px-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
