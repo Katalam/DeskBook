@@ -1,0 +1,32 @@
+name: Vue Tsc
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  vue-tsc:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: '8.1'
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Generate key
+        run: php artisan key:generate
+      - name: Ziggy generate
+        run: php artisan ziggy:generate
+      - name: Install frontend assets
+        run: npm ci
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - uses: keita-hino/vue-tsc-action@main

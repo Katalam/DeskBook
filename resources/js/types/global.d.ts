@@ -1,14 +1,16 @@
 import {PageProps as InertiaPageProps} from '@inertiajs/core';
 import {AxiosInstance} from 'axios';
 import ziggyRoute, {Config as ZiggyConfig} from 'ziggy-js';
-import {PageProps as AppPageProps} from './';
+// @ts-ignore
 import {Team, TeamMember, User} from "@/types/models";
+import type Echo from "laravel-echo";
+import Pusher from "pusher-js";
 
 declare global {
     interface Window {
         axios: AxiosInstance;
         Pusher: typeof Pusher;
-        Echo: typeof Echo;
+        Echo: Echo;
     }
 
     let route: typeof ziggyRoute;
@@ -22,7 +24,7 @@ declare module 'vue' {
 }
 
 declare module '@inertiajs/core' {
-    interface PageProps extends InertiaPageProps, AppPageProps {
+    interface PageProps extends InertiaPageProps {
     }
 }
 
@@ -31,7 +33,7 @@ declare type canObject = {
 };
 
 declare module '@inertiajs/core' {
-    interface PageProps extends InertiaPageProps, AppPageProps {
+    interface PageProps extends InertiaPageProps {
         jetstream: {
             canCreateTeams: boolean;
             canManageTwoFactorAuthentication: boolean;
