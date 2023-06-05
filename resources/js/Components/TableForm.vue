@@ -26,6 +26,7 @@ function submit() {
     form
         .transform(data => ({
             ...data,
+            multiple_bookings: data.multiple_bookings === 'true',
             room_id: parseInt(data.room_id),
         }))
         .post(route('tables.store'), {
@@ -62,7 +63,6 @@ function submit() {
                         v-model="form.location"
                         type="text"
                         class="mt-1 block w-full"
-                        required
                         placeholder="Table 5120"
                         autocomplete="location"
                     />

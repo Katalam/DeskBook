@@ -22,8 +22,8 @@ class TableStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'location' => 'required|string',
+            'name' => 'required|string|max:255|unique:tables',
+            'location' => 'sometimes|string|nullable',
             'room_id' => 'required|integer|exists:rooms,id',
             'multiple_bookings' => 'sometimes|boolean',
         ];
