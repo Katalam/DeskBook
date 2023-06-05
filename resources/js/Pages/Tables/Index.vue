@@ -4,7 +4,7 @@ import {Link, router, useForm, usePage} from '@inertiajs/vue3';
 import axios from "axios";
 import DangerButton from "../../Components/DangerButton.vue";
 import {RouteParam} from "ziggy-js";
-import {Reservation, Room} from "@/types/models";
+import {Reservation, Room, Table} from "@/types/models";
 
 const props = defineProps<Props>()
 
@@ -31,6 +31,17 @@ window.Echo.private(`tables.${ usePage().props.auth.user.current_team_id }`)
     .listen('TableReserved', (e : any) => {
         router.reload({only: ['rooms', 'hasBookedSelectedDate']})
     })
+
+function canBookTable(table : Table) : boolean {
+    return (
+        !table.reserved
+        || (
+            table.multiple_bookings
+            && !table.reservations.map((reservation : Reservation) => reservation.user.id).includes(usePage().props.auth.user.id)
+        )
+    )
+        && !props.hasBookedSelectedDate
+}
 
 interface Props {
     rooms: Rooms,
@@ -116,7 +127,7 @@ declare interface Dates {
                                         </template>
                                         <button type="button"
                                                 @click="reserve(table.id)"
-                                                v-if="(!table.reserved || (table.multiple_bookings && !table.reservations.map((reservation : Reservation) => reservation.user.id).includes($page.props.auth.user.id))) && !hasBookedSelectedDate"
+                                                v-if="canBookTable(table)"
                                                 class="inline-flex items-center px-4 py-2 bg-blue-500 rounded-2xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-100 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                             Reserve
                                         </button>
