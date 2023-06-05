@@ -48,12 +48,12 @@ it('will return a 200 response on table index', function () {
             )
         )
         ->has('dates', fn (Assert $page) => $page
-            ->has('before')
+            ->where('before', today()->subDay()->format('Y-m-d'))
             ->has('selectedWeekday')
-            ->has('selectedDate')
-            ->has('isToday')
-            ->has('today')
-            ->has('after')
+            ->where('selectedDate', today()->format('Y-m-d'))
+            ->where('isToday', true)
+            ->where('today', today()->format('Y-m-d'))
+            ->where('after', today()->addDay()->format('Y-m-d'))
         )
     );
 })->group('unit', 'controller', 'table');
@@ -70,14 +70,21 @@ it('will return a 200 response on table index with get parameter date', function
         ->count(15)
         ->create();
 
-    $response = $this->actingAs($user)->get(route('tables.index', ['date' => now()->addDay()->format('Y-m-d')]));
+    $response = $this->actingAs($user)->get(route('tables.index', ['date' => today()->addDay()->format('Y-m-d')]));
 
     $response->assertOk();
 
     $response->assertInertia(fn (Assert $page) => $page
         ->component('Tables/Index')
         ->has('rooms')
-        ->where('dates.selectedDate', now()->addDay()->format('Y-m-d'))
+        ->has('dates', fn (Assert $page) => $page
+            ->where('before', today()->format('Y-m-d'))
+            ->has('selectedWeekday')
+            ->where('selectedDate', today()->addDay()->format('Y-m-d'))
+            ->where('isToday', false)
+            ->where('today', today()->format('Y-m-d'))
+            ->where('after', today()->addDays(2)->format('Y-m-d'))
+        )
     );
 })->group('unit', 'controller', 'table');
 
