@@ -1,45 +1,65 @@
-<script setup>
+<script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import {Link, router, useForm, usePage} from '@inertiajs/vue3';
 import axios from "axios";
 import DangerButton from "../../Components/DangerButton.vue";
-import {computed} from "vue";
+import {RouteParam} from "ziggy-js";
+import {Reservation, Room, Table} from "@/types/models";
 
-const props = defineProps({
-    rooms: {
-        type: Object,
-        required: true,
-    },
-    dates: {
-        type: Object,
-        required: true,
-    }
-});
+const props = defineProps<Props>()
 
-function reserve(tableId) {
+function reserve(tableId : RouteParam) {
     const data = {
         date: props.dates.selectedDate,
     };
 
     axios.post(route('tables.reservations.store', tableId), data)
         .then(() => {
-            router.reload({only: ['rooms']})
+            router.reload({only: ['rooms', 'hasBookedSelectedDate']})
         });
 }
 
 const deleteForm = useForm({});
 
-function deleteReserved(tableId, reservationId) {
+function deleteReserved(tableId : RouteParam, reservationId : RouteParam) {
     deleteForm.delete(route('tables.reservations.destroy', [tableId, reservationId]), {
         preserveScroll: true,
     })
 }
 
-Echo.private(`tables.${ usePage().props.auth.user.current_team_id }`)
-    .listen('TableReserved', (e) => {
-        router.reload({only: ['rooms']})
+window.Echo.private(`tables.${ usePage().props.auth.user.current_team_id }`)
+    .listen('TableReserved', (e : any) => {
+        router.reload({only: ['rooms', 'hasBookedSelectedDate']})
     })
 
+function canBookTable(table : Table) : boolean {
+    return (
+        !table.reserved
+        || (
+            table.multiple_bookings
+            && !table.reservations.map((reservation : Reservation) => reservation.user.id).includes(usePage().props.auth.user.id)
+        )
+    )
+        && !props.hasBookedSelectedDate
+}
+
+interface Props {
+    rooms: Rooms,
+    dates: Dates,
+    hasBookedSelectedDate: boolean,
+}
+
+declare interface Rooms {
+    data: Array<Room>
+}
+declare interface Dates {
+    today: string,
+    before: string,
+    after: string,
+    selectedDate: string,
+    selectedWeekday: string,
+    isToday: boolean,
+}
 </script>
 
 <template>
@@ -107,7 +127,7 @@ Echo.private(`tables.${ usePage().props.auth.user.current_team_id }`)
                                         </template>
                                         <button type="button"
                                                 @click="reserve(table.id)"
-                                                v-if="!table.reserved || (table.multiple_bookings && !table.reservations.map(reservation => reservation.user.id).includes($page.props.auth.user.id))"
+                                                v-if="canBookTable(table)"
                                                 class="inline-flex items-center px-4 py-2 bg-blue-500 rounded-2xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-100 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                             Reserve
                                         </button>

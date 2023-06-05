@@ -54,6 +54,7 @@ class TableController extends Controller
                 'today' => today()->format('Y-m-d'),
                 'after' => $selectedDate->addDay()->format('Y-m-d'),
             ],
+            'hasBookedSelectedDate' => $request->user()->reservations()->where('date', $selectedDate->subDay())->exists(),
         ]);
     }
 

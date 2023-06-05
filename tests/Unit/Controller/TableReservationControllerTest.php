@@ -91,6 +91,36 @@ it('will not return an error response on table reservation store if date is bloc
     ]);
 })->group('unit', 'controller', 'table-reservation');
 
+it('will return an error response on table reservation store if the requester already has a table', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $table = Table::factory()
+        ->create();
+    $tableForSecondReservation = Table::factory()
+        ->create();
+
+    $table->reservations()->create([
+        'date' => today(),
+        'user_id' => $user->id,
+    ]);
+
+    $response = $this->actingAs($user)
+        ->post(route('tables.reservations.store', $tableForSecondReservation), [
+            'date' => today(),
+        ]);
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseHas('reservations', [
+        'table_id' => $table->id,
+        'user_id' => $user->id,
+    ]);
+    $this->assertDatabaseMissing('reservations', [
+        'table_id' => $tableForSecondReservation->id,
+        'user_id' => $user->id,
+    ]);
+})->group('unit', 'controller', 'table-reservation');
 
 it('will destroy a reservation if user is the reserver', function () {
     $user = User::factory()

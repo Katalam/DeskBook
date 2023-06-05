@@ -23,6 +23,17 @@ class TableReservationController extends Controller
             ]);
         }
 
+        $alreadySomethingReserved = $request->user()
+            ->reservations()
+            ->where('date', $request->date)
+            ->exists();
+
+        if ($alreadySomethingReserved) {
+            return back()->withErrors([
+                'date' => 'Du hast bereits einen Tisch an diesem Tag reserviert.',
+            ]);
+        }
+
         $table->reservations()->create([
             'date' => $request->date,
             'user_id' => auth()->id(),
