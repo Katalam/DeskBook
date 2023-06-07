@@ -14,7 +14,7 @@ it('will return a 302 response on table favorite toggle', function () {
     $response = $this->actingAs($user)
         ->post(route('tables.favorite.toggle', $table));
 
-    $response->assertStatus(302);
+    $response->assertStatus(204);
 
     $response->assertSessionHasNoErrors();
 
@@ -35,7 +35,7 @@ it('will return a 302 response on table favorite toggle with toggled on', functi
     $response = $this->actingAs($user)
         ->post(route('tables.favorite.toggle', $table));
 
-    $response->assertStatus(302);
+    $response->assertStatus(204);
 
     $response->assertSessionHasNoErrors();
 

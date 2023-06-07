@@ -16,6 +16,6 @@ class TableFavoriteController extends Controller
             $table->id,
         ]);
 
-        return back();
+        return response()->noContent();
     }
 }
