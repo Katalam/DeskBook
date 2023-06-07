@@ -20,7 +20,7 @@ function reserve(tableId: RouteParam) {
 
     window.axios.post(route('tables.reservations.store', tableId), data)
         .then(() => {
-            router.reload({only: ['favorites']})
+            router.reload({only: ['favorites', 'reservation']})
         });
 }
 
