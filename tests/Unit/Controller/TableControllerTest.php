@@ -45,6 +45,7 @@ it('will return a 200 response on table index', function () {
                 ->has('reserved')
                 ->has('reservations')
                 ->has('multiple_bookings')
+                ->has('is_favorite')
             )
         )
         ->has('dates', fn (Assert $page) => $page

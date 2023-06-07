@@ -23,6 +23,7 @@ class TableResource extends JsonResource
             'reserved' => $this->whenLoaded('reservations', fn() => $this->isReserved($request)),
             'reservations' => $this->whenLoaded('reservations', fn() => ReservationResource::collection($this->resource->reservations)),
             'multiple_bookings' => $this->resource->multiple_bookings,
+            'is_favorite' => $this->whenLoaded('favorites', fn() => $this->resource->favorites->contains('id', auth()->id())),
         ];
     }
 

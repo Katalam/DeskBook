@@ -81,10 +81,14 @@ export interface Table {
     location: string,
     reserved: boolean,
     multiple_bookings: boolean,
-    reservations: Array<Reservation>
+    reservations: Array<Reservation>,
+    room_name?: string,
+    is_favorite?: boolean,
 }
 
 export interface Reservation {
     id: number,
+    date: string,
     user: User
+    table?: Table,
 }

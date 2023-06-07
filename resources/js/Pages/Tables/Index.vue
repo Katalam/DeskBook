@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import {Link, router, useForm, usePage} from '@inertiajs/vue3';
-import axios from "axios";
 import DangerButton from "../../Components/DangerButton.vue";
 import {RouteParam} from "ziggy-js";
 import {Reservation, Room, Table} from "@/types/models";
@@ -14,10 +13,26 @@ function reserve(tableId: RouteParam) {
         date: props.dates.selectedDate,
     };
 
-    axios.post(route('tables.reservations.store', tableId), data)
+    window.axios.post(route('tables.reservations.store', tableId), data)
         .then(() => {
             router.reload({only: ['rooms', 'hasBookedSelectedDate']})
         });
+}
+
+function toggleFavorite(tableId: RouteParam) {
+    window.axios.post(route('tables.favorite.toggle', tableId))
+        .then(() => {
+            router.reload({only: ['rooms']})
+        });
+
+    // we fake the toggle here to avoid waiting for the api call to finish
+    props.rooms.data.forEach((room: Room) => {
+        room.tables.forEach((table: Table) => {
+            if (table.id === tableId) {
+                table.is_favorite = !table.is_favorite
+            }
+        })
+    });
 }
 
 const deleteForm = useForm({});
@@ -138,8 +153,15 @@ declare interface Dates {
                                  class="overflow-hidden bg-background-light-dark rounded-lg p-4">
                                 <div class="flex flex-col justify-between h-full">
                                     <div>
-                                        <p v-text="table.name" class="text-center font-bold uppercase text-lg"
-                                           :class="{'line-through': table.reserved && !table.multiple_bookings}"/>
+                                        <div class="relative">
+                                            <p v-text="table.name" class="text-center font-bold uppercase text-lg"
+                                               :class="{'line-through': table.reserved && !table.multiple_bookings}"/>
+                                            <span class="absolute top-0 right-0 hover:text-yellow-400/60" :class="{'text-gray-600': !table.is_favorite, 'text-yellow-400': table.is_favorite}" @click="toggleFavorite(table.id)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" :fill="table.is_favorite ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                                </svg>
+                                            </span>
+                                        </div>
                                         <p v-text="table.location"
                                            :class="{'line-through': table.reserved && !table.multiple_bookings}"
                                            class="tracking-widest text-gray-600 font-light mb-4 text-center"/>
