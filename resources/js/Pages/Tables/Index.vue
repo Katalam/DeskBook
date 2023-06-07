@@ -62,12 +62,21 @@ function canBookTable(table: Table): boolean {
 const search = ref('');
 
 const rooms = computed(() => {
-    return props.rooms.data.filter((room: Room) => {
-        return room.tables.filter((table: Table) => {
-            return table.name.toLowerCase().includes(search.value.toLowerCase())
-        }).length > 0
-    })
-})
+    // Make a deep copy of the rooms data
+    const rooms = JSON.parse(JSON.stringify(props.rooms.data));
+
+    return rooms.filter((room: Room) => {
+        const filteredTables = room.tables.filter((table: Table) => {
+            return table.name.toLowerCase().includes(search.value.toLowerCase());
+        });
+
+        // Replace the room's tables array with the filtered tables
+        room.tables = filteredTables;
+
+        // Return the modified room object only if it has matching tables
+        return filteredTables.length > 0;
+    });
+});
 
 interface Props {
     rooms: Rooms,
