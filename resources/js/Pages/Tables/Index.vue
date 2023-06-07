@@ -4,7 +4,7 @@ import {Link, router, useForm, usePage} from '@inertiajs/vue3';
 import DangerButton from "../../Components/DangerButton.vue";
 import {RouteParam} from "ziggy-js";
 import {Reservation, Room, Table} from "@/types/models";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 
 const props = defineProps<Props>()
 
@@ -59,7 +59,42 @@ function canBookTable(table: Table): boolean {
         && !props.hasBookedSelectedDate
 }
 
-const search = ref('');
+const search = ref(props.oldQuery ?? '');
+
+watch(search, () => {
+    if (search.value.length === 0) {
+        setURLSearchParam('search', null);
+    }
+
+    setURLSearchParam('search', search.value);
+});
+
+
+function setURLSearchParam(key : string, value : string|null) {
+    const url = new URL(window.location.href);
+    if (value === null) {
+        const url = removeParamFromURL(window.location.href, key);
+        // full page reload to remove the search param from the url
+        router.visit(url, {
+            preserveScroll: true,
+            preserveState: true
+        })
+
+        return;
+    }
+
+    url.searchParams.set(key, value);
+    window.history.pushState(null, '', url.href);
+}
+
+function removeParamFromURL(url : string, param : string) {
+    const [path, searchParams] = url.split('?');
+    const newSearchParams = searchParams
+        ?.split('&')
+        .filter((p) => !(p === param || p.startsWith(`${param}=`)))
+        .join('&');
+    return newSearchParams ? `${path}?${newSearchParams}` : path;
+}
 
 const rooms = computed(() => {
     // Make a deep copy of the rooms data
@@ -82,6 +117,7 @@ interface Props {
     rooms: Rooms,
     dates: Dates,
     hasBookedSelectedDate: boolean,
+    oldQuery?: string,
 }
 
 declare interface Rooms {
