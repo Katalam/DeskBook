@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import {Link, router, useForm, usePage} from '@inertiajs/vue3';
-import axios from "axios";
 import DangerButton from "../../Components/DangerButton.vue";
 import {RouteParam} from "ziggy-js";
 import {Reservation, Room, Table} from "@/types/models";
@@ -14,7 +13,7 @@ function reserve(tableId: RouteParam) {
         date: props.dates.selectedDate,
     };
 
-    axios.post(route('tables.reservations.store', tableId), data)
+    window.axios.post(route('tables.reservations.store', tableId), data)
         .then(() => {
             router.reload({only: ['rooms', 'hasBookedSelectedDate']})
         });

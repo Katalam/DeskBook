@@ -43,5 +43,7 @@ class DatabaseSeeder extends Seeder
                 ->has(Reservation::factory()->count(5), 'reservations')
                 ->count(5), 'tables')
             ->count(2)->create();
+
+        $user->favorites()->sync(Table::all()->random(5));
     }
 }
