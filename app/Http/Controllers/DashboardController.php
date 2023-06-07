@@ -15,13 +15,20 @@ class DashboardController extends Controller
     {
         $reservation = auth()->user()
             ?->reservations()
-            ->with(['table.room', 'table.reservations'])
+            ->with('table.room')
             ->where('date', today())
             ->first();
 
         $favorites = $request->user()
             ?->favorites()
-            ->with('room')
+            ->with([
+                'room',
+                'reservations' => function ($query) {
+                    return $query
+                        ->where('date', '=', today())
+                        ->with('user');
+                },
+            ])
             ->get();
 
         return inertia('Dashboard', [
