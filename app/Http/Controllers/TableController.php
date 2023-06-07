@@ -43,6 +43,7 @@ class TableController extends Controller
                 },
             ])
             ->has('tables')
+            ->orderBy('is_outside')
             ->get();
 
         return inertia('Tables/Index', [

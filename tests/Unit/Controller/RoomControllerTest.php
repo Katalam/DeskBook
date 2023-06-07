@@ -11,14 +11,14 @@ it('will create a new room on store method', function () {
         ->withPersonalTeam()
         ->create();
 
-    $response = $this->actingAs($user)->post(route('rooms.store'), [
-        'name' => 'Test Room',
-    ]);
+    $room = Room::factory()->make()->toArray();
+
+    $response = $this->actingAs($user)->post(route('rooms.store'), $room);
 
     $response->assertStatus(302);
 
     $this->assertDatabaseHas('rooms', [
-        'name' => 'Test Room',
+        'name' => $room['name'],
     ]);
 })->group('unit', 'controller', 'room');
 

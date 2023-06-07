@@ -23,6 +23,7 @@ class RoomStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'is_outside' => 'required|boolean',
         ];
     }
 }

@@ -19,7 +19,8 @@ class RoomFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'team_id' => Team::factory()
+            'team_id' => Team::factory(),
+            'is_outside' => false,
         ];
     }
 }
