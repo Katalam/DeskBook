@@ -36,6 +36,9 @@ class TableController extends Controller
                                     ->where('date', '=', $selectedDate)
                                     ->with('user');
                             },
+                            'favorites' => function ($query) {
+                                return $query->where('id', auth()->id());
+                            },
                         ]);
                 },
             ])

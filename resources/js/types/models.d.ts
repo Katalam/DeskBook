@@ -83,6 +83,7 @@ export interface Table {
     multiple_bookings: boolean,
     reservations: Array<Reservation>,
     room_name?: string,
+    is_favorite?: boolean,
 }
 
 export interface Reservation {

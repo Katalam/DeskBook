@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\TableFavoriteController;
 use App\Http\Controllers\TableReservationController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckFor2FaAuthentication;
@@ -67,6 +68,8 @@ Route::middleware([
             Route::post('/', 'store')->name('store');
             Route::delete('{reservation}', 'destroy')->name('destroy');
         });
+
+    Route::post('/tables/{table}/favorite', TableFavoriteController::class)->name('tables.favorite.toggle');
 
     Route::controller(UserController::class)
         ->prefix('/users')
