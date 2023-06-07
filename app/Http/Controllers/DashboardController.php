@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         $reservation = auth()->user()
             ?->reservations()
-            ->with('table.room')
+            ->with(['table.room', 'table.reservations'])
             ->where('date', today())
             ->first();
 
