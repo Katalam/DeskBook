@@ -11,11 +11,15 @@ it('will return a 200 response on table index', function () {
         ->withPersonalTeam()
         ->create();
 
-    $response = $this->actingAs($user)->get(route('tables.index'));
+    $response = $this->actingAs($user)->get(route('dashboard'));
 
     $response->assertOk();
 
     $response->assertInertia(fn (Assert $page) => $page
-        ->component('Dashboard')
+        ->component('Dashboard', fn(Assert $page) => $page
+            ->has('reservation')
+            ->has('favorites')
+            ->has('today')
+        )
     );
 })->group('unit', 'controller', 'dashboard');
