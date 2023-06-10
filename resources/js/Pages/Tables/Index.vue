@@ -211,8 +211,15 @@ declare interface Dates {
                                            :class="{'line-through': table.reserved && !table.multiple_bookings}"
                                            class="tracking-widest text-gray-600 font-light mb-4 text-center"/>
                                         <div v-for="reservation in table.reservations">
-                                            <p v-if="reservation" v-text="reservation.user.name"
-                                               class="uppercase no-underline text-center"/>
+                                            <div class="flex items-center justify-center gap-3">
+                                                <div class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                                    <img class="h-8 w-8 rounded-full object-cover"
+                                                         :src="reservation.user.profile_photo_url"
+                                                         :alt="reservation.user.name">
+                                                </div>
+                                                <p v-if="reservation" v-text="reservation.user.name"
+                                                   class="uppercase no-underline text-center"/>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-center mt-2">

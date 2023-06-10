@@ -21,6 +21,7 @@ class ReservationResource extends JsonResource
                 return [
                     'id' => $this->resource->user->id,
                     'name' => $this->resource->user->name,
+                    'profile_photo_url' => $this->resource->user->profile_photo_url,
                 ];
             }),
             'table' => TableResource::make($this->whenLoaded('table')),
