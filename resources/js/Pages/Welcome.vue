@@ -39,9 +39,9 @@ defineProps({
             </div>
 
             <div class="mt-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     <div
-                        class="scale-100 bg-background-light-dark border-double relative rounded-lg p-6 flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+                        class="bg-background-light-dark border-double relative rounded-lg p-6 flex focus:outline focus:outline-2 focus:outline-purple-500">
                         <div class="border-triple"></div>
                         <div>
                             <div class="h-16 w-16 bg-blue-800/20 flex items-center justify-center rounded-full">
@@ -59,16 +59,10 @@ defineProps({
                                 which desks are available in your office.
                             </p>
                         </div>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             class="self-center shrink-0 stroke-red-500 w-6 h-6 mx-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
-                        </svg>
                     </div>
 
                     <div
-                        class="scale-100 bg-background-light-dark border-double relative rounded-lg p-6 flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+                        class="bg-background-light-dark border-double relative rounded-lg p-6 flex focus:outline focus:outline-2 focus:outline-purple-500">
                         <div class="border-triple"></div>
                         <div>
                             <div class="h-16 w-16 bg-blue-800/20 flex items-center justify-center rounded-full">
@@ -90,16 +84,10 @@ defineProps({
                                 are working from home.
                             </p>
                         </div>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             class="self-center shrink-0 stroke-red-500 w-6 h-6 mx-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
-                        </svg>
                     </div>
 
                     <div
-                        class="scale-100 bg-background-light-dark border-double relative rounded-lg p-6 flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+                        class="bg-background-light-dark border-double relative rounded-lg p-6 flex focus:outline focus:outline-2 focus:outline-purple-500">
                         <div class="border-triple"></div>
                         <div>
                             <div class="h-16 w-16 bg-blue-800/20 flex items-center justify-center rounded-full">
@@ -120,12 +108,6 @@ defineProps({
                                 searching for a desk in multiple buildings
                             </p>
                         </div>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             class="self-center shrink-0 stroke-red-500 w-6 h-6 mx-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
-                        </svg>
                     </div>
                 </div>
             </div>
