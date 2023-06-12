@@ -19,7 +19,7 @@ class TableReservationController extends Controller
             ->where('date', $request->date)
             ->exists();
 
-        if ($alreadyReserved && !$table->multiple_bookings) {
+        if ($alreadyReserved && ! $table->multiple_bookings) {
             return back()->withErrors([
                 'date' => 'Dieser Tisch ist an diesem Tag bereits reserviert.',
             ]);
@@ -51,7 +51,7 @@ class TableReservationController extends Controller
     {
         $reservationModel = $table->reservations()->find($reservation);
 
-        if (!$reservationModel) {
+        if (! $reservationModel) {
             return redirect()->back();
         }
 

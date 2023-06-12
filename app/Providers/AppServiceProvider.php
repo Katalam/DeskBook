@@ -22,11 +22,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Http::macro('personio', function () {
             return Http::baseUrl(config('personio.base_url'))
-            ->withHeaders([
-                'accept' => 'application/json',
-                'content-type' => 'application/json',
-            ])
-            ->retry(3, 100);
+                ->withHeaders([
+                    'accept' => 'application/json',
+                    'content-type' => 'application/json',
+                ])
+                ->retry(3, 100);
         });
     }
 }

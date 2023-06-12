@@ -25,7 +25,7 @@ it('can make a request to the personio api', function () {
             'data' => [
                 'token' => $token,
             ],
-        ])
+        ]),
     ]);
 
     // Create a new instance of the PersonioService
@@ -54,7 +54,7 @@ it('will not break if the personio api is unavailable', function () {
                 'code' => 0,
                 'message' => 'Wrong credentials',
             ],
-        ])
+        ]),
     ]);
 
     // Create a new instance of the PersonioService
@@ -115,10 +115,10 @@ it('can sync all employees with their personio id', function () {
                             'type' => 'string',
                             'universal_id' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-        ])
+        ]),
     ]);
 
     // Create a new instance of the PersonioService
@@ -199,10 +199,10 @@ it('will sync the personio id for users of the team', function () {
                             'type' => 'string',
                             'universal_id' => false,
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
-        ])
+        ]),
     ]);
 
     Artisan::call(SyncPersonioUsersCommand::class);
@@ -248,7 +248,7 @@ it('will sync the time off types for each team', function () {
                         'substitute_option' => 'disabled',
                         'approval_required' => false,
                         'legacy_category' => 'offsite_work',
-                    ]
+                    ],
                 ],
                 [
                     'type' => 'TimeOffType',
@@ -263,12 +263,11 @@ it('will sync the time off types for each team', function () {
                         'substitute_option' => 'disabled',
                         'approval_required' => false,
                         'legacy_category' => 'offsite_work',
-                    ]
-                ]
+                    ],
+                ],
             ],
-        ])
+        ]),
     ]);
-
 
     // Create a new instance of the PersonioService
     $personio = new PersonioService($user->currentTeam);
@@ -332,7 +331,7 @@ it('will sync the time off types for a team', function () {
                         'substitute_option' => 'disabled',
                         'approval_required' => false,
                         'legacy_category' => 'offsite_work',
-                    ]
+                    ],
                 ],
                 [
                     'type' => 'TimeOffType',
@@ -347,10 +346,10 @@ it('will sync the time off types for a team', function () {
                         'substitute_option' => 'disabled',
                         'approval_required' => false,
                         'legacy_category' => 'offsite_work',
-                    ]
-                ]
+                    ],
+                ],
             ],
-        ])
+        ]),
     ]);
 
     Artisan::call(SyncPersonioTimeOffTypesCommand::class);

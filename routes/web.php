@@ -36,7 +36,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    CheckFor2FaAuthentication::class
+    CheckFor2FaAuthentication::class,
 ])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/settings', SettingController::class)->name('settings');

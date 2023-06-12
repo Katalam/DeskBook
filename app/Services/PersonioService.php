@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Models\Team;
 use Http;
 
@@ -12,7 +11,7 @@ class PersonioService
 
     public function __construct(private readonly Team $team)
     {
-        if (!$team->personio_client_id || !$team->personio_client_secret) {
+        if (! $team->personio_client_id || ! $team->personio_client_secret) {
             return;
         }
 
@@ -38,7 +37,7 @@ class PersonioService
             ->withToken($this->token)
             ->get('company/employees?limit=100');
 
-        if (!$response->successful() || !$response->json('success')) {
+        if (! $response->successful() || ! $response->json('success')) {
             return;
         }
 
@@ -50,7 +49,7 @@ class PersonioService
             $email = data_get($personioUser, 'attributes.email.value');
             $user = $users->firstWhere('email', $email);
 
-            if (!$user) {
+            if (! $user) {
                 return;
             }
 
@@ -65,7 +64,7 @@ class PersonioService
             ->withToken($this->token)
             ->get('company/time-off-types');
 
-        if (!$response->successful() || !$response->json('success')) {
+        if (! $response->successful() || ! $response->json('success')) {
             return;
         }
 

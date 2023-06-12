@@ -28,7 +28,7 @@ class TableReserved implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('tables.' . $this->team->id),
+            new PrivateChannel('tables.'.$this->team->id),
         ];
     }
 }
