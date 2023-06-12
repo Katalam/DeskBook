@@ -64,6 +64,8 @@ class UserFactory extends Factory
                     'name' => $user->name.'\'s Team',
                     'user_id' => $user->id,
                     'personal_team' => true,
+                    'personio_client_id' => $this->faker->password(10),
+                    'personio_client_secret' => $this->faker->password(20),
                 ])
                 ->when(is_callable($callback), $callback),
             'ownedTeams'

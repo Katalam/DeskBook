@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\TableReserved;
 use App\Http\Requests\TableReservationStoreRequest;
+use App\Jobs\SyncReservationDeleteToPersonio;
+use App\Jobs\SyncReservationToPersonio;
 use App\Models\Table;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,24 +36,32 @@ class TableReservationController extends Controller
             ]);
         }
 
-        $table->reservations()->create([
+        $reservation = $table->reservations()->create([
             'date' => $request->date,
             'user_id' => auth()->id(),
         ]);
 
         broadcast(new TableReserved($request->user()->currentTeam))->toOthers();
+        SyncReservationToPersonio::dispatch($reservation);
 
         return redirect()->route('tables.index');
     }
 
     public function destroy(Request $request, Table $table, int $reservation): RedirectResponse
     {
-        $table->reservations()
-            ->where('id', $reservation)
-            ->where('user_id', auth()->id())
-            ->delete();
+        $reservationModel = $table->reservations()->find($reservation);
+
+        if (!$reservationModel) {
+            return redirect()->back();
+        }
+
+        $reservationModel->delete();
 
         broadcast(new TableReserved($request->user()->currentTeam))->toOthers();
+
+        if ($table->time_off_type_id) {
+            SyncReservationDeleteToPersonio::dispatch($reservationModel->personio_id);
+        }
 
         return redirect()->back();
     }

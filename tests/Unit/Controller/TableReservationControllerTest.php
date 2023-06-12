@@ -13,7 +13,7 @@ it('will return a 302 response on table reservation store', function () {
 
     $response = $this->actingAs($user)
         ->post(route('tables.reservations.store', $table), [
-            'date' => now()->format('Y-m-d'),
+            'date' => today()->format('Y-m-d'),
         ]);
 
     $response->assertStatus(302);
