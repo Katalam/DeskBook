@@ -27,7 +27,7 @@ class SyncReservationToPersonio implements ShouldQueue
      */
     public function handle(): void
     {
-        if (! $this->reservation->table->room->team) {
+        if (! $this->reservation->table?->room?->team) {
             return;
         }
 
