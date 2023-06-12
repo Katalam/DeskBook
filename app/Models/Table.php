@@ -34,4 +34,9 @@ class Table extends Model
     {
         return $this->belongsToMany(User::class, 'user_table_favorites', 'table_id', 'user_id');
     }
+
+    public function timeOffType(): BelongsTo
+    {
+        return $this->belongsTo(TimeOffType::class);
+    }
 }

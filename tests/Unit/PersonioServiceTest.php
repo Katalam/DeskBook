@@ -7,6 +7,7 @@ use App\Jobs\SyncPersonioUsersJob;
 use App\Jobs\SyncReservationDeleteToPersonio;
 use App\Jobs\SyncReservationToPersonio;
 use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\Table;
 use App\Models\Team;
 use App\Models\User;
@@ -412,4 +413,110 @@ it('will trigger a sync on table reservation cancel', function () {
         ->delete(route('tables.reservations.destroy', [$table, $reservation]));
 
     Queue::assertPushed(SyncReservationDeleteToPersonio::class);
+})->group('personio');
+
+it('will sync a reservation to personio', function () {
+    Http::preventStrayRequests();
+
+    $timeOffPeriodId = 1;
+
+    Http::fake([
+        config('personio.base_url').'/auth' => Http::response([
+            'success' => true,
+            'data' => [
+                'token' => Str::random(20),
+            ],
+        ]),
+
+        config('personio.base_url').'/*' => Http::response([
+            'success' => true,
+            'data' => [
+                'type' => 'TimeOffPeriod',
+                'attributes' => [
+                    'id' => $timeOffPeriodId,
+                    'status' => 'approved',
+                    'comment' => 'Comment',
+                    'start_date' => '2023-06-13T00:00:00+02:00',
+                    'end_date' => '2023-06-13T00:00:00+02:00',
+                    'days_count' => 1,
+                    'half_days_start' => 0,
+                    'half_days_end' => 0,
+                    'time_off_type' => [
+                        'type' => 'TimeOffType',
+                        'attributes' => [
+                            'id' => 1,
+                            'name' => 'Home Office',
+                            'category' => 'offsite_work',
+                        ],
+                    ],
+                    'employee' => [
+                        'type' => 'Employee',
+                        'attributes' => [
+                            'id' => [
+                                'label' => 'ID',
+                                'value' => 1,
+                                'type' => 'integer',
+                                'universal_id' => 'id',
+                            ],
+                            'first_name' => [
+                                'label' => 'First name',
+                                'value' => 'John',
+                                'type' => 'string',
+                                'universal_id' => 'first_name',
+                            ],
+                            'last_name' => [
+                                'label' => 'Last name',
+                                'value' => 'Doe',
+                                'type' => 'string',
+                                'universal_id' => 'last_name',
+                            ],
+                            'email' => [
+                                'label' => 'Email',
+                                'value' => '',
+                                'type' => 'string',
+                                'universal_id' => 'email',
+                            ],
+                        ],
+                    ],
+                    'created_by' => 'API',
+                    'certificate' => [
+                        'status' => 'not-required',
+                    ],
+                    'created_at' => '2023-06-12T23:22:48+02:00',
+                    'updated_at' => '2023-06-12T23:22:48+02:00',
+                ],
+            ],
+        ]),
+    ]);
+
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+
+    $timeOfType = $user->currentTeam->timeOffTypes()->create([
+        'name' => 'Home Office',
+        'personio_id' => 1,
+    ]);
+
+    $table = Table::factory()
+        ->has(Room::factory()->state([
+            'team_id' => $user->currentTeam->id,
+        ]))
+        ->state([
+            'time_off_type_id' => $timeOfType->id,
+        ])
+        ->create();
+
+    $reservation = Reservation::factory()
+        ->state([
+            'table_id' => $table->id,
+            'user_id' => $user->id,
+        ])
+        ->create();
+
+    $personioService = new PersonioService($user->currentTeam);
+
+    $personioService->syncReservation($reservation);
+
+    expect($reservation->fresh()->personio_id)->toBe($timeOffPeriodId);
 })->group('personio');

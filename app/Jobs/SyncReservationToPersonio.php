@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Reservation;
+use App\Services\PersonioService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -26,6 +27,12 @@ class SyncReservationToPersonio implements ShouldQueue
      */
     public function handle(): void
     {
-        //
+        if (! $this->reservation->table->room->team) {
+            return;
+        }
+
+        $personioService = new PersonioService($this->reservation->table->room->team);
+
+        $personioService->syncReservation($this->reservation);
     }
 }

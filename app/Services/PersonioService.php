@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Reservation;
 use App\Models\Team;
 use Http;
 
@@ -76,5 +77,29 @@ class PersonioService
             ])->toArray();
 
         $this->team->timeOffTypes()->upsert($timeOffTypes, ['personio_id'], ['name', 'team_id']);
+    }
+
+    public function syncReservation(Reservation $reservation): void
+    {
+        $response = Http::personio()
+            ->withToken($this->token)
+            ->post('/company/time-offs', [
+                'employee_id' => $reservation->user->personio_id,
+                'time_off_type_id' => $reservation->table->timeOffType->personio_id,
+                'start_date' => $reservation->date->format('Y-m-d'),
+                'end_date' => $reservation->date->format('Y-m-d'),
+                'half_day_start' => false,
+                'half_day_end' => false,
+                'comment' => 'Automatically created by Reservation System',
+                'skip_approval' => true,
+            ]);
+
+        if (! $response->successful() || ! $response->json('success')) {
+            return;
+        }
+
+        $reservation->update([
+            'personio_id' => $response->json('data.attributes.id'),
+        ]);
     }
 }
