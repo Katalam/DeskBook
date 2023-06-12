@@ -29,6 +29,8 @@ class Team extends JetstreamTeam
     protected $fillable = [
         'name',
         'personal_team',
+        'personio_client_id',
+        'personio_client_secret',
     ];
 
     /**
