@@ -141,6 +141,7 @@ it('will destroy a reservation if user is the reserver', function () {
     $this->assertDatabaseMissing('reservations', [
         'table_id' => $table->id,
         'user_id' => $user->id,
+        'deleted_at' => null,
     ]);
 })->group('unit', 'controller', 'table-reservation');
 
