@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\Reservation;
 use App\Models\Table;
 use App\Models\User;
-use Inertia\Testing\AssertableInertia as Assert;
 
 it('will return a 302 response on table favorite toggle', function () {
     $user = User::factory()

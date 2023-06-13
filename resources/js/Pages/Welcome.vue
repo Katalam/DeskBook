@@ -55,7 +55,7 @@ defineProps({
                             <h2 class="mt-6 text-xl font-semibold text-white">Know which desk is available</h2>
 
                             <p class="mt-4 text-gray-400 text-sm leading-relaxed">
-                                No more searching for an empty desk in multiple buildings. With Deskbook you can see
+                                No more searching for an empty desk in multiple buildings. With DeskPlan you can see
                                 which desks are available in your office.
                             </p>
                         </div>
@@ -80,7 +80,7 @@ defineProps({
                                 are</h2>
 
                             <p class="mt-4 text-gray-400 text-sm leading-relaxed">
-                                With Deskbook you can let your colleagues know where you are working today. Even if you
+                                With DeskPlan you can let your colleagues know where you are working today. Even if you
                                 are working from home.
                             </p>
                         </div>
@@ -104,7 +104,7 @@ defineProps({
                             <h2 class="mt-6 text-xl font-semibold text-white">Make a reservation for your table lighting fast</h2>
 
                             <p class="mt-4 text-gray-400 text-sm leading-relaxed">
-                                With Deskbook you can make a reservation for your desk in a few clicks. No more
+                                With DeskPlan you can make a reservation for your desk in a few clicks. No more
                                 searching for a desk in multiple buildings
                             </p>
                         </div>

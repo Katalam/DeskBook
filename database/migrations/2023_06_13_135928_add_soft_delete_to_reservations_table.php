@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tables', static function (Blueprint $table) {
-            $table->foreignId('room_id')->nullable()->constrained('rooms')->onDelete('cascade');
+        Schema::table('reservations', static function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -21,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('tables', static function (Blueprint $table) {
-            $table->dropForeign(['room_id']);
-            $table->dropColumn('room_id');
+        Schema::table('reservations', static function (Blueprint $table) {
+            $table->dropSoftDeletes();
         });
     }
 };

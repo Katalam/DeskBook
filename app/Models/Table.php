@@ -17,6 +17,7 @@ class Table extends Model
         'location',
         'room_id',
         'multiple_bookings',
+        'time_off_type_id',
     ];
 
     public function reservations(): HasMany
@@ -32,5 +33,10 @@ class Table extends Model
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_table_favorites', 'table_id', 'user_id');
+    }
+
+    public function timeOffType(): BelongsTo
+    {
+        return $this->belongsTo(TimeOffType::class);
     }
 }

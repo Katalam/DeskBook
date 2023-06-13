@@ -19,11 +19,11 @@ class TableResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'location' => $this->resource->location,
-            'room_name' => $this->whenLoaded('room', fn() => $this->resource->room->name),
-            'reserved' => $this->whenLoaded('reservations', fn() => $this->isReserved($request)),
-            'reservations' => $this->whenLoaded('reservations', fn() => ReservationResource::collection($this->resource->reservations)),
+            'room_name' => $this->whenLoaded('room', fn () => $this->resource->room->name),
+            'reserved' => $this->whenLoaded('reservations', fn () => $this->isReserved($request)),
+            'reservations' => $this->whenLoaded('reservations', fn () => ReservationResource::collection($this->resource->reservations)),
             'multiple_bookings' => $this->resource->multiple_bookings,
-            'is_favorite' => $this->whenLoaded('favorites', fn() => $this->resource->favorites->contains('id', auth()->id())),
+            'is_favorite' => $this->whenLoaded('favorites', fn () => $this->resource->favorites->contains('id', auth()->id())),
         ];
     }
 

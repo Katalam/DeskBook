@@ -5,6 +5,9 @@ export interface Team {
     personal_team: boolean
     created_at: string
     updated_at: string
+    owner: User,
+    personio_client_id: string | null,
+    personio_client_secret: string | null,
 }
 
 export interface TeamMember {
@@ -91,4 +94,12 @@ export interface Reservation {
     date: string,
     user: User
     table?: Table,
+}
+
+export interface TeamPermissions {
+    canAddTeamMembers: boolean,
+    canDeleteTeam: boolean,
+    canRemoveTeamMembers: boolean,
+    canUpdateTeam: boolean,
+    canUpdateTeamMembers: boolean,
 }

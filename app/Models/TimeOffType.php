@@ -2,25 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Room extends Model
+class TimeOffType extends Model
 {
-    use HasFactory;
+    public $timestamps = false;
 
     protected $fillable = [
         'name',
+        'personio_id',
         'team_id',
-        'is_outside',
     ];
-
-    public function tables(): HasMany
-    {
-        return $this->hasMany(Table::class);
-    }
 
     public function team(): BelongsTo
     {

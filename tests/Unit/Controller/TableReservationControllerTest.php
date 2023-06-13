@@ -3,7 +3,6 @@
 use App\Models\Reservation;
 use App\Models\Table;
 use App\Models\User;
-use Inertia\Testing\AssertableInertia as Assert;
 
 it('will return a 302 response on table reservation store', function () {
     $user = User::factory()
@@ -13,7 +12,7 @@ it('will return a 302 response on table reservation store', function () {
 
     $response = $this->actingAs($user)
         ->post(route('tables.reservations.store', $table), [
-            'date' => now()->format('Y-m-d'),
+            'date' => today()->format('Y-m-d'),
         ]);
 
     $response->assertStatus(302);
@@ -45,8 +44,8 @@ it('will return an error response on table reservation store if date is blocked'
 
     $response->assertStatus(302);
 
-//    Session has no errors in workflow tests for some reason
-//    $response->assertSessionHasErrors();
+    //    Session has no errors in workflow tests for some reason
+    //    $response->assertSessionHasErrors();
 
     $this->assertDatabaseMissing('reservations', [
         'table_id' => $table->id,
@@ -142,6 +141,7 @@ it('will destroy a reservation if user is the reserver', function () {
     $this->assertDatabaseMissing('reservations', [
         'table_id' => $table->id,
         'user_id' => $user->id,
+        'deleted_at' => null,
     ]);
 })->group('unit', 'controller', 'table-reservation');
 

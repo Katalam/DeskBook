@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
@@ -29,6 +30,13 @@ class Team extends JetstreamTeam
     protected $fillable = [
         'name',
         'personal_team',
+        'personio_client_id',
+        'personio_client_secret',
+    ];
+
+    protected $hidden = [
+        'personio_client_id',
+        'personio_client_secret',
     ];
 
     /**
@@ -41,4 +49,9 @@ class Team extends JetstreamTeam
         'updated' => TeamUpdated::class,
         'deleted' => TeamDeleted::class,
     ];
+
+    public function timeOffTypes(): HasMany
+    {
+        return $this->hasMany(TimeOffType::class);
+    }
 }

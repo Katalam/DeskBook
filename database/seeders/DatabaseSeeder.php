@@ -34,7 +34,6 @@ class DatabaseSeeder extends Seeder
         $user->currentTeam->users()->attach($invitedUser, ['role' => 'admin']);
         $invitedUser->switchTeam($user->currentTeam);
 
-
         Room::factory()
             ->state([
                 'team_id' => $user->currentTeam->id,

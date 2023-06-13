@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tables', static function (Blueprint $table) {
+        Schema::create('time_off_types', static function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->text('location')->nullable();
-            $table->timestamps();
+            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
+            $table->string('name')->default('');
+            $table->foreignId('personio_id');
+
+            // mainly for the sqlite tests
+            $table->unique('personio_id');
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tables');
+        Schema::dropIfExists('time_off_types');
     }
 };

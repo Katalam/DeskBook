@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TableStoreRequest;
 use App\Http\Requests\TableUpdateRequest;
 use App\Http\Resources\RoomResource;
-use App\Http\Resources\TableResource;
 use App\Models\Room;
 use App\Models\Table;
 use Carbon\Carbon;
@@ -59,7 +58,7 @@ class TableController extends Controller
                 'after' => $selectedDate->addDay()->format('Y-m-d'),
             ],
             'hasBookedSelectedDate' => $request->user()->reservations()->where('date', $selectedDate->subDay())->exists(),
-            'oldQuery' => $request->input('search')
+            'oldQuery' => $request->input('search'),
         ]);
     }
 
