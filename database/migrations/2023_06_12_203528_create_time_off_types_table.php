@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->string('name')->default('');
             $table->foreignId('personio_id');
+
+            // mainly for the sqlite tests
+            $table->unique('personio_id');
         });
     }
 
