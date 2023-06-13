@@ -1,15 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue';
-import SectionBorder from '@/Components/SectionBorder.vue';
 import TeamMemberManager from '@/Pages/Teams/Partials/TeamMemberManager.vue';
 import UpdateTeamNameForm from '@/Pages/Teams/Partials/UpdateTeamNameForm.vue';
+import {Role, Team} from "@/types/models";
 
-defineProps({
-    team: Object,
-    availableRoles: Array,
-    permissions: Object,
-});
+defineProps<{
+    team: Team,
+    availableRoles: Array<Role>,
+    permissions: {
+        canAddTeamMembers: boolean,
+        canDeleteTeam: boolean,
+        canRemoveTeamMembers: boolean,
+        canUpdateTeam: boolean,
+        canUpdateTeamMembers: boolean,
+    },
+}>();
 </script>
 
 <template>
