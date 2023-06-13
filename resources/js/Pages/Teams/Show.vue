@@ -3,18 +3,13 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue';
 import TeamMemberManager from '@/Pages/Teams/Partials/TeamMemberManager.vue';
 import UpdateTeamNameForm from '@/Pages/Teams/Partials/UpdateTeamNameForm.vue';
-import {Role, Team} from "@/types/models";
+import {Role, Team, TeamPermissions} from "@/types/models";
+import UpdateTeamPersonioForm from "@/Pages/Teams/Partials/UpdateTeamPersonioForm.vue";
 
 defineProps<{
     team: Team,
     availableRoles: Array<Role>,
-    permissions: {
-        canAddTeamMembers: boolean,
-        canDeleteTeam: boolean,
-        canRemoveTeamMembers: boolean,
-        canUpdateTeam: boolean,
-        canUpdateTeamMembers: boolean,
-    },
+    permissions: TeamPermissions,
 }>();
 </script>
 
@@ -30,6 +25,10 @@ defineProps<{
             <div class="max-w-7xl mx-auto py-10 mt-10 space-y-4">
                 <div class="bg-background-light-dark rounded-lg p-4">
                     <UpdateTeamNameForm :team="team" :permissions="permissions"/>
+                </div>
+
+                <div class="bg-background-light-dark rounded-lg p-4">
+                    <UpdateTeamPersonioForm :team="team" :permissions="permissions"/>
                 </div>
 
                 <div class="bg-background-light-dark rounded-lg p-4">

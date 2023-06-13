@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TableFavoriteController;
 use App\Http\Controllers\TableReservationController;
+use App\Http\Controllers\TeamPersonioController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckFor2FaAuthentication;
 use Illuminate\Foundation\Application;
@@ -80,4 +81,6 @@ Route::middleware([
             Route::patch('{user}', 'update')->name('update');
             Route::delete('{user}', 'destroy')->name('destroy');
         });
+
+    Route::put('/teams/{team}/personio', TeamPersonioController::class)->name('teams.personio.update');
 });

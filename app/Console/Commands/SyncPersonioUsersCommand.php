@@ -13,7 +13,7 @@ class SyncPersonioUsersCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:sync-personio-users-command';
+    protected $signature = 'app:sync-personio-users';
 
     /**
      * The console command description.

@@ -51,10 +51,6 @@ class TableReservationController extends Controller
     {
         $reservationModel = $table->reservations()->find($reservation);
 
-        if ($reservationModel->user_id !== $request->user()->id) {
-            return redirect()->back();
-        }
-
         if (! $reservationModel) {
             return redirect()->back();
         }

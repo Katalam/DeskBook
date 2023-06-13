@@ -34,6 +34,11 @@ class Team extends JetstreamTeam
         'personio_client_secret',
     ];
 
+    protected $hidden = [
+        'personio_client_id',
+        'personio_client_secret',
+    ];
+
     /**
      * The event map for the model.
      *

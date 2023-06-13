@@ -111,7 +111,7 @@ class PersonioService
 
         $response = Http::personio()
             ->withToken($this->token)
-            ->delete('/company/time-offs/' . $reservation->personio_id);
+            ->delete('/company/time-offs/'.$reservation->personio_id);
 
         if (! $response->successful() || ! $response->json('success')) {
             return;

@@ -13,7 +13,7 @@ class SyncPersonioTimeOffTypesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:sync-personio-time-off-types-command';
+    protected $signature = 'app:sync-personio-time-off-types';
 
     /**
      * The console command description.
