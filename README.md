@@ -1,12 +1,12 @@
-# DeskBook
-DeskBook is a web application that allows users to book a desk in a shared office space. It is built using the Laravel framework and uses a MySQL database. The application can be accessed at https://deskbook.katalam.com/.
+# DeskPlan
+DeskPlan is a web application that allows users to book a desk in a shared office space. It is built using the Laravel framework and uses a MySQL database. The application can be accessed at https://deskplan.com/.
 
 ## Contributing
 
 Thank you for considering contributing. Please follow the steps below to contribute to the project.
 First clone the repository to your local machine.
 ```bash
-git clone git@github.com:Katalam/DeskBook.git
+git clone git@github.com:hyperlinkgroup/DeskPlan.git
 ```
 Then create a new branch for your contribution.
 ```bash
@@ -25,7 +25,7 @@ Finally, open a pull request on GitHub.
 ## Installation
 1. Clone the repository to your local machine.
 ```bash
-git clone git@github.com:Katalam/DeskBook.git
+git clone git@github.com:hyperlinkgroup/DeskPlan.git
 ```
 2. Install the dependencies.
 ```bash
