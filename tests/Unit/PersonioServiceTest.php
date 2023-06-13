@@ -520,3 +520,57 @@ it('will sync a reservation to personio', function () {
 
     expect($reservation->fresh()->personio_id)->toBe($timeOffPeriodId);
 })->group('personio');
+
+it('will sync a reservation cancel to personio', function () {
+    Http::preventStrayRequests();
+
+    $timeOffPeriodId = 1;
+
+    Http::fake([
+        config('personio.base_url').'/auth' => Http::response([
+            'success' => true,
+            'data' => [
+                'token' => Str::random(20),
+            ],
+        ]),
+
+        config('personio.base_url').'/*' => Http::response([
+            'success' => true,
+            'data' => [
+                'message' => 'The absence period was deleted.',
+            ],
+        ]),
+    ]);
+
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+
+    $timeOfType = $user->currentTeam->timeOffTypes()->create([
+        'name' => 'Home Office',
+        'personio_id' => 1,
+    ]);
+
+    $table = Table::factory()
+        ->has(Room::factory()->state([
+            'team_id' => $user->currentTeam->id,
+        ]))
+        ->state([
+            'time_off_type_id' => $timeOfType->id,
+        ])
+        ->create();
+
+    $reservation = Reservation::factory()
+        ->state([
+            'table_id' => $table->id,
+            'user_id' => $user->id,
+            'personio_id' => $timeOffPeriodId,
+        ])
+        ->create();
+
+    $personioService = new PersonioService($user->currentTeam);
+
+    $personioService->deleteReservation($reservation);
+
+    expect($reservation->fresh()->personio_id)->toBeNull();
+})->group('personio');

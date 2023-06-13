@@ -102,4 +102,23 @@ class PersonioService
             'personio_id' => $response->json('data.attributes.id'),
         ]);
     }
+
+    public function deleteReservation(Reservation $reservation): void
+    {
+        if (! $reservation->personio_id) {
+            return;
+        }
+
+        $response = Http::personio()
+            ->withToken($this->token)
+            ->delete('/company/time-offs/' . $reservation->personio_id);
+
+        if (! $response->successful() || ! $response->json('success')) {
+            return;
+        }
+
+        $reservation->update([
+            'personio_id' => null,
+        ]);
+    }
 }

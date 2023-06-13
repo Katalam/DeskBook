@@ -64,7 +64,7 @@ class TableReservationController extends Controller
         broadcast(new TableReserved($request->user()->currentTeam))->toOthers();
 
         if ($table->time_off_type_id) {
-            SyncReservationDeleteToPersonio::dispatch($reservationModel->personio_id);
+            SyncReservationDeleteToPersonio::dispatch($reservationModel);
         }
 
         return redirect()->back();

@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\Reservation;
+use App\Services\PersonioService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,7 +17,7 @@ class SyncReservationDeleteToPersonio implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(private readonly Reservation $reservation)
     {
         //
     }
@@ -25,6 +27,12 @@ class SyncReservationDeleteToPersonio implements ShouldQueue
      */
     public function handle(): void
     {
-        //
+        if (! $this->reservation->table?->room?->team) {
+            return;
+        }
+
+        $personioService = new PersonioService($this->reservation->table->room->team);
+
+        $personioService->deleteReservation($this->reservation);
     }
 }
