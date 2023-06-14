@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 
 class SyncPersonioUsersJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * Create a new job instance.
