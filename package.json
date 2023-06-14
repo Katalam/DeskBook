@@ -21,6 +21,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@sentry/vue": "^7.40.0",
         "@types/ziggy-js": "^1.3.2",
         "laravel-echo": "^1.15.1",
         "pusher-js": "^8.0.2",
