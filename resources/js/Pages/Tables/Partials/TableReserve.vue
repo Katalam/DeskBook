@@ -11,6 +11,8 @@ const emits = defineEmits<{
     reloadRooms: []
 }>();
 
+const isReserved = ref(props.table.reserved);
+
 function reserve(tableId: RouteParam) {
     const data = {
         date: props.selectedDate,
@@ -20,6 +22,8 @@ function reserve(tableId: RouteParam) {
         .then(() => {
             emits('reloadRooms');
         });
+
+    isReserved.value = true;
 }
 
 const isFavorite = ref(props.table.is_favorite);
@@ -37,6 +41,8 @@ function deleteReserved(tableId: RouteParam, reservationId: RouteParam) {
     useForm({}).delete(route('tables.reservations.destroy', [tableId, reservationId]), {
         preserveScroll: true,
     })
+
+    isReserved.value = false;
 }
 
 function canBookTable(table: Table): boolean {
@@ -102,7 +108,7 @@ interface Props {
             </template>
             <button type="button"
                     @click="reserve(table.id)"
-                    v-if="canBookTable(table)"
+                    v-if="canBookTable(table) && !isReserved"
                     class="inline-flex items-center px-4 py-2 bg-blue-500 rounded-2xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-100 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                 Reserve
             </button>
