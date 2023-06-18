@@ -19,12 +19,12 @@ const form = useForm({
     room_id: (queryRoomId || props.table?.data?.room_id || props.rooms.data[0]?.id).toString(),
     multiple_bookings: (props.table?.data?.multiple_bookings || false).toString(),
     time_off_type_id: props.table?.data?.time_off_type_id || 0,
-    features: [],
+    feature_ids: [],
 });
 
 onMounted(() => {
-    props.table?.data?.features?.forEach(feature => {
-        form.features[feature] = true;
+    props.table?.data?.feature_ids?.forEach(feature => {
+        form.feature_ids[feature] = true;
     });
 });
 
@@ -37,7 +37,7 @@ function submit() {
                 ...data,
                 multiple_bookings: data.multiple_bookings === 'true',
                 time_off_type_id: data.time_off_type_id === 0 ? null : data.time_off_type_id,
-                features: Object.keys(data.features).filter(key => data.features[key]).map(key => parseInt(key)),
+                feature_ids: Object.keys(data.feature_ids).filter(key => data.feature_ids[key]).map(key => parseInt(key)),
             }))
             .patch(route('tables.update', props.table.data.id), {
             onFinish: () => {
@@ -52,7 +52,7 @@ function submit() {
             ...data,
             multiple_bookings: data.multiple_bookings === 'true',
             time_off_type_id: data.time_off_type_id === 0 ? null : data.time_off_type_id,
-            features: Object.keys(data.features).filter(key => data.features[key]).map(key => parseInt(key)),
+            feature_ids: Object.keys(data.feature_ids).filter(key => data.feature_ids[key]).map(key => parseInt(key)),
         }))
         .post(route('tables.store'), {
         onFinish: () => {
@@ -151,8 +151,8 @@ interface Props {
                             :id="feature.id"
                             :value="feature.name"
                             :label="feature.name"
-                            :checked="form.features[feature.id]"
-                            v-model="form.features[feature.id]"
+                            :checked="form.feature_ids[feature.id]"
+                            v-model="form.feature_ids[feature.id]"
                         />
                         <span v-text="feature.name" />
                     </div>

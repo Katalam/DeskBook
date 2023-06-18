@@ -41,6 +41,9 @@ class TableController extends Controller
                             'favorites' => function ($query) {
                                 return $query->where('id', auth()->id());
                             },
+                            'features' => function ($query) {
+                                return $query->orderBy('name');
+                            },
                         ]);
                 },
             ])
@@ -110,8 +113,8 @@ class TableController extends Controller
     {
         $table = Table::create($request->safe()->all());
 
-        if ($request->has('features')) {
-            $table->features()->sync($request->input('features'));
+        if ($request->has('feature_ids')) {
+            $table->features()->sync($request->input('feature_ids'));
         }
 
         return redirect()->route('tables.edit', $table->id);
@@ -121,8 +124,8 @@ class TableController extends Controller
     {
         $table->update($request->safe()->all());
 
-        if ($request->has('features')) {
-            $table->features()->sync($request->input('features'));
+        if ($request->has('feature_ids')) {
+            $table->features()->sync($request->input('feature_ids'));
         }
 
         return redirect()->back();

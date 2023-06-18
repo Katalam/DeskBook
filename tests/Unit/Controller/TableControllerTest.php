@@ -127,7 +127,7 @@ it('will create a new table with features on store method', function () {
         'name' => 'Test Table',
         'location' => 'Test Location',
         'room_id' => $room->id,
-        'features' => [$feature->id],
+        'feature_ids' => [$feature->id],
     ]);
 
     $response->assertStatus(302);
@@ -214,7 +214,7 @@ it('will update a table with features on update method', function () {
         ->patch(route('tables.update', $table->id), [
             'name' => 'Test Table',
             'location' => 'Test Location',
-            'features' => [$featureNew->id],
+            'feature_ids' => [$featureNew->id],
         ]);
 
     $response->assertStatus(302);

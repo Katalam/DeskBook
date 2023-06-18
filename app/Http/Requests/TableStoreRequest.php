@@ -27,8 +27,8 @@ class TableStoreRequest extends FormRequest
             'room_id' => 'required|integer|exists:rooms,id',
             'multiple_bookings' => 'sometimes|boolean',
             'time_off_type_id' => 'sometimes|integer|exists:time_off_types,id|nullable',
-            'features' => 'sometimes|array',
-            'features.*' => 'integer|exists:features,id',
+            'feature_ids' => 'sometimes|array',
+            'feature_ids.*' => 'integer|exists:features,id',
         ];
     }
 }
