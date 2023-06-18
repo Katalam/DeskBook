@@ -650,7 +650,7 @@ it('will not fire X requests to the auth endpoint with X reservation requests', 
                 ],
             ],
         ], 200, [
-            'Authorization' => 'Bearer : ' . Str::random(20),
+            'Authorization' => 'Bearer : '.Str::random(20),
         ]),
     ]);
 
