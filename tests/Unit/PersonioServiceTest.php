@@ -574,3 +574,120 @@ it('will sync a reservation cancel to personio', function () {
 
     expect($reservation->fresh()->personio_id)->toBeNull();
 })->group('personio');
+
+// the personio api is rate limited to 60 requests per minute
+// so we need to make sure that we don't fire 60 requests to the auth endpoint
+// instead taking the token from the response and using it for the next requests
+it('will not fire X requests to the auth endpoint with X reservation requests', function () {
+    Http::preventStrayRequests();
+
+    $timeOffPeriodId = 1;
+
+    Http::fake([
+        config('personio.base_url').'/auth' => Http::response([
+            'success' => true,
+            'data' => [
+                'token' => Str::random(20),
+            ],
+        ]),
+
+        config('personio.base_url').'/*' => Http::response([
+            'success' => true,
+            'data' => [
+                'type' => 'TimeOffPeriod',
+                'attributes' => [
+                    'id' => $timeOffPeriodId,
+                    'status' => 'approved',
+                    'comment' => 'Comment',
+                    'start_date' => '2023-06-13T00:00:00+02:00',
+                    'end_date' => '2023-06-13T00:00:00+02:00',
+                    'days_count' => 1,
+                    'half_days_start' => 0,
+                    'half_days_end' => 0,
+                    'time_off_type' => [
+                        'type' => 'TimeOffType',
+                        'attributes' => [
+                            'id' => 1,
+                            'name' => 'Home Office',
+                            'category' => 'offsite_work',
+                        ],
+                    ],
+                    'employee' => [
+                        'type' => 'Employee',
+                        'attributes' => [
+                            'id' => [
+                                'label' => 'ID',
+                                'value' => 1,
+                                'type' => 'integer',
+                                'universal_id' => 'id',
+                            ],
+                            'first_name' => [
+                                'label' => 'First name',
+                                'value' => 'John',
+                                'type' => 'string',
+                                'universal_id' => 'first_name',
+                            ],
+                            'last_name' => [
+                                'label' => 'Last name',
+                                'value' => 'Doe',
+                                'type' => 'string',
+                                'universal_id' => 'last_name',
+                            ],
+                            'email' => [
+                                'label' => 'Email',
+                                'value' => '',
+                                'type' => 'string',
+                                'universal_id' => 'email',
+                            ],
+                        ],
+                    ],
+                    'created_by' => 'API',
+                    'certificate' => [
+                        'status' => 'not-required',
+                    ],
+                    'created_at' => '2023-06-12T23:22:48+02:00',
+                    'updated_at' => '2023-06-12T23:22:48+02:00',
+                ],
+            ],
+        ], 200, [
+            'Authorization' => 'Bearer : ' . Str::random(20),
+        ]),
+    ]);
+
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+
+    $timeOfType = $user->currentTeam->timeOffTypes()->create([
+        'name' => 'Home Office',
+        'personio_id' => 1,
+    ]);
+
+    $room = Room::factory()->state([
+        'team_id' => $user->currentTeam->id,
+    ])->create();
+
+    $table = Table::factory()
+        ->state([
+            'time_off_type_id' => $timeOfType->id,
+            'room_id' => $room->id,
+        ])
+        ->create();
+
+    $reservation = Reservation::factory()
+        ->state([
+            'table_id' => $table->id,
+            'user_id' => $user->id,
+        ])
+        ->create();
+
+    $reservationCount = 60;
+
+    for ($i = 0; $i < $reservationCount; $i++) {
+        Queue::push(new SyncReservationToPersonio($reservation));
+    }
+
+    // 1 initial request to the auth endpoint
+    // X requests to the reservation endpoint
+    Http::assertSentCount(1 + $reservationCount);
+})->group('personio');

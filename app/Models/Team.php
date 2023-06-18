@@ -32,11 +32,13 @@ class Team extends JetstreamTeam
         'personal_team',
         'personio_client_id',
         'personio_client_secret',
+        'personio_token',
     ];
 
     protected $hidden = [
         'personio_client_id',
         'personio_client_secret',
+        'personio_token',
     ];
 
     /**
