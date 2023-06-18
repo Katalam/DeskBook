@@ -147,10 +147,22 @@ it('will update a table on update method', function () {
 })->group('unit', 'controller', 'table');
 
 it('can destroy a table', function () {
-    $user = User::factory()->create();
-    $table = Table::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $room = Room::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+    $table = Table::factory()
+        ->state([
+            'room_id' => $room->id,
+        ])
+        ->create();
 
-    $response = $this->actingAs($user)->delete(route('tables.destroy', $table->id));
+    $response = $this->actingAs($user)
+        ->delete(route('tables.destroy', $table->id));
 
     $response->assertStatus(302);
 
