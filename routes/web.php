@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
@@ -47,6 +48,8 @@ Route::middleware([
         ->as('rooms.')
         ->group(function () {
             Route::post('/', 'store')->name('store');
+            Route::get('create', 'create')->name('create');
+            Route::get('{room}', 'edit')->name('edit');
             Route::patch('{room}', 'update')->name('update');
             Route::delete('{room}', 'destroy')->name('destroy');
         });
@@ -57,6 +60,8 @@ Route::middleware([
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/', 'store')->name('store');
+            Route::get('create', 'create')->name('create');
+            Route::get('{table}', 'edit')->name('edit');
             Route::patch('{table}', 'update')->name('update');
             Route::delete('{table}', 'destroy')->name('destroy');
         });
@@ -80,6 +85,17 @@ Route::middleware([
             Route::post('/', 'store')->name('store');
             Route::patch('{user}', 'update')->name('update');
             Route::delete('{user}', 'destroy')->name('destroy');
+        });
+
+    Route::controller(FeatureController::class)
+        ->prefix('features')
+        ->as('features.')
+        ->group(function () {
+            Route::post('/', 'store')->name('store');
+            Route::get('create', 'create')->name('create');
+            Route::get('{feature}', 'edit')->name('edit');
+            Route::patch('{feature}', 'update')->name('update');
+            Route::delete('{feature}', 'destroy')->name('destroy');
         });
 
     Route::put('/teams/{team}/personio', TeamPersonioController::class)->name('teams.personio.update');

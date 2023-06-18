@@ -24,6 +24,16 @@ class TableResource extends JsonResource
             'reservations' => $this->whenLoaded('reservations', fn () => ReservationResource::collection($this->resource->reservations)),
             'multiple_bookings' => $this->resource->multiple_bookings,
             'is_favorite' => $this->whenLoaded('favorites', fn () => $this->resource->favorites->contains('id', auth()->id())),
+
+            $this->mergeWhen($request->routeIs('*.index'), [
+                'features' => FeatureResource::collection($this->whenLoaded('features')),
+            ]),
+
+            $this->mergeWhen($request->routeIs('*.edit'), [
+                'room_id' => $this->resource->room_id,
+                'time_off_type_id' => $this->resource->time_off_type_id,
+                'feature_ids' => $this->whenLoaded('features', fn () => $this->resource->features->pluck('id')),
+            ]),
         ];
     }
 

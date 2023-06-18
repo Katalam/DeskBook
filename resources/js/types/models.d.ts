@@ -75,7 +75,8 @@ export interface ApiToken {
 export interface Room {
     id: number,
     name: string,
-    tables: Array<Table>
+    tables: Array<Table>,
+    is_outside?: boolean,
 }
 
 export interface Table {
@@ -85,8 +86,12 @@ export interface Table {
     reserved: boolean,
     multiple_bookings: boolean,
     reservations: Array<Reservation>,
+    room_id?: number,
     room_name?: string,
     is_favorite?: boolean,
+    time_off_type_id?: number,
+    feature_ids?: Array<number>,
+    features?: Array<Feature>,
 }
 
 export interface Reservation {
@@ -102,4 +107,9 @@ export interface TeamPermissions {
     canRemoveTeamMembers: boolean,
     canUpdateTeam: boolean,
     canUpdateTeamMembers: boolean,
+}
+
+export interface Feature {
+    id: number,
+    name: string,
 }

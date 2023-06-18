@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Feature;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\Table;
@@ -46,6 +47,7 @@ it('will return a 200 response on table index', function () {
                 ->has('reservations')
                 ->has('multiple_bookings')
                 ->has('is_favorite')
+                ->has('features')
             )
         )
         ->has('dates', fn (Assert $page) => $page
@@ -110,9 +112,46 @@ it('will create a new table on store method', function () {
     ]);
 })->group('unit', 'controller', 'table');
 
-it('will update a table on update method', function () {
-    $user = User::factory()->create();
+it('will create a new table with features on store method', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
     $room = Room::factory()->create();
+
+    $feature = Feature::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+
+    $response = $this->actingAs($user)->post(route('tables.store'), [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+        'room_id' => $room->id,
+        'feature_ids' => [$feature->id],
+    ]);
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseHas('tables', [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+        'room_id' => $room->id,
+    ]);
+    $this->assertDatabaseHas('feature_table', [
+        'feature_id' => $feature->id,
+    ]);
+})->group('unit', 'controller', 'table');
+
+it('will update a table on update method', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $room = Room::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
 
     $table = Table::factory()
         ->state([
@@ -122,10 +161,11 @@ it('will update a table on update method', function () {
         ])
         ->create();
 
-    $response = $this->actingAs($user)->patch(route('tables.update', $table->id), [
-        'name' => 'Test Table',
-        'location' => 'Test Location',
-    ]);
+    $response = $this->actingAs($user)
+        ->patch(route('tables.update', $table->id), [
+            'name' => 'Test Table',
+            'location' => 'Test Location',
+        ]);
 
     $response->assertStatus(302);
 
@@ -139,11 +179,82 @@ it('will update a table on update method', function () {
     ]);
 })->group('unit', 'controller', 'table');
 
-it('can destroy a table', function () {
-    $user = User::factory()->create();
-    $table = Table::factory()->create();
+it('will update a table with features on update method', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $room = Room::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
 
-    $response = $this->actingAs($user)->delete(route('tables.destroy', $table->id));
+    $featureOld = Feature::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+
+    $table = Table::factory()
+        ->state([
+            'name' => 'Old Name',
+            'location' => 'Old Location',
+            'room_id' => $room->id,
+        ])
+        ->create();
+
+    $table->features()->attach($featureOld->id);
+
+    $featureNew = Feature::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+
+    $response = $this->actingAs($user)
+        ->patch(route('tables.update', $table->id), [
+            'name' => 'Test Table',
+            'location' => 'Test Location',
+            'feature_ids' => [$featureNew->id],
+        ]);
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseHas('tables', [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+    ]);
+    $this->assertDatabaseMissing('tables', [
+        'name' => 'Old Name',
+        'location' => 'Old Location',
+    ]);
+    $this->assertDatabaseHas('feature_table', [
+        'feature_id' => $featureNew->id,
+        'table_id' => $table->id,
+    ]);
+    $this->assertDatabaseMissing('feature_table', [
+        'feature_id' => $featureOld->id,
+        'table_id' => $table->id,
+    ]);
+})->group('unit', 'controller', 'table');
+
+it('can destroy a table', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $room = Room::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+    $table = Table::factory()
+        ->state([
+            'room_id' => $room->id,
+        ])
+        ->create();
+
+    $response = $this->actingAs($user)
+        ->delete(route('tables.destroy', $table->id));
 
     $response->assertStatus(302);
 

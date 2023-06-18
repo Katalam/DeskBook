@@ -39,4 +39,9 @@ class Table extends Model
     {
         return $this->belongsTo(TimeOffType::class);
     }
+
+    public function features(): BelongsToMany
+    {
+        return $this->belongsToMany(Feature::class);
+    }
 }

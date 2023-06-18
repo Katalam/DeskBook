@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TableStoreRequest;
 use App\Http\Requests\TableUpdateRequest;
+use App\Http\Resources\FeatureResource;
 use App\Http\Resources\RoomResource;
+use App\Http\Resources\TableResource;
 use App\Models\Room;
 use App\Models\Table;
+use App\Models\TimeOffType;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,6 +41,9 @@ class TableController extends Controller
                             'favorites' => function ($query) {
                                 return $query->where('id', auth()->id());
                             },
+                            'features' => function ($query) {
+                                return $query->orderBy('name');
+                            },
                         ]);
                 },
             ])
@@ -62,28 +68,73 @@ class TableController extends Controller
         ]);
     }
 
+    public function create(Request $request)
+    {
+        $rooms = Room::query()
+            ->where('team_id', $request->user()->currentTeam->id)
+            ->get();
+
+        $features = $request->user()->currentTeam->features;
+
+        return inertia('Settings/Tables/Create', [
+            'rooms' => RoomResource::collection($rooms),
+            'features' => FeatureResource::collection($features),
+            'timeOffTypes' => TimeOffType::query()
+                ->where('team_id', $request->user()->currentTeam->id)
+                ->get()
+                ->pluck('name', 'id'),
+        ]);
+    }
+
+    public function edit(Request $request, Table $table)
+    {
+        $rooms = Room::query()
+            ->where('team_id', $request->user()->currentTeam->id)
+            ->get();
+
+        if ($rooms->pluck('id')->doesntContain($table->room_id)) {
+            abort(403);
+        }
+
+        $features = $request->user()->currentTeam->features;
+
+        return inertia('Settings/Tables/Edit', [
+            'table' => TableResource::make($table->load('features')),
+            'rooms' => RoomResource::collection($rooms),
+            'features' => FeatureResource::collection($features),
+            'timeOffTypes' => TimeOffType::query()
+                ->where('team_id', $request->user()->currentTeam->id)
+                ->get()
+                ->pluck('name', 'id'),
+        ]);
+    }
+
     public function store(TableStoreRequest $request): RedirectResponse
     {
-        Table::create($request->safe()->all());
+        $table = Table::create($request->safe()->all());
+
+        if ($request->has('feature_ids')) {
+            $table->features()->sync($request->input('feature_ids'));
+        }
+
+        return redirect()->route('tables.edit', $table->id);
+    }
+
+    public function update(TableUpdateRequest $request, Table $table): RedirectResponse
+    {
+        $table->update($request->safe()->all());
+
+        if ($request->has('feature_ids')) {
+            $table->features()->sync($request->input('feature_ids'));
+        }
 
         return redirect()->back();
     }
 
-    public function update(TableUpdateRequest $request, int $table): RedirectResponse
+    public function destroy(Table $table): RedirectResponse
     {
-        Table::query()
-            ->where('id', $table)
-            ->update($request->safe()->all());
+        $table->delete();
 
-        return redirect()->back();
-    }
-
-    public function destroy(int $table): RedirectResponse
-    {
-        Table::query()
-            ->where('id', $table)
-            ->delete();
-
-        return redirect()->back();
+        return redirect()->route('rooms.edit', $table->room_id);
     }
 }
