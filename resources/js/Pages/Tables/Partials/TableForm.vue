@@ -109,8 +109,8 @@ interface Props {
                         class="mt-1 block w-full"
                         required
                     >
-                        <option :value="true" :key="true">True</option>
-                        <option selected :value="false" :key="false">False</option>
+                        <option :value="true">True</option>
+                        <option selected :value="false">False</option>
                     </Select>
                     <InputError class="mt-2" :message="form.errors.multiple_bookings"/>
                 </div>

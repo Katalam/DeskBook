@@ -6,17 +6,18 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import {Room, Table} from "@/types/models";
 import {router, useForm} from "@inertiajs/vue3";
+import type {Ref} from "vue";
 import {ref} from "vue";
 
 const props = defineProps<Props>();
 
-const showDeleteTableModal = ref(null);
+const showDeleteTableModal : Ref<Boolean> = ref(false);
 
 function deleteTable() {
     useForm({}).delete(route('tables.destroy', props.table.data.id), {
         preserveScroll: true,
         onSuccess: () => {
-            showDeleteTableModal.value = null;
+            showDeleteTableModal.value = false;
         },
     })
 }
@@ -55,7 +56,7 @@ interface Props {
                     </div>
                     <TableForm :table="table" @submit-table="reloadTable" :rooms="rooms" :time-off-types="timeOffTypes" />
                 </div>
-                <ConfirmationModal :show="showDeleteTableModal != null" @close="showDeleteTableModal = null">
+                <ConfirmationModal :show="showDeleteTableModal" @close="showDeleteTableModal = false">
                     <template #title>
                         Delete table
                     </template>
@@ -65,7 +66,7 @@ interface Props {
                     </template>
 
                     <template #footer>
-                        <SecondaryButton @click="showDeleteTableModal = null">
+                        <SecondaryButton @click="showDeleteTableModal = false">
                             Cancel
                         </SecondaryButton>
 

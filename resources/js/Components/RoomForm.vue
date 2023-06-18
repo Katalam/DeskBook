@@ -75,8 +75,8 @@ interface Props {
                         class="mt-1 block w-full"
                         required
                     >
-                        <option selected :value="false" :key="false">False</option>
-                        <option :value="true" :key="true">True</option>
+                        <option selected :value="false">False</option>
+                        <option :value="true">True</option>
                     </Select>
                     <InputError class="mt-2" :message="form.errors.is_outside"/>
                 </div>

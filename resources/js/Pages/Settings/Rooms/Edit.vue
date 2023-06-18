@@ -5,18 +5,19 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import {Room, Table} from "@/types/models";
 import {Link, router, useForm} from "@inertiajs/vue3";
+import type {Ref} from 'vue'
 import {ref} from "vue";
 import RoomForm from "@/Components/RoomForm.vue";
 
 const props = defineProps<Props>();
 
-const showDeleteRoomModal = ref(null);
+const showDeleteRoomModal : Ref<Boolean> = ref(false);
 
 function deleteRoom() {
     useForm({}).delete(route('rooms.destroy', props.room.data.id), {
         preserveScroll: true,
         onSuccess: () => {
-            showDeleteRoomModal.value = null;
+            showDeleteRoomModal.value = false;
         },
     })
 }
@@ -69,7 +70,7 @@ interface Props {
                         </h3>
                     </div>
                 </div>
-                <ConfirmationModal :show="showDeleteRoomModal != null" @close="showDeleteRoomModal = null">
+                <ConfirmationModal :show="showDeleteRoomModal" @close="showDeleteRoomModal = false">
                     <template #title>
                         Delete room
                     </template>
@@ -79,7 +80,7 @@ interface Props {
                     </template>
 
                     <template #footer>
-                        <SecondaryButton @click="showDeleteRoomModal = null">
+                        <SecondaryButton @click="showDeleteRoomModal = false">
                             Cancel
                         </SecondaryButton>
 
