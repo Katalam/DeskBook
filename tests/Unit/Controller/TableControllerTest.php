@@ -111,8 +111,14 @@ it('will create a new table on store method', function () {
 })->group('unit', 'controller', 'table');
 
 it('will update a table on update method', function () {
-    $user = User::factory()->create();
-    $room = Room::factory()->create();
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $room = Room::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
 
     $table = Table::factory()
         ->state([
@@ -122,7 +128,8 @@ it('will update a table on update method', function () {
         ])
         ->create();
 
-    $response = $this->actingAs($user)->patch(route('tables.update', $table->id), [
+    $response = $this->actingAs($user)
+        ->patch(route('tables.update', $table->id), [
         'name' => 'Test Table',
         'location' => 'Test Location',
     ]);
