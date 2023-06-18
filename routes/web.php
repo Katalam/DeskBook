@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SettingTableController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TableFavoriteController;
 use App\Http\Controllers\TableReservationController;
@@ -56,6 +57,7 @@ Route::middleware([
         ->as('tables.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('{table}', 'edit')->name('edit');
             Route::post('/', 'store')->name('store');
             Route::patch('{table}', 'update')->name('update');
             Route::delete('{table}', 'destroy')->name('destroy');

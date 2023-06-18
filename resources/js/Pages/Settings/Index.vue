@@ -1,12 +1,12 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import RoomForm from "../Components/RoomForm.vue";
-import TableForm from "./Tables/Partials/TableForm.vue";
-import {router, useForm} from "@inertiajs/vue3";
-import ConfirmationModal from "../Components/ConfirmationModal.vue";
+import RoomForm from "../../Components/RoomForm.vue";
+import TableForm from "../Tables/Partials/TableForm.vue";
+import {Link, router, useForm} from "@inertiajs/vue3";
+import ConfirmationModal from "../../Components/ConfirmationModal.vue";
 import {ref} from "vue";
-import DangerButton from "../Components/DangerButton.vue";
-import SecondaryButton from "../Components/SecondaryButton.vue";
+import DangerButton from "../../Components/DangerButton.vue";
+import SecondaryButton from "../../Components/SecondaryButton.vue";
 
 defineProps({
     rooms: {
@@ -53,15 +53,36 @@ const showDeleteRoomModal = ref(null);
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Settings">
         <template #header>
             <h2 class="font-semibold bg-background-light text-lg text-gray-700 leading-tight">
-                Dashboard
+                Settings
             </h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto space-y-4 text-gray-100">
+                <div class="grid grid-cols-1 sm:grid-cols-5 gap-4">
+                    <div class="bg-background-light-dark rounded-lg p-6" v-for="room in rooms.data" :key="room.id">
+                        <div class="text-center flex items-center justify-center">
+                            <h3 class="text-2xl font-semibold" v-text="room.name" />
+                        </div>
+                        <div class="flex items-center justify-around text-gray-600">
+                            <div class="hover:text-white cursor-pointer">
+                                <Link :href="route('tables.index')">Tables</Link>
+                            </div>
+                            <div>|</div>
+                            <div class="hover:text-white cursor-pointer">
+                                <Link :href="route('tables.index')">Edit</Link>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-background-light-dark rounded-lg p-6 text-center flex items-center justify-center" :key="0">
+                        <h3 class="text-2xl font-semibold">
+                            <Link :href="route('tables.index')">New room</Link>
+                        </h3>
+                    </div>
+                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="bg-background-light-dark rounded-lg p-6">
                         <h3 class="text-2xl font-semibold">New room</h3>

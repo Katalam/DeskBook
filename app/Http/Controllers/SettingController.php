@@ -16,12 +16,14 @@ class SettingController extends Controller
     public function __invoke(Request $request)
     {
         $rooms = Room::query()
+            ->where('team_id', $request->user()->currentTeam->id)
             ->get();
 
         $tables = Table::query()
+            ->whereIn('room_id', $rooms->pluck('id')->toArray())
             ->get();
 
-        return inertia('Setting', [
+        return inertia('Settings/Index', [
             'rooms' => RoomResource::collection($rooms),
             'tables' => TableResource::collection($tables),
         ]);

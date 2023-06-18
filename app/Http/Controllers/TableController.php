@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TableStoreRequest;
 use App\Http\Requests\TableUpdateRequest;
 use App\Http\Resources\RoomResource;
+use App\Http\Resources\TableResource;
 use App\Models\Room;
 use App\Models\Table;
+use App\Models\TimeOffType;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -62,6 +64,26 @@ class TableController extends Controller
         ]);
     }
 
+    public function edit(Request $request, Table $table)
+    {
+        $rooms = Room::query()
+            ->where('team_id', $request->user()->currentTeam->id)
+            ->get();
+
+        if ($rooms->pluck('id')->doesntContain($table->room_id)) {
+            abort(403);
+        }
+
+        return inertia('Settings/Tables/Edit', [
+            'table' => TableResource::make($table),
+            'rooms' => RoomResource::collection($rooms),
+            'timeOffTypes' => TimeOffType::query()
+                ->where('team_id', $request->user()->currentTeam->id)
+                ->get()
+                ->pluck('name', 'id'),
+        ]);
+    }
+
     public function store(TableStoreRequest $request): RedirectResponse
     {
         Table::create($request->safe()->all());
@@ -69,11 +91,9 @@ class TableController extends Controller
         return redirect()->back();
     }
 
-    public function update(TableUpdateRequest $request, int $table): RedirectResponse
+    public function update(TableUpdateRequest $request, Table $table): RedirectResponse
     {
-        Table::query()
-            ->where('id', $table)
-            ->update($request->safe()->all());
+        $table->update($request->safe()->all());
 
         return redirect()->back();
     }

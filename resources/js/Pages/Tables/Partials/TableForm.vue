@@ -1,33 +1,45 @@
-<script setup>
+<script setup lang="ts">
 import InputLabel from "../../../Components/InputLabel.vue";
 import TextInput from "../../../Components/TextInput.vue";
 import InputError from "../../../Components/InputError.vue";
 import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "../../../Components/PrimaryButton.vue";
 import Select from "../../../Components/Select.vue";
+import {Room, Table} from "@/types/models";
 
-const props = defineProps({
-    rooms: {
-        type: Object,
-        required: true,
-    },
-})
+const props = defineProps<Props>()
 
 const form = useForm({
-    name: '',
-    location: '',
-    room_id: props.rooms.data[0]?.id?.toString() ?? '',
-    multiple_bookings: false,
+    name: props.table.data.name || '',
+    location: props.table.data.location || '',
+    room_id: props.table.data.room_id || (props.rooms.data[0]?.id?.toString() ?? ''),
+    multiple_bookings: props.table.data.multiple_bookings || false,
+    time_off_type_id: props.table.data.time_off_type_id || 0,
 });
 
 const emit = defineEmits(['submit-table'])
 
 function submit() {
+    if (props.table) {
+        form
+            .transform(data => ({
+                ...data,
+                multiple_bookings: data.multiple_bookings === 'true',
+                time_off_type_id: data.time_off_type_id === 0 ? null : data.time_off_type_id,
+            }))
+            .patch(route('tables.update', props.table.data.id), {
+            onFinish: () => {
+                emit('submit-table');
+            },
+        });
+        return;
+    }
+
     form
         .transform(data => ({
             ...data,
             multiple_bookings: data.multiple_bookings === 'true',
-            room_id: parseInt(data.room_id),
+            time_off_type_id: data.time_off_type_id === 0 ? null : data.time_off_type_id,
         }))
         .post(route('tables.store'), {
         onFinish: () => {
@@ -35,7 +47,16 @@ function submit() {
             emit('submit-table');
         },
     });
+}
 
+interface Props {
+    rooms: {
+        data: Room[]
+    }
+    table: {
+        data: Table,
+    },
+    timeOffTypes: Array<string>
 }
 </script>
 
@@ -92,6 +113,19 @@ function submit() {
                         <option selected :value="false" :key="false">False</option>
                     </Select>
                     <InputError class="mt-2" :message="form.errors.multiple_bookings"/>
+                </div>
+                <div>
+                    <InputLabel for="time_off_type_id" value="Personio Time off Type"/>
+                    <Select
+                        id="room_id"
+                        v-model="form.time_off_type_id"
+                        class="mt-1 block w-full"
+                        required
+                    >
+                        <option :value="0" :key="0">None</option>
+                        <option v-for="(timeOffType, index) in timeOffTypes" :value="index" :key="index" v-text="timeOffType" />
+                    </Select>
+                    <InputError class="mt-2" :message="form.errors.time_off_type_id"/>
                 </div>
             </div>
             <div class="mt-4 flex items-center justify-end">

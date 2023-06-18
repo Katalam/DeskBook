@@ -11,7 +11,7 @@ class TableUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', $this->table);
     }
 
     /**
@@ -26,6 +26,7 @@ class TableUpdateRequest extends FormRequest
             'location' => 'sometimes|string',
             'room_id' => 'sometimes|integer|exists:rooms,id',
             'multiple_bookings' => 'sometimes|boolean',
+            'time_off_type_id' => 'sometimes|integer|exists:time_off_types,id|nullable',
         ];
     }
 }
