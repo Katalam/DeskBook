@@ -1,9 +1,9 @@
-name: PHP Linting (Pint)
+name: Laravel Pint
 on:
   workflow_dispatch:
   push:
 jobs:
-  phplint:
+  pint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
