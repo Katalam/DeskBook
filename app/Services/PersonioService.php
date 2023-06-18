@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Reservation;
 use App\Models\Team;
 use Http;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Str;
 
 class PersonioService
 {
@@ -12,7 +14,7 @@ class PersonioService
 
     public function __construct(private readonly Team $team)
     {
-        if (! $team->personio_client_id || ! $team->personio_client_secret) {
+        if (!$team->personio_client_id || !$team->personio_client_secret) {
             return;
         }
 
@@ -21,6 +23,13 @@ class PersonioService
 
     private function login(string $clientId, string $clientSecret): void
     {
+        if ($this->team->personio_token) {
+            $this->token = $this->team->personio_token;
+
+            return;
+        }
+
+
         $response = Http::personio()
             ->post('auth', [
                 'client_id' => $clientId,
@@ -32,13 +41,36 @@ class PersonioService
         }
     }
 
+    /**
+     * The token is a single use token, so we need to update it after every request.
+     * If the request was not successful, we don't get a new token.
+     * If the request was successful, we get a new token. The
+     * api is rate limited, so we need to make sure that we
+     * save the current token on the team model, so that
+     * we don't have to log in again on construct.
+     *
+     * @param Response $response
+     * @return void
+     */
+    private function updateToken(Response $response): void
+    {
+        if ($response->successful() && $response->json('success')) {
+            $this->token = Str::remove('Bearer ', $response->header('authorization'));
+            $this->team->update([
+                'personio_token' => $this->token,
+            ]);
+        }
+    }
+
     public function syncAllEmployees(): void
     {
         $response = Http::personio()
             ->withToken($this->token)
             ->get('company/employees?limit=100');
 
-        if (! $response->successful() || ! $response->json('success')) {
+        $this->updateToken($response);
+
+        if (!$response->successful() || !$response->json('success')) {
             return;
         }
 
@@ -50,7 +82,7 @@ class PersonioService
             $email = data_get($personioUser, 'attributes.email.value');
             $user = $users->firstWhere('email', $email);
 
-            if (! $user) {
+            if (!$user) {
                 return;
             }
 
@@ -65,12 +97,14 @@ class PersonioService
             ->withToken($this->token)
             ->get('company/time-off-types');
 
-        if (! $response->successful() || ! $response->json('success')) {
+        $this->updateToken($response);
+
+        if (!$response->successful() || !$response->json('success')) {
             return;
         }
 
         $timeOffTypes = collect($response->json('data'))
-            ->map(fn ($timeOffType) => [
+            ->map(fn($timeOffType) => [
                 'team_id' => $this->team->id,
                 'personio_id' => data_get($timeOffType, 'attributes.id'),
                 'name' => data_get($timeOffType, 'attributes.name'),
@@ -94,7 +128,9 @@ class PersonioService
                 'skip_approval' => true,
             ]);
 
-        if (! $response->successful() || ! $response->json('success')) {
+        $this->updateToken($response);
+
+        if (!$response->successful() || !$response->json('success')) {
             return;
         }
 
@@ -105,7 +141,7 @@ class PersonioService
 
     public function deleteReservation(Reservation $reservation): void
     {
-        if (! $reservation->personio_id) {
+        if (!$reservation->personio_id) {
             return;
         }
 
@@ -113,7 +149,9 @@ class PersonioService
             ->withToken($this->token)
             ->delete('/company/time-offs/'.$reservation->personio_id);
 
-        if (! $response->successful() || ! $response->json('success')) {
+        $this->updateToken($response);
+
+        if (!$response->successful() || !$response->json('success')) {
             return;
         }
 
