@@ -1,10 +1,10 @@
 <script setup>
-import InputLabel from "./InputLabel.vue";
-import TextInput from "./TextInput.vue";
-import InputError from "./InputError.vue";
+import InputLabel from "../../../Components/InputLabel.vue";
+import TextInput from "../../../Components/TextInput.vue";
+import InputError from "../../../Components/InputError.vue";
 import {useForm} from "@inertiajs/vue3";
-import PrimaryButton from "./PrimaryButton.vue";
-import Select from "./Select.vue";
+import PrimaryButton from "../../../Components/PrimaryButton.vue";
+import Select from "../../../Components/Select.vue";
 
 const props = defineProps({
     rooms: {

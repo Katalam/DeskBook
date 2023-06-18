@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import RoomForm from "../Components/RoomForm.vue";
-import TableForm from "../Components/TableForm.vue";
+import TableForm from "./Tables/Partials/TableForm.vue";
 import {router, useForm} from "@inertiajs/vue3";
 import ConfirmationModal from "../Components/ConfirmationModal.vue";
 import {ref} from "vue";
