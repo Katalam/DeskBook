@@ -2,7 +2,7 @@
 import InputLabel from "../../../Components/InputLabel.vue";
 import TextInput from "../../../Components/TextInput.vue";
 import InputError from "../../../Components/InputError.vue";
-import {useForm} from "@inertiajs/vue3";
+import {InertiaForm, useForm} from "@inertiajs/vue3";
 import PrimaryButton from "../../../Components/PrimaryButton.vue";
 import Select from "../../../Components/Select.vue";
 import {Feature, Room, Table} from "@/types/models";
@@ -13,7 +13,14 @@ const props = defineProps<Props>()
 
 const queryRoomId = (new URLSearchParams(window.location.search)).get('room');
 
-const form = useForm({
+const form : InertiaForm<{
+    name: string
+    location: string
+    room_id: string
+    multiple_bookings: string,
+    time_off_type_id: number,
+    feature_ids: boolean[],
+}> = useForm({
     name: props.table?.data?.name || '',
     location: props.table?.data?.location || '',
     room_id: (queryRoomId || props.table?.data?.room_id || props.rooms.data[0]?.id).toString(),
@@ -37,7 +44,7 @@ function submit() {
                 ...data,
                 multiple_bookings: data.multiple_bookings === 'true',
                 time_off_type_id: data.time_off_type_id === 0 ? null : data.time_off_type_id,
-                feature_ids: Object.keys(data.feature_ids).filter(key => data.feature_ids[key]).map(key => parseInt(key)),
+                feature_ids: Object.keys(data.feature_ids).filter((key: string) => data.feature_ids[parseInt(key)]).map((key: string) => parseInt(key)),
             }))
             .patch(route('tables.update', props.table.data.id), {
             onFinish: () => {
@@ -52,7 +59,7 @@ function submit() {
             ...data,
             multiple_bookings: data.multiple_bookings === 'true',
             time_off_type_id: data.time_off_type_id === 0 ? null : data.time_off_type_id,
-            feature_ids: Object.keys(data.feature_ids).filter(key => data.feature_ids[key]).map(key => parseInt(key)),
+            feature_ids: Object.keys(data.feature_ids).filter((key: string) => data.feature_ids[parseInt(key)]).map((key: string) => parseInt(key)),
         }))
         .post(route('tables.store'), {
         onFinish: () => {
