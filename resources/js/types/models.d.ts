@@ -90,6 +90,7 @@ export interface Table {
     room_name?: string,
     is_favorite?: boolean,
     time_off_type_id?: number,
+    features?: Array<number>,
 }
 
 export interface Reservation {

@@ -23,10 +23,12 @@ class TableUpdateRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|max:255',
-            'location' => 'sometimes|string',
+            'location' => 'sometimes|string|nullable',
             'room_id' => 'sometimes|integer|exists:rooms,id',
             'multiple_bookings' => 'sometimes|boolean',
             'time_off_type_id' => 'sometimes|integer|exists:time_off_types,id|nullable',
+            'features' => 'sometimes|array',
+            'features.*' => 'integer|exists:features,id',
         ];
     }
 }

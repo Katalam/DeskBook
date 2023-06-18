@@ -28,6 +28,7 @@ class TableResource extends JsonResource
             $this->mergeWhen($request->routeIs('*.edit'), [
                 'room_id' => $this->resource->room_id,
                 'time_off_type_id' => $this->resource->time_off_type_id,
+                'features' => $this->whenLoaded('features', fn () => $this->resource->features->pluck('id')),
             ]),
         ];
     }

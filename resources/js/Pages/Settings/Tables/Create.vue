@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import TableForm from "@/Pages/Tables/Partials/TableForm.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import {Room} from "@/types/models";
+import {Feature, Room} from "@/types/models";
 
 const props = defineProps<Props>();
 interface Props {
     rooms: {
         data: Room[];
+    },
+    features: {
+        data: Feature[],
     },
     timeOffTypes: Object,
 }
@@ -26,7 +29,7 @@ interface Props {
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-2xl font-semibold">Create table</h3>
                     </div>
-                    <TableForm :rooms="rooms" :time-off-types="timeOffTypes" />
+                    <TableForm :rooms="rooms" :features="features" :time-off-types="timeOffTypes" />
                 </div>
             </div>
         </div>

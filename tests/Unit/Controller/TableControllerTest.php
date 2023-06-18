@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Feature;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\Table;
@@ -110,6 +111,37 @@ it('will create a new table on store method', function () {
     ]);
 })->group('unit', 'controller', 'table');
 
+it('will create a new table with features on store method', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $room = Room::factory()->create();
+
+    $feature = Feature::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+
+    $response = $this->actingAs($user)->post(route('tables.store'), [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+        'room_id' => $room->id,
+        'features' => [$feature->id],
+    ]);
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseHas('tables', [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+        'room_id' => $room->id,
+    ]);
+    $this->assertDatabaseHas('feature_table', [
+        'feature_id' => $feature->id,
+    ]);
+})->group('unit', 'controller', 'table');
+
 it('will update a table on update method', function () {
     $user = User::factory()
         ->withPersonalTeam()
@@ -143,6 +175,65 @@ it('will update a table on update method', function () {
     $this->assertDatabaseMissing('tables', [
         'name' => 'Old Name',
         'location' => 'Old Location',
+    ]);
+})->group('unit', 'controller', 'table');
+
+it('will update a table with features on update method', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $room = Room::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+
+    $featureOld = Feature::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+
+    $table = Table::factory()
+        ->state([
+            'name' => 'Old Name',
+            'location' => 'Old Location',
+            'room_id' => $room->id,
+        ])
+        ->create();
+
+    $table->features()->attach($featureOld->id);
+
+    $featureNew = Feature::factory()
+        ->state([
+            'team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+
+    $response = $this->actingAs($user)
+        ->patch(route('tables.update', $table->id), [
+            'name' => 'Test Table',
+            'location' => 'Test Location',
+            'features' => [$featureNew->id],
+        ]);
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseHas('tables', [
+        'name' => 'Test Table',
+        'location' => 'Test Location',
+    ]);
+    $this->assertDatabaseMissing('tables', [
+        'name' => 'Old Name',
+        'location' => 'Old Location',
+    ]);
+    $this->assertDatabaseHas('feature_table', [
+        'feature_id' => $featureNew->id,
+        'table_id' => $table->id,
+    ]);
+    $this->assertDatabaseMissing('feature_table', [
+        'feature_id' => $featureOld->id,
+        'table_id' => $table->id,
     ]);
 })->group('unit', 'controller', 'table');
 

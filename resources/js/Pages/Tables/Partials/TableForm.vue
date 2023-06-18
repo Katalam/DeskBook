@@ -5,7 +5,9 @@ import InputError from "../../../Components/InputError.vue";
 import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "../../../Components/PrimaryButton.vue";
 import Select from "../../../Components/Select.vue";
-import {Room, Table} from "@/types/models";
+import {Feature, Room, Table} from "@/types/models";
+import Checkbox from "@/Components/Checkbox.vue";
+import {onMounted} from "vue";
 
 const props = defineProps<Props>()
 
@@ -17,6 +19,13 @@ const form = useForm({
     room_id: (queryRoomId || props.table?.data?.room_id || props.rooms.data[0]?.id).toString(),
     multiple_bookings: (props.table?.data?.multiple_bookings || false).toString(),
     time_off_type_id: props.table?.data?.time_off_type_id || 0,
+    features: [],
+});
+
+onMounted(() => {
+    props.table?.data?.features?.forEach(feature => {
+        form.features[feature] = true;
+    });
 });
 
 const emit = defineEmits(['submit-table'])
@@ -28,6 +37,7 @@ function submit() {
                 ...data,
                 multiple_bookings: data.multiple_bookings === 'true',
                 time_off_type_id: data.time_off_type_id === 0 ? null : data.time_off_type_id,
+                features: Object.keys(data.features).filter(key => data.features[key]).map(key => parseInt(key)),
             }))
             .patch(route('tables.update', props.table.data.id), {
             onFinish: () => {
@@ -42,6 +52,7 @@ function submit() {
             ...data,
             multiple_bookings: data.multiple_bookings === 'true',
             time_off_type_id: data.time_off_type_id === 0 ? null : data.time_off_type_id,
+            features: Object.keys(data.features).filter(key => data.features[key]).map(key => parseInt(key)),
         }))
         .post(route('tables.store'), {
         onFinish: () => {
@@ -57,6 +68,9 @@ interface Props {
     }
     table?: {
         data: Table,
+    },
+    features: {
+        data: Feature[],
     },
     timeOffTypes: Object,
 }
@@ -128,6 +142,20 @@ interface Props {
                         <option v-for="(timeOffType, index) in timeOffTypes" :value="index" :key="index" v-text="timeOffType" />
                     </Select>
                     <InputError class="mt-2" :message="form.errors.time_off_type_id"/>
+                </div>
+                <div>
+                    <InputLabel for="features" value="Features"/>
+                    <div class="flex items-center gap-2" v-for="(feature, index) in features.data">
+                        <Checkbox
+                            :key="index"
+                            :id="feature.id"
+                            :value="feature.name"
+                            :label="feature.name"
+                            :checked="form.features[feature.id]"
+                            v-model="form.features[feature.id]"
+                        />
+                        <span v-text="feature.name" />
+                    </div>
                 </div>
             </div>
             <div class="mt-4 flex items-center justify-end">

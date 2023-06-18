@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TableStoreRequest;
 use App\Http\Requests\TableUpdateRequest;
+use App\Http\Resources\FeatureResource;
 use App\Http\Resources\RoomResource;
 use App\Http\Resources\TableResource;
 use App\Models\Room;
@@ -70,8 +71,11 @@ class TableController extends Controller
             ->where('team_id', $request->user()->currentTeam->id)
             ->get();
 
+        $features = $request->user()->currentTeam->features;
+
         return inertia('Settings/Tables/Create', [
             'rooms' => RoomResource::collection($rooms),
+            'features' => FeatureResource::collection($features),
             'timeOffTypes' => TimeOffType::query()
                 ->where('team_id', $request->user()->currentTeam->id)
                 ->get()
@@ -89,9 +93,12 @@ class TableController extends Controller
             abort(403);
         }
 
+        $features = $request->user()->currentTeam->features;
+
         return inertia('Settings/Tables/Edit', [
-            'table' => TableResource::make($table),
+            'table' => TableResource::make($table->load('features')),
             'rooms' => RoomResource::collection($rooms),
+            'features' => FeatureResource::collection($features),
             'timeOffTypes' => TimeOffType::query()
                 ->where('team_id', $request->user()->currentTeam->id)
                 ->get()
@@ -103,12 +110,20 @@ class TableController extends Controller
     {
         $table = Table::create($request->safe()->all());
 
+        if ($request->has('features')) {
+            $table->features()->sync($request->input('features'));
+        }
+
         return redirect()->route('tables.edit', $table->id);
     }
 
     public function update(TableUpdateRequest $request, Table $table): RedirectResponse
     {
         $table->update($request->safe()->all());
+
+        if ($request->has('features')) {
+            $table->features()->sync($request->input('features'));
+        }
 
         return redirect()->back();
     }
