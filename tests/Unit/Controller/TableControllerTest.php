@@ -130,9 +130,9 @@ it('will update a table on update method', function () {
 
     $response = $this->actingAs($user)
         ->patch(route('tables.update', $table->id), [
-        'name' => 'Test Table',
-        'location' => 'Test Location',
-    ]);
+            'name' => 'Test Table',
+            'location' => 'Test Location',
+        ]);
 
     $response->assertStatus(302);
 

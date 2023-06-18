@@ -8,7 +8,6 @@ use App\Http\Resources\RoomResource;
 use App\Http\Resources\TableResource;
 use App\Models\Room;
 use App\Models\Table;
-use App\Models\TimeOffType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 

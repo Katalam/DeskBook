@@ -3,7 +3,6 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\SettingTableController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TableFavoriteController;
 use App\Http\Controllers\TableReservationController;
