@@ -56,4 +56,9 @@ class Team extends JetstreamTeam
     {
         return $this->hasMany(TimeOffType::class);
     }
+
+    public function features(): HasMany
+    {
+        return $this->hasMany(Feature::class);
+    }
 }

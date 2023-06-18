@@ -37,7 +37,7 @@ interface Props {
 </script>
 
 <template>
-    <AppLayout title="Table Settings">
+    <AppLayout title="Room Settings">
         <template #header>
             <h2 class="font-semibold bg-background-light text-lg text-gray-700 leading-tight">
                 Edit room

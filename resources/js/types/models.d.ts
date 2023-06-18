@@ -106,3 +106,8 @@ export interface TeamPermissions {
     canUpdateTeam: boolean,
     canUpdateTeamMembers: boolean,
 }
+
+export interface Feature {
+    id: number,
+    name: string,
+}

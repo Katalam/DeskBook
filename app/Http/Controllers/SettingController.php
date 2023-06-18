@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FeatureResource;
 use App\Http\Resources\RoomResource;
 use App\Http\Resources\TableResource;
 use App\Models\Room;
@@ -23,9 +24,12 @@ class SettingController extends Controller
             ->whereIn('room_id', $rooms->pluck('id')->toArray())
             ->get();
 
+        $features = $request->user()->currentTeam->features;
+
         return inertia('Settings/Index', [
             'rooms' => RoomResource::collection($rooms),
             'tables' => TableResource::collection($tables),
+            'features' => FeatureResource::collection($features),
         ]);
     }
 }
