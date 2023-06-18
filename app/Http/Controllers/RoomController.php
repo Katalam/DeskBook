@@ -18,11 +18,16 @@ class RoomController extends Controller
     {
         // merge the team id into the request data and create the room
         // this will automatically associate the room with the current team
-        Room::create($request->safe()->merge([
+        $room = Room::create($request->safe()->merge([
             'team_id' => $request->user()->currentTeam->id,
         ])->all());
 
-        return redirect()->back();
+        return redirect()->route('rooms.edit', $room->id);
+    }
+
+    public function create()
+    {
+        return inertia('Settings/Rooms/Create');
     }
 
     public function edit(Room $room)

@@ -15,8 +15,6 @@ const form = useForm({
     is_outside: (props.room?.data?.is_outside || false).toString(),
 });
 
-const emit = defineEmits(['submit-room'])
-
 function submit() {
     if (props.room) {
         form
@@ -25,18 +23,16 @@ function submit() {
                 is_outside: data.is_outside === 'true',
             }))
             .patch(route('rooms.update', props.room.data.id), {
-            onFinish: () => {
-                emit('submit-room');
-            },
         });
         return;
     }
 
-    form.post(route('rooms.store'), {
-        onFinish: () => {
-            form.reset('name');
-            emit('submit-room');
-        },
+    form
+        .transform(data => ({
+            ...data,
+            is_outside: data.is_outside === 'true',
+        }))
+        .post(route('rooms.store'), {
     });
 }
 

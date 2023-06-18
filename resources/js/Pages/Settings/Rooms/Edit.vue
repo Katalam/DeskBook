@@ -66,7 +66,9 @@ interface Props {
                     </div>
                     <div class="bg-background-light-dark rounded-lg p-6 text-center flex items-center justify-center" :key="0">
                         <h3 class="text-2xl font-semibold">
-                            <Link :href="route('tables.create')">New table</Link>
+                            <Link :href="route('tables.create', {
+                                'room': room.data.id
+                            })">New table</Link>
                         </h3>
                     </div>
                 </div>

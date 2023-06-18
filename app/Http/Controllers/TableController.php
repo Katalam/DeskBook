@@ -64,6 +64,21 @@ class TableController extends Controller
         ]);
     }
 
+    public function create(Request $request)
+    {
+        $rooms = Room::query()
+            ->where('team_id', $request->user()->currentTeam->id)
+            ->get();
+
+        return inertia('Settings/Tables/Create', [
+            'rooms' => RoomResource::collection($rooms),
+            'timeOffTypes' => TimeOffType::query()
+                ->where('team_id', $request->user()->currentTeam->id)
+                ->get()
+                ->pluck('name', 'id'),
+        ]);
+    }
+
     public function edit(Request $request, Table $table)
     {
         $rooms = Room::query()
@@ -86,9 +101,9 @@ class TableController extends Controller
 
     public function store(TableStoreRequest $request): RedirectResponse
     {
-        Table::create($request->safe()->all());
+        $table = Table::create($request->safe()->all());
 
-        return redirect()->back();
+        return redirect()->route('tables.edit', $table->id);
     }
 
     public function update(TableUpdateRequest $request, Table $table): RedirectResponse

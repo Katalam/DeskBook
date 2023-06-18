@@ -9,10 +9,12 @@ import {Room, Table} from "@/types/models";
 
 const props = defineProps<Props>()
 
+const queryRoomId = (new URLSearchParams(window.location.search)).get('room');
+
 const form = useForm({
     name: props.table?.data?.name || '',
     location: props.table?.data?.location || '',
-    room_id: (props.table?.data?.room_id || props.rooms.data[0]?.id).toString(),
+    room_id: (queryRoomId || props.table?.data?.room_id || props.rooms.data[0]?.id).toString(),
     multiple_bookings: (props.table?.data?.multiple_bookings || false).toString(),
     time_off_type_id: props.table?.data?.time_off_type_id || 0,
 });
