@@ -7,7 +7,6 @@ use App\Http\Requests\FeatureUpdateRequest;
 use App\Http\Resources\FeatureResource;
 use App\Models\Feature;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class FeatureController extends Controller
 {
