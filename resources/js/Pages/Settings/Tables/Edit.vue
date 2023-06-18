@@ -32,7 +32,7 @@ interface Props {
     rooms: {
         data: Room[];
     },
-    timeOffTypes: Array<string>,
+    timeOffTypes: Object,
 }
 </script>
 

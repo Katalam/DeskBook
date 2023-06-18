@@ -18,6 +18,10 @@ class RoomResource extends JsonResource
             'id' => $this->resource->id,
             'name' => $this->resource->name,
             'tables' => TableResource::collection($this->whenLoaded('tables')),
+
+            $this->mergeWhen($request->routeIs('*.edit'), [
+                'is_outside' => $this->resource->is_outside,
+            ]),
         ];
     }
 }

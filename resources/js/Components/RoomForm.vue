@@ -1,30 +1,52 @@
-<script setup>
+<script setup lang="ts">
 import InputLabel from "./InputLabel.vue";
 import TextInput from "./TextInput.vue";
 import InputError from "./InputError.vue";
 import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "./PrimaryButton.vue";
 import Select from "./Select.vue";
+import {Room, Table} from "@/types/models";
+
+const props = defineProps<Props>()
+
 
 const form = useForm({
-    name: '',
-    is_outside: false,
+    name: props.room?.data?.name || '',
+    is_outside: (props.room?.data?.is_outside || false).toString(),
 });
 
 const emit = defineEmits(['submit-room'])
 
 function submit() {
-    form
-        .transform(data => ({
-            ...data,
-            is_outside: data.is_outside === 'true',
-        }))
-        .post(route('rooms.store'), {
+    if (props.room) {
+        form
+            .transform(data => ({
+                ...data,
+                is_outside: data.is_outside === 'true',
+            }))
+            .patch(route('rooms.update', props.room.data.id), {
             onFinish: () => {
-                form.reset('name');
                 emit('submit-room');
             },
         });
+        return;
+    }
+
+    form.post(route('rooms.store'), {
+        onFinish: () => {
+            form.reset('name');
+            emit('submit-room');
+        },
+    });
+}
+
+interface Props {
+    room?: {
+        data: Room
+    }
+    // tables: {
+    //     data: Table,
+    // },
 }
 </script>
 

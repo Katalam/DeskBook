@@ -48,6 +48,8 @@ Route::middleware([
         ->as('rooms.')
         ->group(function () {
             Route::post('/', 'store')->name('store');
+            Route::get('create', 'create')->name('create');
+            Route::get('{room}', 'edit')->name('edit');
             Route::patch('{room}', 'update')->name('update');
             Route::delete('{room}', 'destroy')->name('destroy');
         });
@@ -57,8 +59,9 @@ Route::middleware([
         ->as('tables.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('{table}', 'edit')->name('edit');
             Route::post('/', 'store')->name('store');
+            Route::get('create', 'create')->name('create');
+            Route::get('{table}', 'edit')->name('edit');
             Route::patch('{table}', 'update')->name('update');
             Route::delete('{table}', 'destroy')->name('destroy');
         });

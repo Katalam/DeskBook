@@ -75,7 +75,8 @@ export interface ApiToken {
 export interface Room {
     id: number,
     name: string,
-    tables: Array<Table>
+    tables: Array<Table>,
+    is_outside?: boolean,
 }
 
 export interface Table {

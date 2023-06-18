@@ -98,12 +98,10 @@ class TableController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(int $table): RedirectResponse
+    public function destroy(Table $table): RedirectResponse
     {
-        Table::query()
-            ->where('id', $table)
-            ->delete();
+        $table->delete();
 
-        return redirect()->back();
+        return redirect()->route('rooms.edit', $table->room_id);
     }
 }

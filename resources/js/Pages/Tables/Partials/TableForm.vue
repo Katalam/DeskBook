@@ -10,11 +10,11 @@ import {Room, Table} from "@/types/models";
 const props = defineProps<Props>()
 
 const form = useForm({
-    name: props.table.data.name || '',
-    location: props.table.data.location || '',
-    room_id: props.table.data.room_id || (props.rooms.data[0]?.id?.toString() ?? ''),
-    multiple_bookings: props.table.data.multiple_bookings || false,
-    time_off_type_id: props.table.data.time_off_type_id || 0,
+    name: props.table?.data?.name || '',
+    location: props.table?.data?.location || '',
+    room_id: (props.table?.data?.room_id || props.rooms.data[0]?.id).toString(),
+    multiple_bookings: (props.table?.data?.multiple_bookings || false).toString(),
+    time_off_type_id: props.table?.data?.time_off_type_id || 0,
 });
 
 const emit = defineEmits(['submit-table'])
@@ -53,10 +53,10 @@ interface Props {
     rooms: {
         data: Room[]
     }
-    table: {
+    table?: {
         data: Table,
     },
-    timeOffTypes: Array<string>
+    timeOffTypes: Object,
 }
 </script>
 
