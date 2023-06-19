@@ -47,7 +47,7 @@ function deleteReserved(tableId: RouteParam, reservationId: RouteParam) {
 
 function canBookTable(table: Table): boolean {
     return (
-            !table.reserved
+        (!table.reserved && !isReserved.value)
             || (
                 table.multiple_bookings
                 && !table.reservations.map((reservation: Reservation) => reservation.user.id).includes(usePage().props.auth.user.id)
@@ -129,7 +129,7 @@ interface Props {
             </template>
             <button type="button"
                     @click="reserve(table.id)"
-                    v-if="canBookTable(table) && !isReserved"
+                    v-if="canBookTable(table)"
                     class="inline-flex items-center px-4 py-2 bg-blue-500 rounded-2xl font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-100 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                 Reserve
             </button>
