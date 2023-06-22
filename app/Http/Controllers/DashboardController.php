@@ -35,6 +35,7 @@ class DashboardController extends Controller
             'reservation' => $reservation ? ReservationResource::make($reservation) : null,
             'favorites' => TableResource::collection($favorites),
             'today' => today()->format('Y-m-d'),
+            'hasBookedSelectedDate' => $request->user()->reservations()->where('date', today())->exists(),
         ]);
     }
 }
