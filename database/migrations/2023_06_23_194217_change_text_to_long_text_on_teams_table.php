@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('teams', static function (Blueprint $table) {
-            $table->longText('personio_token')->change();
+            $table->longText('personio_token')->nullable()->change();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('teams', static function (Blueprint $table) {
-            $table->text('personio_token')->change();
+            $table->text('personio_token')->nullable()->change();
         });
     }
 };
