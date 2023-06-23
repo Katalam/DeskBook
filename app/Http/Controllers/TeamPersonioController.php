@@ -24,6 +24,7 @@ class TeamPersonioController extends Controller
         $team->forceFill([
             'personio_client_id' => $request->input('personio_client_id'),
             'personio_client_secret' => $request->input('personio_client_secret'),
+            'personio_token' => null,
         ])->save();
 
         return back(303);
