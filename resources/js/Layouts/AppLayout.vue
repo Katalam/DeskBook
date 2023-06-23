@@ -11,7 +11,7 @@ import Banner2FA from "../Components/Banner2FA.vue";
 import {Team} from "@/types/models";
 
 defineProps<{
-    title: String,
+    title: string,
 }>();
 
 const showingNavigationDropdown = ref(false);

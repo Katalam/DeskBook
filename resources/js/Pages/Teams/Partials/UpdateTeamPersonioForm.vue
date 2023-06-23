@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useForm} from '@inertiajs/vue3';
+import {InertiaForm, useForm} from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
@@ -7,15 +7,19 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {Team, TeamPermissions} from "@/types/models";
+import {PropType} from "vue";
 
 const props = defineProps<{
     team: Team,
     permissions: TeamPermissions,
 }>();
 
-const form = useForm({
-    personio_client_id: props.team.personio_client_id,
-    personio_client_secret: props.team.personio_client_secret,
+const form : InertiaForm<{
+    personio_client_id: string;
+    personio_client_secret: string
+}> = useForm({
+    personio_client_id: props.team.personio_client_id ?? '',
+    personio_client_secret: props.team.personio_client_secret ?? '',
 });
 
 const updateTeamPersonio = () => {

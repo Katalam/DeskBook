@@ -9,7 +9,6 @@ use App\Http\Resources\TableResource;
 use App\Models\Room;
 use App\Models\Table;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {

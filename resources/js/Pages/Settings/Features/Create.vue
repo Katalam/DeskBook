@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import ConfirmationModal from "@/Components/ConfirmationModal.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
-import DangerButton from "@/Components/DangerButton.vue";
-import {Feature, Room, Table} from "@/types/models";
-import {Link, router, useForm} from "@inertiajs/vue3";
-import type {Ref} from 'vue'
-import {ref} from "vue";
-import RoomForm from "@/Components/RoomForm.vue";
 import FeatureForm from "@/Pages/Features/Partials/FeatureForm.vue";
 </script>
 
