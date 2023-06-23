@@ -52,9 +52,10 @@ class PersonioService
     {
         if ($response->successful() && $response->json('success')) {
             $this->token = Str::remove('Bearer ', $response->header('authorization'));
-            $this->team->update([
+            $this->team->forceFill([
                 'personio_token' => $this->token,
             ]);
+            $this->team->save();
         }
     }
 
