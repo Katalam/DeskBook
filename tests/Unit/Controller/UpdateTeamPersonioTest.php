@@ -16,7 +16,6 @@ it('will update the team personio ids', function () {
         'personio_token' => Str::random(20),
     ]);
 
-
     $response = $this->actingAs($user)->put(route('teams.personio.update', $user->currentTeam), [
         'personio_client_id' => 'MyPersonioClientId',
         'personio_client_secret' => 'MyPersonioClientSecret',
