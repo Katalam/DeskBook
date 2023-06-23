@@ -121,7 +121,7 @@ declare interface Dates {
                                 ref="input"
                                 class="border-gray-300 text-center sm:text-left bg-background text-gray-200 focus:outline-none"
                                 placeholder="Search for a room"
-                                v-model="search"0
+                                v-model="search"
                             >
                         </div>
                     </div>
