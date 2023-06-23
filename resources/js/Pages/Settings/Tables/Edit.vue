@@ -11,7 +11,7 @@ import {ref} from "vue";
 
 const props = defineProps<Props>();
 
-const showDeleteTableModal : Ref<Boolean> = ref(false);
+const showDeleteTableModal : Ref<boolean> = ref(false);
 
 function deleteTable() {
     useForm({}).delete(route('tables.destroy', props.table.data.id), {

@@ -11,7 +11,7 @@ import RoomForm from "@/Components/RoomForm.vue";
 
 const props = defineProps<Props>();
 
-const showDeleteRoomModal : Ref<Boolean> = ref(false);
+const showDeleteRoomModal : Ref<boolean> = ref(false);
 
 function deleteRoom() {
     useForm({}).delete(route('rooms.destroy', props.room.data.id), {

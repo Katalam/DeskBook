@@ -12,7 +12,7 @@ import FeatureForm from "@/Pages/Features/Partials/FeatureForm.vue";
 
 const props = defineProps<Props>();
 
-const showDeleteFeatureModal : Ref<Boolean> = ref(false);
+const showDeleteFeatureModal : Ref<boolean> = ref(false);
 
 function deleteFeature() {
     useForm({}).delete(route('features.destroy', props.feature.data.id), {

@@ -4,7 +4,6 @@ import {Link, router, usePage} from '@inertiajs/vue3';
 import {Room, Table} from "@/types/models";
 import {computed, ref, watch} from "vue";
 import TableReserve from "@/Pages/Tables/Partials/TableReserve.vue";
-import {VTooltip} from "floating-vue";
 import Tooltip from "@/Components/Tooltip.vue";
 
 const props = defineProps<Props>()
@@ -122,7 +121,7 @@ declare interface Dates {
                                 ref="input"
                                 class="border-gray-300 text-center sm:text-left bg-background text-gray-200 focus:outline-none"
                                 placeholder="Search for a room"
-                                v-model="search"
+                                v-model="search"0
                             >
                         </div>
                     </div>
