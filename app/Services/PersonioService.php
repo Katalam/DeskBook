@@ -60,7 +60,7 @@ class PersonioService
                 'personio_token' => $this->token,
             ]);
             $this->team->save();
-        } else if ($response->successful() && ! $response->json('success')) {
+        } elseif ($response->successful() && ! $response->json('success')) {
             $this->token = '';
             $this->team->forceFill([
                 'personio_token' => null,
