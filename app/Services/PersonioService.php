@@ -37,6 +37,10 @@ class PersonioService
 
         if ($response->successful() && $response->json('success')) {
             $this->token = $response->json('data.token');
+            $this->team->forceFill([
+                'personio_token' => $this->token,
+            ]);
+            $this->team->save();
         }
     }
 
@@ -54,6 +58,12 @@ class PersonioService
             $this->token = Str::remove('Bearer ', $response->header('authorization'));
             $this->team->forceFill([
                 'personio_token' => $this->token,
+            ]);
+            $this->team->save();
+        } else if ($response->successful() && ! $response->json('success')) {
+            $this->token = '';
+            $this->team->forceFill([
+                'personio_token' => null,
             ]);
             $this->team->save();
         }
