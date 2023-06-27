@@ -25,8 +25,7 @@ class AppServiceProvider extends ServiceProvider
                 ->withHeaders([
                     'accept' => 'application/json',
                     'content-type' => 'application/json',
-                ])
-                ->retry(3, 100);
+                ]);
         });
     }
 }
