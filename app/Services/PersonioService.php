@@ -27,6 +27,10 @@ class PersonioService
         if ($this->team->personio_token) {
             $this->token = $this->team->personio_token;
 
+            Log::warning('Personio token already exists', [
+                'token' => $this->token,
+            ]);
+
             return;
         }
 
@@ -42,6 +46,10 @@ class PersonioService
                 'personio_token' => $this->token,
             ]);
             $this->team->save();
+
+            Log::warning('Personio token created', [
+                'token' => $this->token,
+            ]);
         } else {
             $this->token = '';
             $this->team->forceFill([
@@ -134,6 +142,10 @@ class PersonioService
     public function syncReservation(Reservation $reservation): void
     {
         if ($reservation->table?->timeOffType?->personio_id === null) {
+            Log::warning('No time off type for table', [
+                'reservation' => $reservation->toArray(),
+            ]);
+
             return;
         }
 
@@ -150,6 +162,11 @@ class PersonioService
                 'skip_approval' => true,
             ]);
 
+        Log::warning('Reservation in Personio', [
+            'reservation' => $reservation->toArray(),
+            'response' => $response->json(),
+        ]);
+
         $this->updateToken($response);
 
         if (! $response->successful() || ! $response->json('success')) {
@@ -160,11 +177,6 @@ class PersonioService
 
             return;
         }
-
-        Log::warning('Reservation in Personio', [
-            'reservation' => $reservation->toArray(),
-            'response' => $response->json(),
-        ]);
 
         $reservation->update([
             'personio_id' => $response->json('data.attributes.id'),
