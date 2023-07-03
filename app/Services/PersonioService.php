@@ -26,6 +26,7 @@ class PersonioService
     {
         if ($this->team->personio_token) {
             $this->token = $this->team->personio_token;
+
             return;
         }
 
