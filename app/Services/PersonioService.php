@@ -122,6 +122,10 @@ class PersonioService
 
     public function syncReservation(Reservation $reservation): void
     {
+        if ($reservation->table?->timeOffType?->personio_id === null) {
+            return;
+        }
+
         $response = Http::personio()
             ->withToken($this->token)
             ->post('/company/time-offs', [
