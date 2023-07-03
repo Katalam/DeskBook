@@ -14,7 +14,7 @@ it('will return a 302 response on table reservation store', function () {
             'room_id' => Room::factory()
                 ->state([
                     'team_id' => $user->currentTeam->id,
-                ])
+                ]),
         ])
         ->create();
 
@@ -81,7 +81,7 @@ it('will not return an error response on table reservation store if date is bloc
             'room_id' => Room::factory()
                 ->state([
                     'team_id' => $user->currentTeam->id,
-                ])
+                ]),
         ])
         ->create();
 
