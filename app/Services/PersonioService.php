@@ -42,6 +42,16 @@ class PersonioService
                 'personio_token' => $this->token,
             ]);
             $this->team->save();
+        } else {
+            $this->token = '';
+            $this->team->forceFill([
+                'personio_token' => null,
+            ]);
+            $this->team->save();
+
+            Log::error('Could not login to Personio', [
+                'response' => $response->json(),
+            ]);
         }
     }
 
