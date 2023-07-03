@@ -161,6 +161,11 @@ class PersonioService
             return;
         }
 
+        Log::warning('Reservation in Personio', [
+            'reservation' => $reservation->toArray(),
+            'response' => $response->json(),
+        ]);
+
         $reservation->update([
             'personio_id' => $response->json('data.attributes.id'),
         ]);
