@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\Table;
 use App\Models\User;
 
@@ -8,7 +9,14 @@ it('will return a 302 response on table reservation store', function () {
     $user = User::factory()
         ->withPersonalTeam()
         ->create();
-    $table = Table::factory()->create();
+    $table = Table::factory()
+        ->state([
+            'room_id' => Room::factory()
+                ->state([
+                    'team_id' => $user->currentTeam->id,
+                ])
+        ])
+        ->create();
 
     $response = $this->actingAs($user)
         ->post(route('tables.reservations.store', $table), [
@@ -61,10 +69,19 @@ it('will not return an error response on table reservation store if date is bloc
     $user = User::factory()
         ->withPersonalTeam()
         ->create();
-    $userForReservation = User::factory()->create();
+    $userForReservation = User::factory()
+        ->state([
+            'current_team_id' => $user->currentTeam->id,
+        ])
+        ->create();
+
     $table = Table::factory()
         ->state([
             'multiple_bookings' => true,
+            'room_id' => Room::factory()
+                ->state([
+                    'team_id' => $user->currentTeam->id,
+                ])
         ])
         ->create();
 
