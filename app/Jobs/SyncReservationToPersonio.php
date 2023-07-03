@@ -41,6 +41,6 @@ class SyncReservationToPersonio implements ShouldQueue
 
     public function middleware(): array
     {
-        return [new WithoutOverlapping($this->reservation->table->room->team->id)];
+        return [(new WithoutOverlapping($this->reservation->table->room->team->id))->releaseAfter(30)];
     }
 }
