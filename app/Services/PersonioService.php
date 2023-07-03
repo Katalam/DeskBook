@@ -67,12 +67,13 @@ class PersonioService
                 'personio_token' => $this->token,
             ]);
             $this->team->save();
-        } elseif ($response->successful() && ! $response->json('success')) {
+        } else {
             $this->token = '';
             $this->team->forceFill([
                 'personio_token' => null,
             ]);
             $this->team->save();
+            $this->login($this->team->personio_client_id, $this->team->personio_client_secret);
         }
     }
 
