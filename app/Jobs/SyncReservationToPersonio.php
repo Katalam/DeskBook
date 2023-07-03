@@ -15,7 +15,8 @@ class SyncReservationToPersonio implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $tries = 3;
+    public int $tries = 100;
+    public int $maxExceptions = 5;
 
     /**
      * Create a new job instance.
@@ -41,6 +42,10 @@ class SyncReservationToPersonio implements ShouldQueue
 
     public function middleware(): array
     {
-        return [(new WithoutOverlapping($this->reservation->table->room->team->id))->releaseAfter(30)];
+        return [
+            (new WithoutOverlapping($this->reservation->table->room->team->id))
+            ->releaseAfter(20)
+            ->releaseAfter(180)
+        ];
     }
 }
