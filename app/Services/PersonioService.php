@@ -78,7 +78,6 @@ class PersonioService
             'response' => $response->json(),
         ]);
 
-
         if ($response->successful() && $response->json('success')) {
             $this->token = Str::remove('Bearer ', $response->header('authorization'));
             $this->team->forceFill([
