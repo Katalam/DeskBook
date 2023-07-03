@@ -73,6 +73,12 @@ class PersonioService
      */
     private function updateToken(Response $response): void
     {
+        Log::warning('Personio token updated', [
+            'token' => $this->token,
+            'response' => $response->json(),
+        ]);
+
+
         if ($response->successful() && $response->json('success')) {
             $this->token = Str::remove('Bearer ', $response->header('authorization'));
             $this->team->forceFill([
