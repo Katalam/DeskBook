@@ -31,13 +31,14 @@ class SyncReservationsAfterDateCommand extends Command
     public function handle(): void
     {
         $date = $this->argument('date');
-        if (!$date) {
+        if (! $date) {
             $date = $this->ask('What date should we sync reservations after? (YYYY-MM-DD)');
         }
         try {
             $date = Carbon::parse($date);
         } catch (InvalidFormatException) {
             $this->error('Invalid date format. Please use YYYY-MM-DD.');
+
             return;
         }
 
@@ -48,7 +49,7 @@ class SyncReservationsAfterDateCommand extends Command
             ->where('created_at', '>=', $date)
             ->get();
 
-        $this->info('Found ' . $reservations->count() . ' reservations to sync.');
+        $this->info('Found '.$reservations->count().' reservations to sync.');
 
         $reservations->each(function (Reservation $reservation) {
             SyncReservationToPersonio::dispatch($reservation);
