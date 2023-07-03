@@ -46,7 +46,7 @@ class SyncReservationToPersonio implements ShouldQueue
         return [
             (new WithoutOverlapping($this->reservation->table->room->team->id))
                 ->releaseAfter(20)
-                ->releaseAfter(180),
+                ->expireAfter(180),
         ];
     }
 }
