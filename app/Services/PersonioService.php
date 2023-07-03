@@ -7,6 +7,7 @@ use App\Models\Team;
 use Http;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Str;
+use Log;
 
 class PersonioService
 {
@@ -142,6 +143,11 @@ class PersonioService
         $this->updateToken($response);
 
         if (! $response->successful() || ! $response->json('success')) {
+            Log::error('Could not create reservation in Personio', [
+                'reservation' => $reservation->toArray(),
+                'response' => $response->json(),
+            ]);
+
             return;
         }
 
@@ -163,6 +169,11 @@ class PersonioService
         $this->updateToken($response);
 
         if (! $response->successful() || ! $response->json('success')) {
+            Log::error('Could not delete reservation in Personio', [
+                'reservation' => $reservation->toArray(),
+                'response' => $response->json(),
+            ]);
+
             return;
         }
 
