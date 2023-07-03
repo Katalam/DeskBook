@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Reservation;
 use App\Services\PersonioService;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -41,11 +42,14 @@ class SyncReservationToPersonio implements ShouldQueue
         $personioService->syncReservation($this->reservation);
     }
 
+    /**
+     * @throws Exception
+     */
     public function middleware(): array
     {
         return [
             (new WithoutOverlapping($this->reservation->table->room->team->id))
-                ->releaseAfter(20)
+                ->releaseAfter(10 + random_int(10, 20))
                 ->expireAfter(180),
         ];
     }

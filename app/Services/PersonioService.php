@@ -26,11 +26,6 @@ class PersonioService
     {
         if ($this->team->personio_token) {
             $this->token = $this->team->personio_token;
-
-            Log::warning('Personio token already exists', [
-                'token' => $this->token,
-            ]);
-
             return;
         }
 
@@ -46,20 +41,12 @@ class PersonioService
                 'personio_token' => $this->token,
             ]);
             $this->team->save();
-
-            Log::warning('Personio token created', [
-                'token' => $this->token,
-            ]);
         } else {
             $this->token = '';
             $this->team->forceFill([
                 'personio_token' => null,
             ]);
             $this->team->save();
-
-            Log::error('Could not login to Personio', [
-                'response' => $response->json(),
-            ]);
         }
     }
 
@@ -73,11 +60,6 @@ class PersonioService
      */
     private function updateToken(Response $response): void
     {
-        Log::warning('Personio token updated', [
-            'token' => $this->token,
-            'response' => $response->json(),
-        ]);
-
         if ($response->successful() && $response->json('success')) {
             $this->token = Str::remove('Bearer ', $response->header('authorization'));
             $this->team->forceFill([
@@ -147,10 +129,6 @@ class PersonioService
     public function syncReservation(Reservation $reservation): void
     {
         if ($reservation->table?->timeOffType?->personio_id === null) {
-            Log::warning('No time off type for table', [
-                'reservation' => $reservation->toArray(),
-            ]);
-
             return;
         }
 
@@ -166,11 +144,6 @@ class PersonioService
                 'comment' => 'Automatically created by Reservation System',
                 'skip_approval' => true,
             ]);
-
-        Log::warning('Reservation in Personio', [
-            'reservation' => $reservation->toArray(),
-            'response' => $response->json(),
-        ]);
 
         $this->updateToken($response);
 
