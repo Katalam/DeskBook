@@ -46,7 +46,7 @@ class SyncReservationsAfterDateCommand extends Command
 
         $reservations = Reservation::query()
             ->whereNull('personio_id')
-            ->where('created_at', '>=', $date)
+            ->where('date', '>=', $date)
             ->get();
 
         $this->info('Found '.$reservations->count().' reservations to sync.');
