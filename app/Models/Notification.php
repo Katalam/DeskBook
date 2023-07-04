@@ -33,10 +33,10 @@ class Notification extends Model
         return $this->belongsTo(Team::class);
     }
 
-//    public function tables(): MorphToMany
-//    {
-//        return $this->morphedByMany(Table::class, 'notificationable');
-//    }
+    //    public function tables(): MorphToMany
+    //    {
+    //        return $this->morphedByMany(Table::class, 'notificationable');
+    //    }
 
     public function rooms(): MorphToMany
     {

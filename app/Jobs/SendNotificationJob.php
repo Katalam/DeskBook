@@ -27,6 +27,7 @@ class SendNotificationJob implements ShouldQueue
 
     /**
      * Execute the job.
+     *
      * @throws Exception
      */
     public function handle(NotificationService $notificationService): void

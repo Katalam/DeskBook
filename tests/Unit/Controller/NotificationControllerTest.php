@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Notification;
 use App\Models\Team;
 use App\Models\User;
-use App\Models\Notification;
 
 it('will render a inertia page on create', function () {
     $user = User::factory()

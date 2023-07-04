@@ -142,7 +142,6 @@ it('will only push a notification if the condition more than is met', function (
     Queue::assertPushed(SendNotificationJob::class, 1);
 })->group('notification');
 
-
 it('can send messages via slack', function () {
     Http::preventStrayRequests();
 

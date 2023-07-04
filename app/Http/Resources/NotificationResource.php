@@ -24,9 +24,9 @@ class NotificationResource extends JsonResource
             'rooms' => $this->whenPivotLoaded('notificationables', function () {
                 return $this->resource->rooms->pluck('id');
             }),
-//            'tables' => $this->whenPivotLoaded('notificationables', function () {
-//                return $this->resource->tables->pluck('id');
-//            }),
+            //            'tables' => $this->whenPivotLoaded('notificationables', function () {
+            //                return $this->resource->tables->pluck('id');
+            //            }),
         ];
     }
 }

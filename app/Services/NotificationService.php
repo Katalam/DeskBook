@@ -53,8 +53,8 @@ class NotificationService
     {
         return $notification->rooms->every(function (Room $room) use ($notification) {
             return $room->tables->pluck('reservations')
-                    ->flatten()
-                    ->where('date', today())->count() < $notification->number;
+                ->flatten()
+                ->where('date', today())->count() < $notification->number;
         });
     }
 
@@ -62,8 +62,8 @@ class NotificationService
     {
         return $notification->rooms->every(function (Room $room) use ($notification) {
             return $room->tables->pluck('reservations')
-                    ->flatten()
-                    ->where('date', today())->count() > $notification->number;
+                ->flatten()
+                ->where('date', today())->count() > $notification->number;
         });
     }
 
