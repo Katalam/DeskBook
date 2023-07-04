@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\FeatureResource;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\RoomResource;
 use App\Http\Resources\TableResource;
 use App\Models\Room;
@@ -26,10 +27,13 @@ class SettingController extends Controller
 
         $features = $request->user()->currentTeam->features;
 
+        $notifications = $request->user()->currentTeam->notifications;
+
         return inertia('Settings/Index', [
             'rooms' => RoomResource::collection($rooms),
             'tables' => TableResource::collection($tables),
             'features' => FeatureResource::collection($features),
+            'notifications' => NotificationResource::collection($notifications),
         ]);
     }
 }

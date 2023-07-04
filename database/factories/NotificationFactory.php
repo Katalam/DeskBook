@@ -20,6 +20,7 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => $this->faker->word,
             'team_id' => Team::factory(),
             'type' => NotificationTypeEnum::EMPTY,
             'channel' => NotificationChannelEnum::EMAIL,

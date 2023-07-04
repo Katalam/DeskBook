@@ -113,3 +113,8 @@ export interface Feature {
     id: number,
     name: string,
 }
+
+export interface Notification {
+    id: number,
+    name: string,
+}
