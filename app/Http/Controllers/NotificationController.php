@@ -13,7 +13,7 @@ class NotificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function create()
     {
         return inertia('Settings/Notifications/Create');
     }
@@ -21,9 +21,9 @@ class NotificationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreNotificationRequest $request)
+    public function store(StoreNotificationRequest $request): RedirectResponse
     {
-        $notification = $request->user()->currentTeam->notifications()->create($request->validated());
+        $notification = $request->user()->currentTeam->notifications()->create($request->safe()->all());
 
         return redirect()->route('notifications.edit', $notification->id);
     }

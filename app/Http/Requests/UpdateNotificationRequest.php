@@ -11,7 +11,7 @@ class UpdateNotificationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', $this->notification);
     }
 
     /**
@@ -22,6 +22,7 @@ class UpdateNotificationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => 'required|string',
             'type' => 'required|in:empty,more_than,less_than',
             'channel' => 'required|in:email,slack',
             'number' => 'required_if:type,more_than,less_than|numeric',

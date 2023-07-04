@@ -17,7 +17,7 @@ class FeatureController extends Controller
 
     public function store(FeatureStoreRequest $request): RedirectResponse
     {
-        $feature = $request->user()->currentTeam->features()->create($request->validated());
+        $feature = $request->user()->currentTeam->features()->create($request->safe()->all());
 
         return redirect()->route('features.edit', $feature->id);
     }
