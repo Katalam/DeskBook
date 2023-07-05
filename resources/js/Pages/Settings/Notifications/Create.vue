@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
 import NotificationForm from "@/Pages/Notifications/Partials/NotificationForm.vue";
+import {Room} from "@/types/models";
+
+defineProps<{
+    rooms: {
+        data: Room[];
+    }
+}>();
 </script>
 
 <template>
@@ -17,7 +24,7 @@ import NotificationForm from "@/Pages/Notifications/Partials/NotificationForm.vu
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-2xl font-semibold">New notification</h3>
                     </div>
-                    <NotificationForm />
+                    <NotificationForm :rooms="rooms" />
                 </div>
             </div>
         </div>

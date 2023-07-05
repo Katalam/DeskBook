@@ -8,15 +8,20 @@ use App\Http\Resources\NotificationResource;
 use App\Http\Resources\RoomResource;
 use App\Models\Notification;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return inertia('Settings/Notifications/Create');
+        $rooms = $request->user()->currentTeam->rooms;
+
+        return inertia('Settings/Notifications/Create', [
+            'rooms' => RoomResource::collection($rooms),
+        ]);
     }
 
     /**
