@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNotificationRequest;
 use App\Http\Requests\UpdateNotificationRequest;
 use App\Http\Resources\NotificationResource;
+use App\Http\Resources\RoomResource;
 use App\Models\Notification;
 use Illuminate\Http\RedirectResponse;
 
@@ -23,7 +24,9 @@ class NotificationController extends Controller
      */
     public function store(StoreNotificationRequest $request): RedirectResponse
     {
-        $notification = $request->user()->currentTeam->notifications()->create($request->safe()->all());
+        $notification = $request->user()->currentTeam->notifications()->create($request->safe()->except('rooms'));
+
+        $notification->rooms()->sync($request->input('rooms', []));
 
         return redirect()->route('notifications.edit', $notification->id);
     }
@@ -35,8 +38,13 @@ class NotificationController extends Controller
     {
         $this->authorize('update', $notification);
 
+        $notification->load('team.rooms', 'rooms');
+
+        $rooms = $notification->team->rooms;
+
         return inertia('Settings/Notifications/Edit', [
             'notification' => NotificationResource::make($notification),
+            'rooms' => RoomResource::collection($rooms),
         ]);
     }
 
@@ -45,7 +53,9 @@ class NotificationController extends Controller
      */
     public function update(UpdateNotificationRequest $request, Notification $notification): RedirectResponse
     {
-        $notification->update($request->safe()->all());
+        $notification->update($request->safe()->except('rooms'));
+
+        $notification->rooms()->sync($request->input('rooms', []));
 
         return redirect()->back();
     }

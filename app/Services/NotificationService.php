@@ -102,6 +102,7 @@ class NotificationService
     private function replacePlaceholderInMessage(Notification $notification): string
     {
         $roomNames = $notification->rooms->pluck('name')->implode(', ');
+
         return Str::of($notification->message)
             ->replace(Notification::PLACEHOLDER, $roomNames)
             ->toString();

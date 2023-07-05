@@ -117,4 +117,10 @@ export interface Feature {
 export interface Notification {
     id: number,
     name: string,
+    type: string,
+    channel: string,
+    number?: number,
+    receiver: string,
+    message: string,
+    rooms: number[],
 }

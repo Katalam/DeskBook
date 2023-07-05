@@ -66,4 +66,9 @@ class Team extends JetstreamTeam
     {
         return $this->hasMany(Notification::class);
     }
+
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(Room::class);
+    }
 }

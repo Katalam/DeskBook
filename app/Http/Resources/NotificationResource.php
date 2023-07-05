@@ -21,10 +21,10 @@ class NotificationResource extends JsonResource
             'channel' => $this->resource->channel,
             'receiver' => $this->resource->receiver,
             'message' => $this->resource->message,
-            'rooms' => $this->whenPivotLoaded('notificationables', function () {
+            'rooms' => $this->whenLoaded('rooms', function () {
                 return $this->resource->rooms->pluck('id');
             }),
-            //            'tables' => $this->whenPivotLoaded('notificationables', function () {
+            //            'tables' => $this->whenPivotLoaded('tables', function () {
             //                return $this->resource->tables->pluck('id');
             //            }),
         ];

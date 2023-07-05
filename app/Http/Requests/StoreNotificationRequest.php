@@ -28,6 +28,8 @@ class StoreNotificationRequest extends FormRequest
             'number' => 'required_if:type,more_than,less_than|numeric',
             'receiver' => 'required|string',
             'message' => 'required|string',
+            'rooms' => 'required|array',
+            'rooms.*' => 'required|exists:rooms,id',
         ];
     }
 }

@@ -1,13 +1,13 @@
-<script setup>
-import { onMounted, ref } from 'vue';
+<script setup lang="ts">
+import {onMounted, Ref, ref} from 'vue';
 
-defineProps({
-    modelValue: String,
-});
+defineProps<{
+    modelValue: string | number;
+}>();
 
 defineEmits(['update:modelValue']);
 
-const input = ref(null);
+const input : Ref = ref(null);
 
 onMounted(() => {
     if (input.value.hasAttribute('autofocus')) {
