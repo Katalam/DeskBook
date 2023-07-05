@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command(SyncPersonioUsersCommand::class)->daily();
-        $schedule->command(SyncPersonioTimeOffTypesJob::class)->daily();
+        $schedule->job(SyncPersonioTimeOffTypesJob::class)->daily();
         $schedule->call(function (NotificationService $notificationService) {
             $notificationService->handle();
         })->dailyAt('11:00');
