@@ -26,7 +26,9 @@ class NotificationController extends Controller
     {
         $notification = $request->user()->currentTeam->notifications()->create($request->safe()->except('rooms'));
 
-        $notification->rooms()->sync($request->input('rooms', []));
+        if ($request->has('rooms')) {
+            $notification->rooms()->sync($request->input('rooms', []));
+        }
 
         return redirect()->route('notifications.edit', $notification->id);
     }
@@ -55,7 +57,9 @@ class NotificationController extends Controller
     {
         $notification->update($request->safe()->except('rooms'));
 
-        $notification->rooms()->sync($request->input('rooms', []));
+        if ($request->has('rooms')) {
+            $notification->rooms()->sync($request->input('rooms', []));
+        }
 
         return redirect()->back();
     }

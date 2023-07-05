@@ -134,7 +134,7 @@ interface Props {
                 </div>
 
                 <div>
-                    <InputLabel for="terms">
+                    <InputLabel for="rooms">
                         <div class="flex items-center" v-for="room in props.rooms.data">
                             <Checkbox :id="'room' + room.id" v-model:checked="form.rooms" :value="room.id.toString()" :name="'room' + room.id" />
                             <div class="ml-2" v-text="room.name" />
