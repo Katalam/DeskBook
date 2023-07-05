@@ -167,6 +167,40 @@ it('can send messages via slack', function () {
     });
 })->group('notification');
 
+it('can send messages and will replace the placeholder with data via slack', function () {
+    Http::preventStrayRequests();
+
+    $slackWebhook = 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX';
+
+    Http::fake([
+        $slackWebhook => Http::response('ok'),
+    ]);
+
+    $notification = Notification::factory()->create([
+        'channel' => NotificationChannelEnum::SLACK,
+        'receiver' => $slackWebhook,
+        'message' => Notification::PLACEHOLDER,
+    ]);
+
+    $notification->rooms()->attach(
+        Room::factory()
+            ->state([
+                'name' => 'Test',
+            ])
+            ->hasTables()
+            ->create()
+    );
+
+    $notificationService = new NotificationService();
+
+    $notificationService->sendMessage($notification);
+
+    Http::assertSent(function (Request $request) {
+        return $request->url() === 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
+            && $request['text'] === 'Test';
+    });
+})->group('notification');
+
 it('can send messages via email', function () {
     $email = '';
 

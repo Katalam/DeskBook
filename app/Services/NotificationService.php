@@ -11,6 +11,7 @@ use App\Models\Table;
 use Exception;
 use Http;
 use Illuminate\Support\Collection;
+use Str;
 
 class NotificationService
 {
@@ -85,15 +86,24 @@ class NotificationService
 
     private function sendMessageViaSlack(Notification $notification): void
     {
+
         Http::withHeaders([
             'Content-type' => 'application/json',
         ])->post($notification->receiver, [
-            'text' => $notification->message,
+            'text' => $this->replacePlaceholderInMessage($notification),
         ]);
     }
 
     private function sendMessageViaEmail(Notification $notification): void
     {
 
+    }
+
+    private function replacePlaceholderInMessage(Notification $notification): string
+    {
+        $roomNames = $notification->rooms->pluck('name')->implode(', ');
+        return Str::of($notification->message)
+            ->replace(Notification::PLACEHOLDER, $roomNames)
+            ->toString();
     }
 }

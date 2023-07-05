@@ -13,6 +13,8 @@ class Notification extends Model
 {
     use HasFactory;
 
+    public const PLACEHOLDER = '<room_names>';
+
     protected $fillable = [
         'name',
         'team_id',
