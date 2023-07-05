@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Console\Commands\SyncPersonioUsersCommand;
 use App\Jobs\SyncPersonioTimeOffTypesJob;
+use App\Services\NotificationService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,6 +17,9 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(SyncPersonioUsersCommand::class)->daily();
         $schedule->command(SyncPersonioTimeOffTypesJob::class)->daily();
+        $schedule->call(function (NotificationService $notificationService) {
+            $notificationService->handle();
+        })->dailyAt('11:00');
     }
 
     /**

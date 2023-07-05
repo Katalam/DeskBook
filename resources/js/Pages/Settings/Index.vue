@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue';
 import {Link} from "@inertiajs/vue3";
-import {Feature, Room, Table} from "@/types/models";
+import {Feature, Room, Table, Notification} from "@/types/models";
 
 defineProps<Props>();
 
@@ -15,6 +15,9 @@ interface Props {
     features: {
         data: Feature[];
     },
+    notifications: {
+        data: Notification[];
+    }
 }
 </script>
 
@@ -85,6 +88,26 @@ interface Props {
                          :key="0">
                         <h3 class="text-2xl font-semibold">
                             <Link :href="route('features.create')">New feature</Link>
+                        </h3>
+                    </div>
+                </div>
+                <div class="mb-4 flex items-center justify-center">
+                    <span class="font-bold uppercase px-4 py-2 text-lg border border-yellow-300 rounded-sm">Notifications</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-5 gap-4">
+                    <div class="bg-background-light-dark rounded-lg p-6 flex flex-col justify-between h-full"
+                         v-for="notification in notifications.data" :key="notification.id">
+                        <div class="text-center flex items-center justify-center">
+                            <h3 class="text-2xl font-semibold" v-text="notification.name"/>
+                        </div>
+                        <div class="text-gray-600 text-center hover:text-white">
+                            <Link :href="route('notifications.edit', notification.id)">Edit</Link>
+                        </div>
+                    </div>
+                    <div class="bg-background-light-dark rounded-lg p-6 text-center flex items-center justify-center"
+                         :key="0">
+                        <h3 class="text-2xl font-semibold">
+                            <Link :href="route('notifications.create')">New notification</Link>
                         </h3>
                     </div>
                 </div>

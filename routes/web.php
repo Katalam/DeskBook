@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FeatureController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TableController;
@@ -100,6 +101,17 @@ Route::middleware([
             Route::get('{feature}', 'edit')->name('edit');
             Route::patch('{feature}', 'update')->name('update');
             Route::delete('{feature}', 'destroy')->name('destroy');
+        });
+
+    Route::controller(NotificationController::class)
+        ->prefix('notifications')
+        ->as('notifications.')
+        ->group(function () {
+            Route::post('/', 'store')->name('store');
+            Route::get('create', 'create')->name('create');
+            Route::get('{notification}', 'edit')->name('edit');
+            Route::patch('{notification}', 'update')->name('update');
+            Route::delete('{notification}', 'destroy')->name('destroy');
         });
 
     Route::put('/teams/{team}/personio', TeamPersonioController::class)->name('teams.personio.update');

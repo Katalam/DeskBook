@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Feature;
+use App\Models\Notification;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\Table;
@@ -47,6 +48,13 @@ class DatabaseSeeder extends Seeder
         $user->favorites()->sync(Table::all()->random(5));
 
         Feature::factory()
+            ->state([
+                'team_id' => $user->currentTeam->id,
+            ])
+            ->count(5)
+            ->create();
+
+        Notification::factory()
             ->state([
                 'team_id' => $user->currentTeam->id,
             ])
