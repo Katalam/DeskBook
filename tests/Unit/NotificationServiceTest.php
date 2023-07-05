@@ -46,7 +46,7 @@ it('will only push a notification if the condition empty is met', function () {
     Reservation::create([
         'user_id' => User::factory()->create()->id,
         'table_id' => $notification->rooms->first()->tables->first()->id,
-        'date' => today(),
+        'date' => today()->addDay(),
     ]);
 
     $notificationService = new NotificationService();
@@ -72,7 +72,7 @@ it('will only push a notification if the condition empty is met with a reservati
     Reservation::create([
         'user_id' => User::factory()->create()->id,
         'table_id' => $notification->rooms->first()->tables->first()->id,
-        'date' => today()->addDay(),
+        'date' => today()->addDays(2),
     ]);
 
     $notificationService = new NotificationService();
@@ -126,13 +126,13 @@ it('will only push a notification if the condition more than is met', function (
     Reservation::create([
         'user_id' => User::factory()->create()->id,
         'table_id' => $notification->rooms->first()->tables->first()->id,
-        'date' => today(),
+        'date' => today()->addDay(),
     ]);
 
     Reservation::create([
         'user_id' => User::factory()->create()->id,
         'table_id' => $notification->rooms->first()->tables->last()->id,
-        'date' => today(),
+        'date' => today()->addDay(),
     ]);
 
     $notificationService = new NotificationService();

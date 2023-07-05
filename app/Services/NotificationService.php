@@ -45,7 +45,7 @@ class NotificationService
     {
         return $notification->rooms->every(function (Room $room) {
             return $room->tables->every(function (Table $table) {
-                return $table->reservations->where('date', today())->isEmpty();
+                return $table->reservations->where('date', today()->addDay())->isEmpty();
             });
         });
     }
@@ -55,7 +55,7 @@ class NotificationService
         return $notification->rooms->every(function (Room $room) use ($notification) {
             return $room->tables->pluck('reservations')
                 ->flatten()
-                ->where('date', today())->count() < $notification->number;
+                ->where('date', today()->addDay())->count() < $notification->number;
         });
     }
 
@@ -64,7 +64,7 @@ class NotificationService
         return $notification->rooms->every(function (Room $room) use ($notification) {
             return $room->tables->pluck('reservations')
                 ->flatten()
-                ->where('date', today())->count() > $notification->number;
+                ->where('date', today()->addDay())->count() > $notification->number;
         });
     }
 
