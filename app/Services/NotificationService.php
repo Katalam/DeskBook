@@ -9,7 +9,6 @@ use App\Models\Notification;
 use App\Models\Room;
 use App\Models\Table;
 use Arr;
-use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Exception;
 use Http;
@@ -24,7 +23,7 @@ class NotificationService
             ->with(['rooms.tables.reservations' /*, 'tables.reservations' */])
             ->chunk(100, function (Collection $notifications) {
                 $notifications->each(function (Notification $notification) {
-                    if (!$this->shouldSendToday($notification)) {
+                    if (! $this->shouldSendToday($notification)) {
                         return;
                     }
 

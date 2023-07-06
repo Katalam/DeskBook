@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Notification;
 use App\Services\NotificationService;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
