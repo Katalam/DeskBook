@@ -21,6 +21,7 @@ class NotificationController extends Controller
 
         return inertia('Settings/Notifications/Create', [
             'rooms' => RoomResource::collection($rooms),
+            'days' => Notification::DAYS,
         ]);
     }
 
@@ -29,7 +30,12 @@ class NotificationController extends Controller
      */
     public function store(StoreNotificationRequest $request): RedirectResponse
     {
-        $notification = $request->user()->currentTeam->notifications()->create($request->safe()->except('rooms'));
+        $data = $request->safe()->except('rooms');
+        $days = $request->input('days', []);
+        unset($data['days']);
+        $data['days'] = implode(',', $days);
+
+        $notification = $request->user()->currentTeam->notifications()->create($data);
 
         if ($request->has('rooms')) {
             $notification->rooms()->sync($request->input('rooms', []));
@@ -52,6 +58,7 @@ class NotificationController extends Controller
         return inertia('Settings/Notifications/Edit', [
             'notification' => NotificationResource::make($notification),
             'rooms' => RoomResource::collection($rooms),
+            'days' => Notification::DAYS,
         ]);
     }
 
@@ -60,7 +67,12 @@ class NotificationController extends Controller
      */
     public function update(UpdateNotificationRequest $request, Notification $notification): RedirectResponse
     {
-        $notification->update($request->safe()->except('rooms'));
+        $data = $request->safe()->except('rooms');
+        $days = $request->input('days', []);
+        unset($data['days']);
+        $data['days'] = implode(',', $days);
+
+        $notification->update($data);
 
         if ($request->has('rooms')) {
             $notification->rooms()->sync($request->input('rooms', []));
