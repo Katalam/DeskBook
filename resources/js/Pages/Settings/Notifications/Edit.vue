@@ -29,7 +29,9 @@ interface Props {
     rooms: {
         data: Room[];
     },
-    days: string[];
+    days: {
+        [key: number]: string
+    }
 }
 </script>
 

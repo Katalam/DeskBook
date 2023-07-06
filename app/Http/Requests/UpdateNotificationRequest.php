@@ -31,7 +31,7 @@ class UpdateNotificationRequest extends FormRequest
             'rooms' => 'sometimes|array',
             'rooms.*' => 'required|exists:rooms,id',
             'days' => 'sometimes|array',
-            'days.*' => 'required|string',
+            'days.*' => 'required|numeric|between:0,6',
         ];
     }
 }

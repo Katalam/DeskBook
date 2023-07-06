@@ -15,16 +15,6 @@ class Notification extends Model
 
     public const PLACEHOLDER = '<room_names>';
 
-    public const DAYS = [
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday',
-        'sunday',
-    ];
-
     protected $fillable = [
         'name',
         'team_id',
@@ -39,6 +29,7 @@ class Notification extends Model
     protected $casts = [
         'type' => NotificationTypeEnum::class,
         'channel' => NotificationChannelEnum::class,
+        'days' => 'array',
     ];
 
     public function team(): BelongsTo

@@ -56,6 +56,27 @@ it('will only push a notification if the condition empty is met', function () {
     Queue::assertPushed(SendNotificationJob::class, 0);
 })->group('notification');
 
+it('will only push a notification if the condition empty is met and the weekday is checked', function () {
+    Queue::fake();
+
+    $notification = Notification::factory()->create([
+        'type' => NotificationTypeEnum::EMPTY,
+        'days' => [],
+    ]);
+
+    $notification->rooms()->attach(
+        Room::factory()
+            ->hasTables(3)
+            ->create()
+    );
+
+    $notificationService = new NotificationService();
+
+    $notificationService->handle();
+
+    Queue::assertPushed(SendNotificationJob::class, 0);
+})->group('notification');
+
 it('will only push a notification if the condition empty is met with a reservation on another day', function () {
     Queue::fake();
 

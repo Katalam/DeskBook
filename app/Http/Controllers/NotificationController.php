@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateNotificationRequest;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\RoomResource;
 use App\Models\Notification;
+use App\Services\NotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class NotificationController extends Controller
 
         return inertia('Settings/Notifications/Create', [
             'rooms' => RoomResource::collection($rooms),
-            'days' => Notification::DAYS,
+            'days' => NotificationService::getAllWeekdays(),
         ]);
     }
 
@@ -30,12 +31,7 @@ class NotificationController extends Controller
      */
     public function store(StoreNotificationRequest $request): RedirectResponse
     {
-        $data = $request->safe()->except('rooms');
-        $days = $request->input('days', []);
-        unset($data['days']);
-        $data['days'] = implode(',', $days);
-
-        $notification = $request->user()->currentTeam->notifications()->create($data);
+        $notification = $request->user()->currentTeam->notifications()->create($request->safe()->except('rooms'));
 
         if ($request->has('rooms')) {
             $notification->rooms()->sync($request->input('rooms', []));
@@ -58,7 +54,7 @@ class NotificationController extends Controller
         return inertia('Settings/Notifications/Edit', [
             'notification' => NotificationResource::make($notification),
             'rooms' => RoomResource::collection($rooms),
-            'days' => Notification::DAYS,
+            'days' => NotificationService::getAllWeekdays(),
         ]);
     }
 
@@ -67,12 +63,7 @@ class NotificationController extends Controller
      */
     public function update(UpdateNotificationRequest $request, Notification $notification): RedirectResponse
     {
-        $data = $request->safe()->except('rooms');
-        $days = $request->input('days', []);
-        unset($data['days']);
-        $data['days'] = implode(',', $days);
-
-        $notification->update($data);
+        $notification->update($request->safe()->except('rooms'));
 
         if ($request->has('rooms')) {
             $notification->rooms()->sync($request->input('rooms', []));

@@ -8,6 +8,9 @@ use App\Jobs\SendNotificationJob;
 use App\Models\Notification;
 use App\Models\Room;
 use App\Models\Table;
+use Arr;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Exception;
 use Http;
 use Illuminate\Support\Collection;
@@ -21,11 +24,38 @@ class NotificationService
             ->with(['rooms.tables.reservations' /*, 'tables.reservations' */])
             ->chunk(100, function (Collection $notifications) {
                 $notifications->each(function (Notification $notification) {
+                    if (!$this->shouldSendToday($notification)) {
+                        return;
+                    }
+
                     if ($this->conditionMet($notification)) {
                         SendNotificationJob::dispatch($notification);
                     }
                 });
             });
+    }
+
+    private function shouldSendToday(Notification $notification): bool
+    {
+        return Arr::has($notification->days, today()->dayOfWeek);
+    }
+
+    /**
+     * Returns an array of all weekdays with the weekday number as key and the weekday name as value.
+     *
+     * @return string[]
+     */
+    public static function getAllWeekdays(): array
+    {
+        return [
+            CarbonInterface::MONDAY => 'Monday',
+            CarbonInterface::TUESDAY => 'Tuesday',
+            CarbonInterface::WEDNESDAY => 'Wednesday',
+            CarbonInterface::THURSDAY => 'Thursday',
+            CarbonInterface::FRIDAY => 'Friday',
+            CarbonInterface::SATURDAY => 'Saturday',
+            CarbonInterface::SUNDAY => 'Sunday',
+        ];
     }
 
     /**

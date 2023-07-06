@@ -27,7 +27,7 @@ class NotificationResource extends JsonResource
             //            'tables' => $this->whenPivotLoaded('tables', function () {
             //                return $this->resource->tables->pluck('id');
             //            }),
-            'days' => explode(',', $this->resource->days),
+            'days' => $this->resource->days,
         ];
     }
 }
