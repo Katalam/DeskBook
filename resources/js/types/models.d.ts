@@ -123,4 +123,5 @@ export interface Notification {
     receiver: string,
     message: string,
     rooms: number[],
+    days: string[],
 }

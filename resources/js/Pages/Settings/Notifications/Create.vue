@@ -6,7 +6,8 @@ import {Room} from "@/types/models";
 defineProps<{
     rooms: {
         data: Room[];
-    }
+    },
+    days: string[]
 }>();
 </script>
 
@@ -24,7 +25,7 @@ defineProps<{
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-2xl font-semibold">New notification</h3>
                     </div>
-                    <NotificationForm :rooms="rooms" />
+                    <NotificationForm :rooms="rooms" :days="days" />
                 </div>
             </div>
         </div>

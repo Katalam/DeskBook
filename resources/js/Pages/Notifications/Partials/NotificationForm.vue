@@ -19,6 +19,7 @@ const form : InertiaForm<{
     receiver: string
     message: string
     rooms: number[]
+    days: string[]
 }> = useForm({
     name: props.notification?.data?.name || '',
     type: props.notification?.data?.type || 'empty',
@@ -27,6 +28,7 @@ const form : InertiaForm<{
     receiver: props.notification?.data?.receiver || '',
     message: props.notification?.data?.message || '',
     rooms: props.notification?.data?.rooms || [],
+    days : props.notification?.data?.days || [],
 });
 
 function submit() {
@@ -44,7 +46,8 @@ interface Props {
     },
     rooms: {
         data: Room[]
-    }
+    },
+    days: string[]
 }
 </script>
 
@@ -134,12 +137,24 @@ interface Props {
                 </div>
 
                 <div>
+                    <InputLabel value="Rooms"/>
                     <InputLabel for="rooms">
                         <div class="flex items-center" v-for="room in props.rooms.data">
                             <Checkbox :id="'room' + room.id" v-model:checked="form.rooms" :value="room.id.toString()" :name="'room' + room.id" />
                             <div class="ml-2" v-text="room.name" />
                         </div>
                         <InputError class="mt-2" :message="form.errors.rooms" />
+                    </InputLabel>
+                </div>
+
+                <div>
+                    <InputLabel value="Days to notify"/>
+                    <InputLabel for="days">
+                        <div class="flex items-center" v-for="day in props.days">
+                            <Checkbox :id="'day' + day" v-model:checked="form.days" :value="day" :name="'day' + day" />
+                            <div class="ml-2" v-text="day.charAt(0).toUpperCase() + day.slice(1)" />
+                        </div>
+                        <InputError class="mt-2" :message="form.errors.days" />
                     </InputLabel>
                 </div>
 
