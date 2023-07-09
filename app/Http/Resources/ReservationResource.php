@@ -16,7 +16,7 @@ class ReservationResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
-            'date' => $this->resource->date->format('Y m d'),
+            'date' => $this->resource->date->format('Y-m-d'),
             'user' => $this->whenLoaded('user', function () {
                 return [
                     'id' => $this->resource->user->id,

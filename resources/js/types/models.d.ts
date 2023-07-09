@@ -29,6 +29,7 @@ export interface User {
     updated_at: string | null
     two_factor_confirmed_at: string | null
     profile_photo_url: string
+    reservations?: Array<Reservation>
 }
 
 export interface UserSession {

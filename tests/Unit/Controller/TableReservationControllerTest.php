@@ -187,3 +187,29 @@ it('will not destroy a reservation if user is not the reserver', function () {
         'user_id' => $reserver->id,
     ]);
 })->group('unit', 'controller', 'table-reservation');
+
+it('will destroy a reservation if user is not the reserver but an admin', function () {
+    $reserver = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $user = User::factory()
+        ->create();
+    $reserver->currentTeam->users()->attach($user, ['role' => 'admin']);
+    $user->switchTeam($reserver->currentTeam);
+
+    $table = Table::factory()->create();
+    $reservation = Reservation::factory()->create([
+        'table_id' => $table->id,
+        'user_id' => $reserver->id,
+    ]);
+
+    $response = $this->actingAs($user)
+        ->delete(route('tables.reservations.destroy', [$table, $reservation]));
+
+    $response->assertStatus(302);
+
+    $response->assertSessionHasNoErrors();
+
+    $this->assertSoftDeleted($reservation->fresh());
+})->group('unit', 'controller', 'table-reservation');
+

@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'email' => $this->resource->email,
             'has_two_factor_auth' => $this->resource->two_factor_secret !== null,
             'profile_photo_url' => $this->resource->profile_photo_url,
+            'reservations' => ReservationResource::collection($this->whenLoaded('reservations')),
         ];
     }
 }
