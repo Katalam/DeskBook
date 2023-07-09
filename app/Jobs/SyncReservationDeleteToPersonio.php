@@ -4,10 +4,12 @@ namespace App\Jobs;
 
 use App\Models\Reservation;
 use App\Services\PersonioService;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
 class SyncReservationDeleteToPersonio implements ShouldQueue
@@ -34,5 +36,18 @@ class SyncReservationDeleteToPersonio implements ShouldQueue
         $personioService = new PersonioService($this->reservation->table->room->team);
 
         $personioService->deleteReservation($this->reservation);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function middleware(): array
+    {
+        return [
+            (new WithoutOverlapping('personio:'.$this->reservation->table->room->team->id))
+                ->shared()
+                ->releaseAfter(10 + random_int(10, 20))
+                ->expireAfter(180),
+        ];
     }
 }
