@@ -7,6 +7,7 @@ use App\Http\Requests\TableReservationStoreRequest;
 use App\Jobs\SyncReservationDeleteToPersonio;
 use App\Jobs\SyncReservationToPersonio;
 use App\Models\Table;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,13 @@ class TableReservationController extends Controller
             ]);
         }
 
-        $alreadySomethingReserved = $request->user()
+        $user = $request->user();
+
+        if ($request->has('user_id')) {
+            $user = User::find($request->input('user_id'));
+        }
+
+        $alreadySomethingReserved = $user
             ->reservations()
             ->where('date', $request->date)
             ->exists();
@@ -38,10 +45,10 @@ class TableReservationController extends Controller
 
         $reservation = $table->reservations()->create([
             'date' => $request->date,
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
         ]);
 
-        broadcast(new TableReserved($request->user()->currentTeam))->toOthers();
+        broadcast(new TableReserved($user->currentTeam))->toOthers();
         SyncReservationToPersonio::dispatch($reservation);
 
         return redirect()->route('tables.index');
@@ -55,7 +62,7 @@ class TableReservationController extends Controller
             return redirect()->back();
         }
 
-        if (auth()->id() !== $reservationModel->user_id && ! $request->user()->hasTeamRole($request->user()->currentTeam, 'admin')) {
+        if ($request->user()->id !== $reservationModel->user_id && ! $request->user()->hasTeamRole($request->user()->currentTeam, 'admin')) {
             return redirect()->back();
         }
 

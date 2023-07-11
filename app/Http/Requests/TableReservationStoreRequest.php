@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\HasAdminRole;
+use App\Rules\UserBelongsToCurrentTeam;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TableReservationStoreRequest extends FormRequest
@@ -23,6 +25,7 @@ class TableReservationStoreRequest extends FormRequest
     {
         return [
             'date' => 'required|date',
+            'user_id' => ['sometimes', 'numeric', 'exists:users,id', new HasAdminRole, new UserBelongsToCurrentTeam],
         ];
     }
 }

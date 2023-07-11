@@ -12,7 +12,7 @@ class UserController extends Controller
         $queryReservations = static function ($query) {
             return $query
                 ->orderBy('date')
-                ->where('date', '>', today()->subDay())
+                ->where('date', '>=', today()->subDay())
                 ->with('table');
         };
 

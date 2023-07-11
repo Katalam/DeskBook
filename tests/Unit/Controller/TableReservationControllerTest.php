@@ -212,3 +212,67 @@ it('will destroy a reservation if user is not the reserver but an admin', functi
 
     $this->assertSoftDeleted($reservation->fresh());
 })->group('unit', 'controller', 'table-reservation');
+
+it('will store a reservation for another user when user is admin', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $admin = User::factory()
+        ->create();
+    $user->currentTeam->users()->attach($admin, ['role' => 'admin']);
+    $admin->switchTeam($user->currentTeam);
+    $table = Table::factory()
+        ->state([
+            'room_id' => Room::factory()
+                ->state([
+                    'team_id' => $user->currentTeam->id,
+                ]),
+        ])
+        ->create();
+
+    $response = $this->actingAs($admin)
+        ->post(route('tables.reservations.store', $table), [
+            'date' => today()->format('Y-m-d'),
+            'user_id' => $user->id,
+        ]);
+
+    $response->assertStatus(302);
+
+    $response->assertSessionHasNoErrors();
+
+    $this->assertDatabaseHas('reservations', [
+        'table_id' => $table->id,
+        'user_id' => $user->id,
+    ]);
+})->group('unit', 'controller', 'table-reservation');
+
+it('will not store a reservation for another user when user is no admin', function () {
+    $user = User::factory()
+        ->withPersonalTeam()
+        ->create();
+    $member = User::factory()
+        ->create();
+    $user->currentTeam->users()->attach($member, ['role' => 'member']);
+    $member->switchTeam($user->currentTeam);
+    $table = Table::factory()
+        ->state([
+            'room_id' => Room::factory()
+                ->state([
+                    'team_id' => $user->currentTeam->id,
+                ]),
+        ])
+        ->create();
+
+    $response = $this->actingAs($member)
+        ->post(route('tables.reservations.store', $table), [
+            'date' => today()->format('Y-m-d'),
+            'user_id' => $user->id,
+        ]);
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseMissing('reservations', [
+        'table_id' => $table->id,
+        'user_id' => $user->id,
+    ]);
+})->group('unit', 'controller', 'table-reservation');
