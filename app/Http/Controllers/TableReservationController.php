@@ -55,7 +55,7 @@ class TableReservationController extends Controller
             return redirect()->back();
         }
 
-        if (auth()->id() !== $reservationModel->user_id && !$request->user()->hasTeamRole($request->user()->currentTeam, 'admin')) {
+        if (auth()->id() !== $reservationModel->user_id && ! $request->user()->hasTeamRole($request->user()->currentTeam, 'admin')) {
             return redirect()->back();
         }
 

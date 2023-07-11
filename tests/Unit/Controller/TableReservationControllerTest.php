@@ -212,4 +212,3 @@ it('will destroy a reservation if user is not the reserver but an admin', functi
 
     $this->assertSoftDeleted($reservation->fresh());
 })->group('unit', 'controller', 'table-reservation');
-
