@@ -50,13 +50,21 @@ php artisan db:seed
 ```bash
 php artisan serve
 ```
-10. Visit http://localhost:8000/ in your browser.
-11. Login with the following credentials.
+10. Execute npm install.
+```bash
+npm install
+```
+11. Execute npm run dev.
+```bash
+npm run dev
+```
+12. Visit http://localhost:8000/ in your browser.
+13. Login with the following credentials.
 ```bash
 Email: test@test.com
 Password: password
 ```
-12. You can now use the application.
+14. You can now use the application.
 
 
 ## Roadmap
