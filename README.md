@@ -1,5 +1,5 @@
 # DeskPlan
-DeskPlan is a web application that allows users to book a desk in a shared office space. It is built using the Laravel framework and uses a MySQL database. The application can be accessed at https://deskplan.com/.
+DeskPlan is a web application that allows users to book a desk in a shared office space. It is built using the Laravel framework and uses a PostgresSQL database. The application can be accessed at https://deskplan.com/.
 
 ## Contributing
 

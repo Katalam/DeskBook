@@ -29,14 +29,14 @@ function deleteReserved(tableId: RouteParam, reservationId: RouteParam) {
         <div class="py-12">
             <div class="max-w-7xl mx-auto space-y-8 text-gray-100">
                 <div v-for="user in users.data">
-                    <div class="mb-4 flex items-center justify-center" v-if="user.reservations?.length > 0">
+                    <div class="mb-4 flex items-center justify-center" v-if="user.reservations?.length ?? 0 > 0">
                             <span v-text="user.name"
                                   class="font-bold uppercase px-4 py-2 text-lg border border-yellow-300 rounded-sm"/>
                     </div>
-                    <div class="gap-4 grid grid-cols-1 sm:grid-cols-3" v-if="user.reservations?.length > 0">
+                    <div class="gap-4 grid grid-cols-1 sm:grid-cols-3" v-if="user.reservations?.length ?? 0 > 0">
                         <div
                             class="flex flex-col justify-between h-full overflow-hidden bg-background-light-dark rounded-lg p-4"
-                            v-for="reservation in user?.reservations">
+                            v-for="reservation in user?.reservations ?? []">
                             <div class="text-center font-bold text-xl" v-text="reservation.date"/>
                             <div>
                                 <div class="relative">
